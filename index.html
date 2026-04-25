@@ -3,55 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ana y José Tulum - Room Service Pro</title>
+    <title>Ana y José Tulum - Room Service Elite</title>
     <style>
-        :root { --oro: #8d754a; --oscuro: #2c3e50; --beige: #f9f7f2; }
+        :root { --oro: #8d754a; --oscuro: #2c3e50; --beige: #f9f7f2; --blanco: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; color: #333; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .container { max-width: 800px; margin: auto; background: var(--blanco); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        header { text-align: center; border-bottom: 2px solid var(--oro); margin-bottom: 20px; padding-bottom: 15px; }
-        h1 { color: var(--oro); letter-spacing: 3px; margin: 0; font-size: 1.8rem; }
+        /* Hero Banner */
+        .hero { 
+            width: 100%; height: 220px; 
+            background-image: url('https://r2.erweima.ai/i/1000108113.jpg'); 
+            background-size: cover; background-position: center;
+            display: flex; align-items: flex-end;
+        }
+        .hero-title { background: linear-gradient(transparent, rgba(0,0,0,0.8)); width: 100%; padding: 25px; color: white; text-align: center; }
+        .hero-title h1 { margin: 0; letter-spacing: 4px; font-size: 1.6rem; text-transform: uppercase; }
 
-        /* Categorías con Imagen de Fondo */
-        .nav-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; position: sticky; top: 0; background: white; padding: 15px 0; z-index: 100; }
-        .btn-cat { border: 1.5px solid var(--oro); background: white; color: var(--oro); padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        /* Navegación */
+        .nav-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 15px; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; }
+        .btn-cat { border: 1.5px solid var(--oro); background: white; color: var(--oro); padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-cat.active { background: var(--oro); color: white; }
 
-        /* Banner de Categoría */
-        #category-banner { width: 100%; height: 150px; border-radius: 10px; background-size: cover; background-position: center; margin-bottom: 20px; transition: 0.5s; }
-
-        /* Menú */
-        .lista-productos { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        @media(min-width: 600px) { .lista-productos { grid-template-columns: 1fr 1fr; } }
+        /* Grid */
+        .content { padding: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media(min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
         
-        .producto-card { border: 1px solid #eee; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; transition: 0.2s; }
-        .producto-card:hover { border-color: var(--oro); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .producto-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; }
+        .card { border: 1px solid #eee; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; }
+        .card-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; color: var(--oscuro); }
         .precio { color: var(--oro); }
-        .btn-add { background: var(--oscuro); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
+        .desc { font-size: 0.85rem; color: #666; margin-bottom: 15px; }
+        .btn-add { background: var(--oscuro); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* Formulario de Detalles */
-        .detalles-pedido { background: #fdfcf9; border: 1px solid #e0dacc; padding: 20px; border-radius: 12px; margin-top: 30px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--oscuro); }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-
-        /* Carrito */
-        .carrito { margin-top: 20px; padding: 15px; border-top: 1px solid #eee; }
-        .item-carrito { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
-        .total { text-align: right; font-size: 1.5rem; font-weight: bold; margin-top: 20px; color: var(--oscuro); }
+        /* Formulario de Datos del Huésped */
+        .order-box { background: #fdfcf9; border-top: 2px solid var(--oro); padding: 25px; margin-top: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
+        @media(min-width: 600px) { .form-row { grid-template-columns: 1fr 1fr; } }
         
-        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 18px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; margin-top: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-whatsapp:hover { background: #128C7E; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-bottom: 5px; font-size: 0.85rem; color: var(--oscuro); }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; outline: none; }
+        input:focus { border-color: var(--oro); }
+
+        .item-cart { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 1.4rem; font-weight: bold; }
+        
+        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 18px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>ANA Y JOSÉ TULUM</h1>
-        <p>The Good Life - Room Service</p>
-    </header>
+    <div class="hero">
+        <div class="hero-title">
+            <h1>Ana y José</h1>
+            <p>Room Service Experience</p>
+        </div>
+    </div>
 
     <div class="nav-menu">
         <button class="btn-cat active" data-cat="Desayuno">Desayunos</button>
@@ -60,159 +68,129 @@
         <button class="btn-cat" data-cat="Bebidas">Bebidas</button>
     </div>
 
-    <div id="category-banner"></div>
+    <div class="content">
+        <div id="menu-grid" class="grid"></div>
+    </div>
 
-    <div id="contenedor-menu" class="lista-productos"></div>
-
-    <div class="detalles-pedido">
-        <h3>Datos de Entrega y Pago</h3>
-        <div class="form-group">
-            <label>Número de Habitación / Room Number:</label>
-            <input type="text" id="habitacion" placeholder="Ej. 104" required>
+    <div class="order-box">
+        <h3>Datos del Pedido</h3>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre Completo / Full Name:</label>
+                <input type="text" id="nombre-huesped" placeholder="Ej. Juan Pérez" required>
+            </div>
+            <div class="form-group">
+                <label>Número de Habitación / Room:</label>
+                <input type="text" id="habitacion" placeholder="Ej. Villa 10" required>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Método de Pago / Payment Method:</label>
-            <select id="metodo-pago">
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label>Método de Pago:</label>
+            <select id="pago">
                 <option value="Cargo a la Habitación">Cargo a la Habitación</option>
                 <option value="Pago al recibir (Efectivo/Tarjeta)">Pago al recibir (Efectivo/Tarjeta)</option>
             </select>
         </div>
 
-        <div class="carrito">
-            <h4>Tu Selección:</h4>
-            <div id="items-carrito"></div>
-            <div class="total">Total: $<span id="suma-total">0</span> MXN</div>
-            
-            <button class="btn-whatsapp" onclick="enviarWhatsApp()">
-                Confirmar por WhatsApp
-            </button>
+        <h4>Tu Selección:</h4>
+        <div id="cart-items"></div>
+        
+        <div class="total-row">
+            <span>Total:</span>
+            <span>$<span id="total-val">0</span> MXN</span>
         </div>
+        
+        <button class="btn-whatsapp" onclick="enviar()">
+            Confirmar Pedido vía WhatsApp
+        </button>
     </div>
 </div>
 
 <script>
-    // Configuración: Cambia este número por el del hotel (incluye código de país, ej: 52984...)
-    const TELEFONO_HOTEL = "5219841234567"; 
+    const WHATSAPP_NUMBER = "5219841234567"; // CAMBIA ESTO
 
-    const menu = [
-        { n: "Huevos Doña Ana", p: 295, c: "Desayuno" },
-        { n: "Chilaquiles Tradicionales", p: 250, c: "Desayuno" },
-        { n: "Avocado Toast Tulum", p: 350, c: "Desayuno" },
-        { n: "Enchiladas de Cochinita", p: 305, c: "Desayuno" },
-        { n: "Panqueques de Cacao", p: 285, c: "Desayuno" },
-        { n: "Guacamole con Rib Eye", p: 305, c: "Lunch" },
-        { n: "Ceviche de Pescado", p: 485, c: "Lunch" },
-        { n: "Hamburguesa Ana y José", p: 545, c: "Lunch" },
-        { n: "Pizza Caribeña Langosta", p: 765, c: "Lunch" },
-        { n: "Carpaccio de Res Wagyu", p: 1105, c: "Cena" },
-        { n: "Ribeye Prime Madurado", p: 2250, c: "Cena" },
-        { n: "Langosta al Carbón", p: 1350, c: "Cena" },
-        { n: "Filete de Mero en Costra", p: 505, c: "Cena" },
-        { n: "Jugo Verde Maya", p: 155, c: "Bebidas" },
-        { n: "Tónico de Fuego", p: 155, c: "Bebidas" },
-        { n: "Smoothie Tropical", p: 165, c: "Bebidas" }
+    const platillos = [
+        { n: "Huevos Doña Ana", p: 295, d: "Sope de maíz azul, frijol colado y salsa recado negro.", c: "Desayuno" },
+        { n: "Chilaquiles Tradicionales", p: 250, d: "Verdes o rojos con crema, aguacate y frijoles.", c: "Desayuno" },
+        { n: "Avocado Toast Tulum", p: 350, d: "Pan de masa madre, tomate heirloom y huevo pochado.", c: "Desayuno" },
+        { n: "Hamburguesa Ana y José", p: 545, d: "Carne Angus, queso gouda y alioli xcatic.", c: "Lunch" },
+        { n: "Tacos de Rib Eye", p: 495, d: "3 piezas al carbón con guacamole artesanal.", c: "Lunch" },
+        { n: "Carpaccio Res Wagyu", p: 1105, d: "Aceite de trufa y lajas de parmesano.", c: "Cena" },
+        { n: "Langosta al Horno", p: 1350, d: "Con mantequilla de cítricos y puré de maíz.", c: "Cena" },
+        { n: "Jugo Verde Maya", p: 155, d: "Chaya, piña, pepino y miel melipona.", c: "Bebidas" }
     ];
-
-    const banners = {
-        "Desayuno": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=800&q=80",
-        "Lunch": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
-        "Cena": "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80",
-        "Bebidas": "https://images.unsplash.com/photo-1544145945-f904253db0ad?auto=format&fit=crop&w=800&q=80"
-    };
 
     let carrito = [];
 
-    function filtrar(categoria) {
-        const contenedor = document.getElementById('contenedor-menu');
-        const banner = document.getElementById('category-banner');
-        contenedor.innerHTML = '';
-        
-        banner.style.backgroundImage = `url('${banners[categoria]}')`;
-        
-        const filtrados = menu.filter(item => item.c === categoria);
-        filtrados.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'producto-card';
-            div.innerHTML = `
-                <div class="producto-info">
-                    <span>${item.n}</span>
-                    <span class="precio">$${item.p}</span>
+    function filtrar(cat) {
+        document.querySelectorAll('.btn-cat').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+        const grid = document.getElementById('menu-grid');
+        grid.innerHTML = platillos.filter(p => p.c === cat).map(p => `
+            <div class="card">
+                <div>
+                    <div class="card-info"><span>${p.n}</span><span class="precio">$${p.p}</span></div>
+                    <div class="desc">${p.d}</div>
                 </div>
-                <button class="btn-add" onclick="agregar('${item.n}', ${item.p})">Añadir al Pedido</button>
-            `;
-            contenedor.appendChild(div);
-        });
+                <button class="btn-add" onclick="agregar('${p.n}', ${p.p})">Añadir al Pedido</button>
+            </div>
+        `).join('');
     }
 
-    function agregar(nombre, precio) {
-        carrito.push({ nombre, precio });
-        actualizarCarrito();
+    function agregar(n, p) {
+        carrito.push({n, p});
+        renderCart();
     }
 
-    function actualizarCarrito() {
-        const lista = document.getElementById('items-carrito');
-        const totalHtml = document.getElementById('suma-total');
-        lista.innerHTML = '';
-        let suma = 0;
-        carrito.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'item-carrito';
-            div.innerHTML = `<span>${item.nombre}</span> <span>$${item.precio} <button onclick="quitar(${index})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">✕</button></span>`;
-            lista.appendChild(div);
-            suma += item.precio;
-        });
-        totalHtml.innerText = suma.toLocaleString();
+    function renderCart() {
+        const box = document.getElementById('cart-items');
+        box.innerHTML = carrito.map((item, i) => `
+            <div class="item-cart">
+                <span>${item.n}</span>
+                <span>$${item.p} <button onclick="quitar(${i})" style="border:none;background:none;color:red;cursor:pointer">✕</button></span>
+            </div>
+        `).join('');
+        document.getElementById('total-val').innerText = carrito.reduce((s, i) => s + i.p, 0).toLocaleString();
     }
 
-    function quitar(idx) {
-        carrito.splice(idx, 1);
-        actualizarCarrito();
+    function quitar(i) {
+        carrito.splice(i, 1);
+        renderCart();
     }
 
-    function enviarWhatsApp() {
-        const habitacion = document.getElementById('habitacion').value;
-        const pago = document.getElementById('metodo-pago').value;
-        const total = document.getElementById('suma-total').innerText;
+    function enviar() {
+        const nombre = document.getElementById('nombre-huesped').value;
+        const hab = document.getElementById('habitacion').value;
+        const pago = document.getElementById('pago').value;
+        const total = document.getElementById('total-val').innerText;
 
-        if (!habitacion) {
-            alert("Por favor, ingresa tu número de habitación.");
-            return;
-        }
-        if (carrito.length === 0) {
-            alert("Tu pedido está vacío.");
-            return;
-        }
+        if(!nombre || !hab) return alert("Por favor complete su nombre y número de habitación.");
+        if(carrito.length === 0) return alert("El carrito está vacío.");
 
-        // Construir mensaje de WhatsApp
-        let mensaje = `*PEDIDO ROOM SERVICE - ANA Y JOSÉ*%0A%0A`;
-        mensaje += `*Habitación:* ${habitacion}%0A`;
-        mensaje += `*Método de Pago:* ${pago}%0A`;
-        mensaje += `--------------------------%0A`;
-        
-        carrito.forEach(item => {
-            mensaje += `• ${item.nombre} - $${item.precio}%0A`;
-        });
+        let msg = `*NUEVO PEDIDO DE ROOM SERVICE*%0A`;
+        msg += `--------------------------%0A`;
+        msg += `*Huésped:* ${nombre}%0A`;
+        msg += `*Habitación:* ${hab}%0A`;
+        msg += `*Pago:* ${pago}%0A`;
+        msg += `--------------------------%0A`;
+        msg += `*PEDIDO:*%0A`;
+        carrito.forEach(item => msg += `• ${item.n} ($${item.p})%0A`);
+        msg += `--------------------------%0A`;
+        msg += `*TOTAL A PAGAR: $${total} MXN*`;
 
-        mensaje += `--------------------------%0A`;
-        mensaje += `*TOTAL:* $${total} MXN%0A%0A`;
-        mensaje += `_Por favor, confirme la recepción de este pedido._`;
-
-        // Abrir WhatsApp con el mensaje
-        const url = `https://wa.me/${529841862451}?text=${mensaje}`;
-        window.open(url, '_blank');
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const botones = document.querySelectorAll('.btn-cat');
-        botones.forEach(boton => {
-            boton.addEventListener('click', () => {
-                botones.forEach(b => b.classList.remove('active'));
-                boton.classList.add('active');
-                filtrar(boton.getAttribute('data-cat'));
-            });
-        });
-        filtrar('Desayuno');
+    document.querySelectorAll('.btn-cat').forEach(b => {
+        b.dataset.cat = b.innerText === "Almuerzos" ? "Lunch" : (b.innerText === "Cenas" ? "Cena" : b.innerText);
+        b.onclick = () => filtrar(b.dataset.cat);
     });
+    
+    // Ajuste manual de data-cat para que coincidan los nombres
+    document.querySelector('[data-cat="Desayunos"]').dataset.cat = "Desayuno";
+    
+    filtrar('Desayuno');
 </script>
 
 </body>
