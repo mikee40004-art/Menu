@@ -3,47 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ana y José Tulum - Menú Digital</title>
+    <title>Ana y José Tulum - Menú Luxury Multi-Moneda</title>
     <style>
         :root { --oro: #8d754a; --oscuro: #2c3e50; --beige: #f9f7f2; --blanco: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; color: #333; }
-        .container { max-width: 800px; margin: auto; background: var(--blanco); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .container { max-width: 850px; margin: auto; background: var(--blanco); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         
         .hero { 
-            width: 100%; height: 200px; 
+            width: 100%; height: 220px; 
             background-image: url('https://r2.erweima.ai/i/1000108113.jpg'); 
             background-size: cover; background-position: center;
             display: flex; align-items: flex-end;
         }
-        .hero-title { background: linear-gradient(transparent, rgba(0,0,0,0.8)); width: 100%; padding: 20px; color: white; text-align: center; }
-        .hero-title h1 { margin: 0; letter-spacing: 3px; font-size: 1.5rem; text-transform: uppercase; }
+        .hero-title { background: linear-gradient(transparent, rgba(0,0,0,0.8)); width: 100%; padding: 25px; color: white; text-align: center; }
+        .hero-title h1 { margin: 0; letter-spacing: 4px; font-size: 1.8rem; text-transform: uppercase; }
 
         .nav-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 15px; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; }
-        .btn-cat { border: 1.5px solid var(--oro); background: white; color: var(--oro); padding: 7px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        .btn-cat { border: 1.5px solid var(--oro); background: white; color: var(--oro); padding: 8px 16px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
         .btn-cat.active { background: var(--oro); color: white; }
 
         .content { padding: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media(min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
         
-        .card { border: 1px solid #eee; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; transition: 0.2s; }
-        .card:hover { border-color: var(--oro); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .card-info { display: flex; justify-content: space-between; font-weight: bold; color: var(--oscuro); margin-bottom: 5px; }
+        .card { border: 1px solid #eee; padding: 18px; border-radius: 15px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; transition: 0.3s; }
+        .card:hover { border-color: var(--oro); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .card-info { display: flex; justify-content: space-between; font-weight: bold; color: var(--oscuro); margin-bottom: 5px; font-size: 1rem; }
         .precio { color: var(--oro); }
-        .desc { font-size: 0.8rem; color: #777; margin-bottom: 12px; font-style: italic; min-height: 35px; line-height: 1.2; }
-        .btn-add { background: var(--oscuro); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .desc { font-size: 0.85rem; color: #666; margin-bottom: 15px; font-style: italic; min-height: 50px; line-height: 1.4; }
+        .btn-add { background: var(--oscuro); color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-add:active { transform: scale(0.96); }
 
-        .canasta { background: #fdfcf9; border-top: 3px solid var(--oro); padding: 20px; margin-top: 20px; }
-        .form-group { margin-bottom: 12px; }
-        label { font-weight: bold; font-size: 0.85rem; color: var(--oscuro); }
-        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; font-family: inherit; }
+        .canasta { background: #fdfcf9; border-top: 4px solid var(--oro); padding: 25px; margin-top: 30px; }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; font-size: 0.9rem; color: var(--oscuro); }
+        input, select { width: 100%; padding: 14px; margin-top: 6px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 1rem; }
 
-        .items-lista { margin: 15px 0; border-top: 1px solid #eee; }
-        .item-carrito { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        .btn-del { color: #e74c3c; border: none; background: none; cursor: pointer; font-weight: bold; }
+        .items-lista { margin: 20px 0; border-top: 1px solid #eee; }
+        .item-carrito { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+        .btn-del { color: #e74c3c; border: none; background: none; cursor: pointer; font-weight: bold; font-size: 1.3rem; }
         
-        .total-row { display: flex; justify-content: space-between; margin: 15px 0; font-size: 1.3rem; font-weight: bold; }
-        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        .total-box { margin: 20px 0; padding: 18px; background: white; border-radius: 15px; border: 1.5px solid var(--oro); }
+        .total-row { display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .total-mxn { font-size: 1.6rem; color: var(--oscuro); }
+        .total-usd { font-size: 1.25rem; color: var(--oro); margin-top: 8px; border-top: 1px dashed #ddd; padding-top: 8px; }
+        
+        .nota-propina { background: #fff9eb; border-left: 5px solid #d4a017; padding: 12px; margin: 18px 0; font-size: 0.85rem; color: #7a5a0d; line-height: 1.5; border-radius: 6px; }
+        
+        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 20px; border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); transition: 0.3s; }
+        .btn-whatsapp:hover { background: #1ebe57; transform: scale(1.01); }
+        .exchange-note { font-size: 0.8rem; color: #aaa; text-align: center; margin-top: 15px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -52,17 +61,17 @@
     <div class="hero">
         <div class="hero-title">
             <h1>Ana y José</h1>
-            <p>The Good Life • Tulum</p>
+            <p>Signature Experience • Tulum</p>
         </div>
     </div>
 
     <div class="nav-menu">
         <button class="btn-cat active" data-cat="Desayuno">Desayunos</button>
-        <button class="btn-cat" data-cat="Lunch">Almuerzos</button>
+        <button class="btn-cat" data-cat="Lunch">Lunch</button>
         <button class="btn-cat" data-cat="Cena">Cenas</button>
         <button class="btn-cat" data-cat="Mixología">Mixología</button>
-        <button class="btn-cat" data-cat="Clásicos">Cocteles</button>
-        <button class="btn-cat" data-cat="Bebidas">Sin Alcohol</button>
+        <button class="btn-cat" data-cat="Clásicos">Coctelería</button>
+        <button class="btn-cat" data-cat="Bebidas">Refrescantes</button>
     </div>
 
     <div class="content">
@@ -70,78 +79,93 @@
     </div>
 
     <div class="canasta">
-        <h3>🛒 Tu Pedido / Your Order</h3>
+        <h3 style="margin-top:0; color: var(--oscuro);">🛒 Finalizar Pedido / Place Order</h3>
         
-        <div class="form-group">
-            <label>Nombre / Name:</label>
-            <input type="text" id="nombre-huesped" placeholder="Escriba su nombre">
-        </div>
-        
-        <div class="form-group">
-            <label>Habitación / Room:</label>
-            <input type="text" id="habitacion" placeholder="Ej: Villa 01">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+                <label>Nombre / Name:</label>
+                <input type="text" id="nombre-huesped" placeholder="Guest Name">
+            </div>
+            <div class="form-group">
+                <label>Habitación / Room:</label>
+                <input type="text" id="habitacion" placeholder="Villa 00">
+            </div>
         </div>
 
         <div class="form-group">
             <label>Forma de Pago / Payment Method:</label>
             <select id="forma-pago">
-                <option value="Cargo a la Habitación">Cargo a la Habitación / Charge to Room</option>
-                <option value="Tarjeta al recibir">Tarjeta al recibir / Credit Card on Delivery</option>
+                <option value="Cargo a la Habitación">Cargo a la Habitación / Room Charge</option>
+                <option value="Tarjeta al recibir">Tarjeta al recibir / Credit Card</option>
                 <option value="Efectivo">Efectivo / Cash</option>
             </select>
         </div>
 
         <div id="cart-items" class="items-lista"></div>
         
-        <div class="total-row">
-            <span>Total:</span>
-            <span>$<span id="total-val">0</span> MXN</span>
+        <div class="total-box">
+            <div class="total-row total-mxn">
+                <span>Total MXN:</span>
+                <span>$<span id="total-val">0</span></span>
+            </div>
+            <div class="total-row total-usd">
+                <span>Total USD approx:</span>
+                <span>$<span id="total-usd-val">0.00</span></span>
+            </div>
+        </div>
+
+        <div class="nota-propina">
+            <strong>Nota:</strong> La propina no está incluida en el precio total.<br>
+            <strong>Note:</strong> Gratuity is not included in the total price.
         </div>
         
-        <button class="btn-whatsapp" onclick="enviar()">Confirmar Pedido</button>
+        <button class="btn-whatsapp" onclick="enviar()">Confirmar por WhatsApp</button>
+        <p class="exchange-note">Exchange Rate: 1 USD = 18.00 MXN</p>
     </div>
 </div>
 
 <script>
+    const TIPO_CAMBIO = 18.00;
+
     const platillos = [
         // DESAYUNOS
-        { n: "Huevos Doña Ana", p: 295, d: "Sobre sope de maíz azul, frijol colado y salsa recado negro.", c: "Desayuno" },
-        { n: "Chilaquiles Tradicionales", p: 250, d: "Bañados en salsa verde o roja, con crema fresca y aguacate.", c: "Desayuno" },
-        { n: "Avocado Toast Tulum", p: 350, d: "Pan de masa madre, tomate heirloom y huevo pochado orgánico.", c: "Desayuno" },
-        { n: "Hot Cakes Plátano", p: 275, d: "Con miel melipona y frutos rojos de la estación.", c: "Desayuno" },
-        { n: "Omelette de Claras", p: 285, d: "Relleno de espinacas y queso de cabra con guarnición verde.", c: "Desayuno" },
+        { n: "Shakshuka Verde", p: 310, d: "Huevos pochados en salsa de tomatillo, espinaca y queso feta.", c: "Desayuno" },
+        { n: "Chilaquiles Tulum", p: 285, d: "Totopos de maíz azul, salsa de habanero tatemado y crema.", c: "Desayuno" },
+        { n: "Croissant Breakfast", p: 340, d: "Huevo revuelto orgánico, queso gruyere y láminas de aguacate.", c: "Desayuno" },
+        { n: "Parfait de Chía y Coco", p: 245, d: "Leche de coco, chía, mango fresco y semillas de cáñamo.", c: "Desayuno" },
+        { n: "Pan Francés Artesanal", p: 295, d: "Brioche de la casa con miel melipona y frutos del bosque.", c: "Desayuno" },
 
-        // ALMUERZOS (LUNCH)
-        { n: "Guacamole del Huerto", p: 280, d: "Con totopos de maíz azul y plátano macho frito.", c: "Lunch" },
-        { n: "Hamburguesa Ana y José", p: 545, d: "Carne Angus, queso gouda y alioli de xcatic.", c: "Lunch" },
-        { n: "Tacos de Rib Eye", p: 495, d: "3 piezas al carbón con tortillas hechas a mano.", c: "Lunch" },
-        { n: "Ceviche de Pescado", p: 485, d: "Marinado en lima, cilantro y chile habanero.", c: "Lunch" },
-        { n: "Tacos de Camarón Tempura", p: 460, d: "Con col morada y aderezo chipotle cremoso.", c: "Lunch" },
+        // LUNCH
+        { n: "Tacos de Cochinita Pibil", p: 380, d: "3 tacos en tortilla de mano con cebolla morada encurtida.", c: "Lunch" },
+        { n: "Ceviche de Maracuyá", p: 495, d: "Pesca del día, salsa de maracuyá y chile guajillo.", c: "Lunch" },
+        { n: "Tostada Vegana", p: 315, d: "Hummus de paprika, berenjena asada y reducción de balsámico.", c: "Lunch" },
+        { n: "Marlin Quesadillas", p: 365, d: "3 piezas con queso manchego fundido y salsa verde tatemada.", c: "Lunch" },
+        { n: "Bowl Proteico", p: 410, d: "Quinoa, kale, garbanzos crocantes y pollo al grill.", c: "Lunch" },
 
         // CENAS
-        { n: "Carpaccio Wagyu", p: 1105, d: "Con aceite de trufa blanca y lajas de parmesano.", c: "Cena" },
-        { n: "Langosta al Horno", p: 1350, d: "Con mantequilla de cítricos y puré de camote.", c: "Cena" },
-        { n: "Pulpo a la Brasa", p: 550, d: "Con crema de pimentón y papas cambray al romero.", c: "Cena" },
-        { n: "Filete al Carbón", p: 980, d: "Corte Prime con espárragos y puré de papa trufado.", c: "Cena" },
-        { n: "Pasta Frutti di Mare", p: 620, d: "Mariscos frescos salteados en vino blanco y ajo.", c: "Cena" },
+        { n: "Rack de Cordero", p: 1250, d: "Costra de gremolata y puré de plátano macho horneado.", c: "Cena" },
+        { n: "Salmón con Trufa", p: 640, d: "Al grill sobre polenta casera, parmesano y aceite de trufa.", c: "Cena" },
+        { n: "Mejillones al Azafrán", p: 520, d: "Cocinados en vino blanco, azafrán y toque de crema cítrica.", c: "Cena" },
+        { n: "Risotto de Langosta", p: 890, d: "Arroz carnaroli cremado con mantequilla de coral y cola de langosta.", c: "Cena" },
+        { n: "Rib Eye Prime 400g", p: 1100, d: "Corte premium a la leña con vegetales baby asados.", c: "Cena" },
 
-        // MIXOLOGÍA
-        { n: "Mezcalita Maracuyá", p: 320, d: "Mezcal artesanal, maracuyá fresca y sal de gusano.", c: "Mixología" },
-        { n: "Maya Tonic", p: 310, d: "Gin, infusión de chaya, pepino y tónica premium.", c: "Mixología" },
-        { n: "Carajillo Maya", p: 285, d: "Licor 43, espresso y un toque de canela regional.", c: "Mixología" },
-        { n: "Tulum Mule", p: 315, d: "Vodka, jengibre fresco, limón y cerveza de jengibre.", c: "Mixología" },
+        // MIXOLOGÍA DE AUTOR
+        { n: "Hayaté Signature", p: 380, d: "Tequila infusionado con pimiento rojo, albahaca y agave.", c: "Mixología" },
+        { n: "Maya Mistique", p: 360, d: "Mezcal, licor de damiana, infusión de jamaica y romero flameado.", c: "Mixología" },
+        { n: "Wildfire Cocktail", p: 380, d: "Vodka, Cointreau, jarabe de maracuyá y tintura de especias.", c: "Mixología" },
+        { n: "No Mames! Mezcal", p: 390, d: "Mezcal, toronja, mate y jarabe de zacate limón.", c: "Mixología" },
 
-        // CLÁSICOS
-        { n: "Margarita Tradicional", p: 290, d: "Tequila reposado, triple sec y jugo de limón.", c: "Clásicos" },
-        { n: "Piña Colada", p: 275, d: "Ron blanco, crema de coco y piña natural.", c: "Clásicos" },
-        { n: "Aperol Spritz", p: 310, d: "Aperol, Prosecco y un toque de soda.", c: "Clásicos" },
-        { n: "Mojito Clásico", p: 280, d: "Ron, hierbabuena fresca, azúcar y lima.", c: "Clásicos" },
+        // COCTELERÍA CLÁSICA
+        { n: "Carajillo Shakeado", p: 285, d: "Licor 43 y espresso recién extraído con hielo cristal.", c: "Clásicos" },
+        { n: "Margarita de Jamaica", p: 310, d: "Tequila, flor de jamaica orgánica y borde de chile piquín.", c: "Clásicos" },
+        { n: "Old Fashioned Maya", p: 340, d: "Bourbon, azúcar mascabado y bitters de chocolate yucateco.", c: "Clásicos" },
+        { n: "Gin Tonic Botánico", p: 320, d: "Ginebra premium, bayas de enebro y romero fresco.", c: "Clásicos" },
 
-        // SIN ALCOHOL
-        { n: "Jugo Verde", p: 155, d: "Piña, chaya, apio y naranja natural.", c: "Bebidas" },
-        { n: "Limonada Chaya", p: 125, d: "Refrescante combinación local.", c: "Bebidas" },
-        { n: "Smoothie Coco", p: 165, d: "Coco natural y un toque de vainilla.", c: "Bebidas" },
-        { n: "Agua Evian 750ml", p: 140, d: "Agua mineral natural de manantial.", c: "Bebidas" }
+        // REFRESCANTES (SIN ALCOHOL)
+        { n: "Limonada de Lavanda", p: 145, d: "Limón Eureka, jarabe de lavanda y agua mineral.", c: "Bebidas" },
+        { n: "Smoothie de Açaí", p: 185, d: "Açaí orgánico, moras y leche de almendra.", c: "Bebidas" },
+        { n: "Té Matcha Helado", p: 160, d: "Matcha premium grado ceremonial con leche de coco.", c: "Bebidas" },
+        { n: "Agua Fiji 500ml", p: 110, d: "Agua artesiana de las islas Fiji.", c: "Bebidas" }
     ];
 
     let carrito = [];
@@ -152,10 +176,10 @@
         grid.innerHTML = platillos.filter(p => p.c === cat).map(p => `
             <div class="card">
                 <div>
-                    <div class="card-info"><span>${p.n}</span><span class="precio">$${p.p}</span></div>
+                    <div class="card-info"><span>${p.n}</span><span class="precio">$${p.p} MXN</span></div>
                     <div class="desc">${p.d}</div>
                 </div>
-                <button class="btn-add" onclick="agregar('${p.n}', ${p.p})">Añadir</button>
+                <button class="btn-add" onclick="agregar('${p.n}', ${p.p})">Agregar al Pedido</button>
             </div>
         `).join('');
     }
@@ -168,8 +192,9 @@
     function renderCart() {
         const box = document.getElementById('cart-items');
         if (carrito.length === 0) {
-            box.innerHTML = '<p style="text-align:center;color:#999;font-size:0.8rem;">Canasta vacía</p>';
+            box.innerHTML = '<p style="text-align:center;color:#999;font-size:0.9rem;padding:20px;">Tu canasta está esperando algo delicioso...</p>';
             document.getElementById('total-val').innerText = "0";
+            document.getElementById('total-usd-val').innerText = "0.00";
             return;
         }
         box.innerHTML = carrito.map((item, i) => `
@@ -178,7 +203,12 @@
                 <span>$${item.p} <button onclick="quitar(${i})" class="btn-del">✕</button></span>
             </div>
         `).join('');
-        document.getElementById('total-val').innerText = carrito.reduce((s, i) => s + i.p, 0).toLocaleString();
+        
+        const totalMXN = carrito.reduce((s, i) => s + i.p, 0);
+        const totalUSD = totalMXN / TIPO_CAMBIO;
+        
+        document.getElementById('total-val').innerText = totalMXN.toLocaleString();
+        document.getElementById('total-usd-val').innerText = totalUSD.toFixed(2);
     }
 
     function quitar(i) {
@@ -190,11 +220,23 @@
         const nombre = document.getElementById('nombre-huesped').value;
         const hab = document.getElementById('habitacion').value;
         const pago = document.getElementById('forma-pago').value;
-        if(!nombre || !hab || carrito.length === 0) return alert("Por favor complete sus datos y añada productos.");
+        const totalMXN = document.getElementById('total-val').innerText;
+        const totalUSD = document.getElementById('total-usd-val').innerText;
 
-        let msg = `*PEDIDO ROOM SERVICE*%0A*Nombre:* ${nombre}%0A*Habitación:* ${hab}%0A*Pago:* ${pago}%0A%0A*PRODUCTOS:*%0A`;
-        carrito.forEach(item => msg += `- ${item.n} ($${item.p})%0A`);
-        msg += `%0A*TOTAL: $${document.getElementById('total-val').innerText} MXN*`;
+        if(!nombre || !hab || carrito.length === 0) return alert("Por favor, ingrese sus datos y seleccione sus platillos.");
+
+        let msg = `*ROOM SERVICE: ANA Y JOSÉ TULUM*%0A`;
+        msg += `==========================%0A`;
+        msg += `*GUEST:* ${nombre}%0A`;
+        msg += `*ROOM:* ${hab}%0A`;
+        msg += `*PAYMENT:* ${pago}%0A`;
+        msg += `==========================%0A`;
+        msg += `*ORDER:*%0A`;
+        carrito.forEach(item => msg += `• ${item.n} ($${item.p} MXN)%0A`);
+        msg += `==========================%0A`;
+        msg += `*TOTAL MXN: $${totalMXN}*%0A`;
+        msg += `*TOTAL USD: $${totalUSD}*%0A%0A`;
+        msg += `_Propina no incluida / Gratuity not included_`;
 
         window.open(`https://wa.me/5219841234567?text=${msg}`, '_blank');
     }
