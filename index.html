@@ -167,21 +167,27 @@
 
     let carrito = [];
 
-    function filtrar(cat) {
+            function filtrar(cat) {
         document.querySelectorAll('.btn-cat').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
         const grid = document.getElementById('menu-grid');
-        grid.innerHTML = platillos.filter(p => p.c === cat).map(p => `
+        grid.innerHTML = platillos.filter(p => p.c === cat).map((p, index) => `
             <div class="card">
                 <div>
                     <div class="card-info"><span>${p.n}</span><span class="precio">$${p.p} MXN</span></div>
                     <div class="desc">${p.d}</div>
+                    <textarea id="nota-${index}" placeholder="Instrucciones especiales..." 
+                        style="width: 100%; border: 1px solid #eee; border-radius: 8px; padding: 8px; font-size: 0.8rem; margin-bottom: 10px; resize: none; font-family: inherit;"></textarea>
                 </div>
-                <button class="btn-add" onclick="agregar('${p.n}', ${p.p})">Añadir al Carrito</button>
+                <button class="btn-add" onclick="agregar('${p.n}', ${p.p}, 'nota-${index}')">Añadir al Carrito</button>
             </div>
         `).join('');
+            }
+           function agregar(n, p, idNota) { 
+        const notaExtra = document.getElementById(idNota).value;
+        carrito.push({n, p, nota: notaExtra}); 
+        document.getElementById(idNota).value = ""; // Limpia el cuadro después de agregar
+        renderCart(); 
     }
-
-    function agregar(n, p) { carrito.push({n, p}); renderCart(); }
 
     function renderCart() {
         const box = document.getElementById('cart-items');
@@ -192,18 +198,23 @@
             return;
         }
         box.innerHTML = carrito.map((item, i) => `
-            <div class="item-carrito">
-                <span>${item.n}</span>
-                <span>$${item.p} <button onclick="quitar(${i})" class="btn-del">✕</button></span>
+            <div class="item-carrito" style="flex-direction: column; align-items: flex-start; border-bottom: 1px solid #eee; padding: 10px 0;">
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                    <strong>${item.n}</strong>
+                    <span>$${item.p} <button onclick="quitar(${i})" class="btn-del">✕</button></span>
+                </div>
+                ${item.nota ? `<span style="font-size: 0.8rem; color: #8d754a; font-style: italic;">Nota: ${item.nota}</span>` : ''}
             </div>
         `).join('');
+        
         const totalMXN = carrito.reduce((s, i) => s + i.p, 0);
         document.getElementById('total-val').innerText = totalMXN.toLocaleString();
         document.getElementById('total-usd-val').innerText = (totalMXN / TIPO_CAMBIO).toFixed(2);
-    }
+
+        }
 
     function quitar(i) { carrito.splice(i, 1); renderCart(); }
-
+    
     function enviar() {
         const nombre = document.getElementById('nombre-huesped').value;
         const hab = document.getElementById('habitacion').value;
@@ -218,13 +229,19 @@
         msg += `*Habitación:* ${hab}%0A`;
         msg += `*Forma de Pago:* ${pago}%0A%0A`;
         msg += `*PEDIDO:*%0A`;
-        carrito.forEach(item => msg += `• ${item.n} ($${item.p} MXN)%0A`);
+        
+        // MODIFICADO: Ahora incluye la nota en el mensaje de WhatsApp
+        carrito.forEach(item => {
+            msg += `• *${item.n}* ($${item.p} MXN)%0A`;
+            if(item.nota) msg += `   _Nota: ${item.nota}_%0A`;
+        });
+
         msg += `%0A*TOTAL MXN: $${totalMXN}*%0A`;
         msg += `*TOTAL USD approx: $${totalUSD}*%0A%0A`;
         msg += `_Nota: Propina no incluida / Gratuity not included_`;
 
         window.open(`https://wa.me/5219841862451?text=${msg}`, '_blank');
-    }
+        }
 
     document.querySelectorAll('.btn-cat').forEach(b => b.onclick = () => filtrar(b.dataset.cat));
     renderCart();
