@@ -3,250 +3,624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="TU NOMBRE AQUÍ">
-    <title>Ana y José Tulum - Menú Digital Multi-Moneda</title>
+    <title>Ana y José Tulum - Signature Menu</title>
     <style>
         :root { --oro: #8d754a; --oscuro: #2c3e50; --beige: #f9f7f2; --blanco: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; color: #333; }
-        .container { max-width: 850px; margin: auto; background: var(--blanco); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .container { max-width: 800px; margin: auto; background: var(--blanco); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); position: relative; }
         
+        /* AJUSTE: Botón de Idioma movido más abajo */
+        .lang-switch { 
+            position: fixed; 
+            top: 60px; /* Bajado de 20px a 60px para no tapar el banner */
+            right: 15px; 
+            z-index: 1001; 
+            background: var(--oro); 
+            color: white; 
+            border: 2px solid white; 
+            padding: 8px 12px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 0.8rem;
+        }
+
+        .exchange-banner { background: var(--oscuro); color: white; text-align: center; padding: 8px; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; border-bottom: 2px solid var(--oro); position: relative; z-index: 1000; }
+
         .hero { 
-            width: 100%; height: 220px; 
+            width: 100%; height: 250px; 
             background-image: url('https://r2.erweima.ai/i/1000108113.jpg'); 
             background-size: cover; background-position: center;
-            display: flex; align-items: flex-end;
+            display: flex; align-items: center; justify-content: center;
         }
-        .hero-title { background: linear-gradient(transparent, rgba(0,0,0,0.8)); width: 100%; padding: 25px; color: white; text-align: center; }
-        .hero-title h1 { margin: 0; letter-spacing: 4px; font-size: 1.8rem; text-transform: uppercase; }
+        .logo-overlay { 
+            background: rgba(255,255,255,0.85); 
+            padding: 20px 40px; border-radius: 10px; text-align: center; 
+            border: 1px solid var(--oro); box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
+        .logo-overlay h1 { margin: 0; color: var(--oro); letter-spacing: 4px; font-size: 1.6rem; text-transform: uppercase; font-family: 'Times New Roman', serif; }
+        .logo-overlay small { display: block; letter-spacing: 2px; color: #666; margin-top: 5px; font-family: 'Times New Roman', serif; font-style: italic; }
 
-        .nav-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 15px; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; }
-        .btn-cat { border: 1.5px solid var(--oro); background: white; color: var(--oro); padding: 8px 16px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        .nav-menu { display: flex; overflow-x: auto; gap: 10px; padding: 15px; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; scrollbar-width: none; }
+        .nav-menu::-webkit-scrollbar { display: none; }
+        .btn-cat { border: 1.5px solid var(--oro); background: white; color: var(--oro); padding: 8px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: 0.3s; font-size: 0.85rem; }
         .btn-cat.active { background: var(--oro); color: white; }
 
         .content { padding: 20px; }
         .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media(min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
         
-        .card { border: 1px solid #eee; padding: 18px; border-radius: 15px; display: flex; flex-direction: column; justify-content: space-between; background: #fff; transition: 0.3s; }
-        .card:hover { border-color: var(--oro); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .card-info { display: flex; justify-content: space-between; font-weight: bold; color: var(--oscuro); margin-bottom: 5px; font-size: 1rem; }
+        .card { border: 1px solid #eee; border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+        .card-img { width: 100%; height: 160px; object-fit: cover; }
+        .card-body { padding: 12px; flex-grow: 1; }
+        .card-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; color: var(--oscuro); }
         .precio { color: var(--oro); }
-        .desc { font-size: 0.85rem; color: #666; margin-bottom: 15px; font-style: italic; min-height: 55px; line-height: 1.4; }
-        .btn-add { background: var(--oscuro); color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; }
-
-        .canasta { background: #fdfcf9; border-top: 4px solid var(--oro); padding: 25px; margin-top: 30px; }
-        .form-group { margin-bottom: 15px; }
-        label { font-weight: bold; font-size: 0.9rem; color: var(--oscuro); }
-        input, select { width: 100%; padding: 14px; margin-top: 6px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 1rem; }
-
-        .items-lista { margin: 20px 0; border-top: 1px solid #eee; }
-        .item-carrito { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 0.95rem; }
-        .btn-del { color: #e74c3c; border: none; background: none; cursor: pointer; font-weight: bold; font-size: 1.3rem; }
+        .desc { font-size: 0.8rem; color: #666; font-style: italic; margin-bottom: 10px; line-height: 1.3; }
         
-        .total-box { margin: 20px 0; padding: 18px; background: white; border-radius: 15px; border: 1.5px solid var(--oro); }
-        .total-row { display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .total-mxn { font-size: 1.6rem; color: var(--oscuro); }
-        .total-usd { font-size: 1.25rem; color: var(--oro); margin-top: 8px; border-top: 1px dashed #ddd; padding-top: 8px; }
-        
-        .nota-propina { background: #fff9eb; border-left: 5px solid #d4a017; padding: 12px; margin: 18px 0; font-size: 0.85rem; color: #7a5a0d; line-height: 1.5; border-radius: 6px; }
-        
-        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 20px; border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
+        textarea { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 8px; font-size: 0.8rem; margin-bottom: 8px; box-sizing: border-box; font-family: inherit; background: #fcfcfc; }
+        .btn-add { background: var(--oscuro); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
 
-        .footer-credits { text-align: center; padding: 40px 20px; background: #f4f1ea; margin-top: 20px; border-radius: 0 0 20px 20px; }
-        .footer-credits p { margin: 0; letter-spacing: 1px; }
+        .canasta { background: #fdfcf9; border-top: 4px solid var(--oro); padding: 25px; }
+        .form-input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: white; font-size: 1rem; }
+        
+        .total-box { background: white; padding: 18px; border-radius: 10px; border: 1px solid var(--oro); margin: 15px 0; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem; }
+        .total-final { font-size: 1.5rem; font-weight: bold; color: var(--oscuro); border-top: 2px solid var(--oro); margin-top: 10px; padding-top: 10px; }
+
+        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 18px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+
+        .credits { text-align: center; padding: 30px 10px; background: #f4f1ea; border-top: 1px solid #e0ddd5; }
     </style>
 </head>
 <body>
 
+<button class="lang-switch" onclick="toggleLang()" id="langBtn">🇺🇸 EN / 🇲🇽 ES</button>
+
 <div class="container">
+    <div class="exchange-banner">Exchange Rate: 1 USD = 18.50 MXN</div>
+
     <div class="hero">
-        <div class="hero-title">
-            <h1>Ana y José</h1>
-            <p>Signature Experience • Tulum</p>
+        <div class="logo-overlay">
+            <h1>ANA Y JOSÉ</h1>
+            <small>The good life</small>
         </div>
     </div>
 
-    <div class="nav-menu" id="nav-container">
-        <button class="btn-cat active" data-cat="Desayuno">Desayunos</button>
-        <button class="btn-cat" data-cat="Lunch">Lunch</button>
-        <button class="btn-cat" data-cat="Cena">Cenas</button>
-        <button class="btn-cat" data-cat="Mixología">Mixología</button>
-        <button class="btn-cat" data-cat="Clásicos">Coctelería</button>
-        <button class="btn-cat" data-cat="Bebidas">Sin Alcohol</button>
-    </div>
+    <div class="nav-menu" id="navCats"></div>
 
-    <div class="content">
-        <div id="menu-grid" class="grid"></div>
-    </div>
+    <div class="content"><div id="menu-grid" class="grid"></div></div>
 
     <div class="canasta">
-        <h3 style="margin-top:0">🛒 Tu Pedido / Your Order</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="form-group"><label>Nombre / Name:</label><input type="text" id="nombre-huesped" placeholder="Guest Name"></div>
-            <div class="form-group"><label>Habitación / Room:</label><input type="text" id="habitacion" placeholder="Villa 00"></div>
+        <h3 id="txtFinalizar" style="text-align: center;">Finalizar Pedido</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div><label id="lblNombre" style="font-size: 0.75rem; font-weight:bold;">Nombre:</label><input type="text" id="guest-name" class="form-input"></div>
+            <div><label id="lblHab" style="font-size: 0.75rem; font-weight:bold;">Habitación:</label><input type="text" id="room-num" class="form-input" placeholder="00"></div>
         </div>
-
-        <div class="form-group">
-            <label>Forma de Pago / Payment:</label>
-            <select id="forma-pago">
-                <option value="Cargo a la Habitación">Cargo a la Habitación / Room Charge</option>
-                <option value="Tarjeta al recibir">Tarjeta al recibir / Credit Card</option>
-                <option value="Efectivo">Efectivo / Cash</option>
+        <div style="margin-bottom: 20px;">
+            <label id="lblPago" style="font-size: 0.75rem; font-weight:bold;">Forma de Pago:</label>
+            <select id="payment-method" class="form-input">
+                <option value="Cargo a la Habitación" id="optCargo">Cargo a la Habitación</option>
+                <option value="Tarjeta (Terminal)" id="optTarjeta">Tarjeta Crédito-Débito</option>
+                <option value="Efectivo MXN">Efectivo (MXN)</option>
+                <option value="Efectivo USD">Efectivo (USD)</option>
             </select>
         </div>
-
-        <div id="cart-items" class="items-lista"></div>
-        
-        <div class="total-box">
-            <div class="total-row total-mxn"><span>Total MXN:</span><span>$<span id="total-val">0</span></span></div>
-            <div class="total-row total-usd"><span>Total USD approx:</span><span>$<span id="total-usd-val">18.50</span></span></div>
-        </div>
-
-        <div class="nota-propina">
-            <strong>Nota:</strong> La propina no está incluida en el precio total.<br>
-            <strong>Note:</strong> Gratuity is not included in the total price.
-        </div>
-        
-        <button class="btn-whatsapp" onclick="enviar()">Enviar Pedido vía WhatsApp</button>
+        <div id="cart-list"></div>
+        <div id="cart-summary"></div>
+        <button class="btn-whatsapp" onclick="enviarPedido()" id="btnSend">Enviar Pedido vía WhatsApp</button>
     </div>
-<p class="exchange-note">Exchange Rate: 1 USD = 18.50 MXN</p>
-    <div class="footer-credits">
-        <p style="font-size: 0.7rem; color: #999; text-transform: uppercase;">Custom Software Designed by</p>
-        <p style="font-size: 1rem; color: #8d754a; font-weight: bold; margin-top: 5px;">Gregorio Miguel Miam Kuyoc</p>
+
+    <div class="credits">
+        <p style="margin:0; font-size: 0.7rem; color: #888; text-transform: uppercase;">Software adaptado por</p>
+        <p style="color: var(--oro); font-weight: bold; font-size: 1rem; margin-top: 5px;">GREGORIO MIGUEL MIAM KUYOC</p>
         <p style="font-size: 0.6rem; color: #bbb; margin-top: 5px;">Signature Software © 2026 • All Rights Reserved</p>
     </div>
 </div>
 
 <script>
     const TIPO_CAMBIO = 18.50;
+    let currentLang = 'es';
+
+    const translations = {
+        es: {
+            finalizar: "Finalizar Pedido", nombre: "Nombre / Name:", hab: "Habitación / Room:", pago: "Forma de Pago:",
+            cargo: "Cargo a la Habitación", tarjeta: "Tarjeta Crédito-Débito", enviar: "Enviar Pedido vía WhatsApp",
+            sub: "Subtotal", serv: "Servicio (15%)", tot: "Total a Pagar", vaciar: "🗑 Vaciar Canasta", agregar: "Agregar al Pedido",
+            notas: "Instrucciones especiales...", cats: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas"],
+            catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas"]
+        },
+        en: {
+            finalizar: "Complete Order", nombre: "Name:", hab: "Room Number:", pago: "Payment Method:",
+            cargo: "Room Charge", tarjeta: "Credit/Debit Card", enviar: "Send Order via WhatsApp",
+            sub: "Subtotal", serv: "Service (15%)", tot: "Total to Pay", vaciar: "🗑 Empty Cart", agregar: "Add to Order",
+            notas: "Special instructions...", cats: ["Breakfast", "Lunch", "Dinner", "Dessert", "Drink"],
+            catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas"]
+        }
+    };
 
     const platillos = [
-        // DESAYUNOS
-        { n: "Huevos Doña Ana", p: 295, d: "Huevos sobre sope de maíz azul, frijol colado y salsa recado negro.", c: "Desayuno" },
-        { n: "Chilaquiles Tulum", p: 285, d: "Salsa de habanero tatemado, crema fresca, aguacate y cebolla morada.", c: "Desayuno" },
-        { n: "Eggs Benedict Mascarpone", p: 360, d: "Huevos pochados sobre pan brioche, salmón ahumado y salsa holandesa.", c: "Desayuno" },
-        { n: "Omelette de Claras & Kale", p: 280, d: "Relleno de queso de cabra, espinaca y jitomate deshidratado.", c: "Desayuno" },
-        { n: "French Toast Brioche", p: 295, d: "Con compota de frutos rojos, miel melipona y crema batida artesanal.", c: "Desayuno" },
-        { n: "Acaí Bowl Tropical", p: 265, d: "Base de acaí orgánico, granola artesanal, plátano, coco y chía.", c: "Desayuno" },
+        { 
+            n_es: "Fruta tropical Ana y José", n_en: "Ana & José tropical fruit",
+            p: 285, d_es: "Piña, papaya, melón, frutos rojos y granola casera.", 
+            d_en: "Pineapple, papaya, melon, berries and homemade granola.",
+            c: "Desayuno", img: "https://i.postimg.cc/JhwBj5H7/IMG-20260430-192553.jpg" 
+        },
+        { 
+            n_es: "Yogurth griego con frutos rojos", n_en: "Greek yogurth with berries",
+            p: 295, d_es: "Acompañado de miel de agave y nibs de cacao.", 
+            d_en: "With agave honey and cacao nibs.",
+            c: "Desayuno", img: "https://i.postimg.cc/Qd67RHbk/IMG-20260501-143852.jpg" 
+        },
+        { 
+            n_es: "Avocado toast Tulum", n_en: "Avocado toast Tulum",
+            p: 350, d_es: "Pan masa madre, jitomate heirloom, limón curtido y brotes. Huevo +$40 / Salmón curado +$60 / Tocino artesanal +$45", 
+            d_en: "Sourdough bread, heirloom tomatoe, pickled lemon and sprouts. Egg +$40 / Cured salmon +$60 / Artisanal bacon +$45.",
+            c: "Desayuno", img: "https://i.postimg.cc/zGDWtnnJ/IMG-20260501-175132.jpg" 
+        },
+        { 
+            n_es: "Chilaquiles verdes o rojos", n_en: "Green or red Chilaquiles",
+            p: 250, d_es: "Crema, aguacate, frijoles negros y brotes. Huevo +$285 / Pollo orgánico +$305 / Arrachera local +$365.", 
+            d_en: "Cream, avocado, black beans and sprouts. Egg +$285 / Organic chicken +$305 / Local flank steak +$365.",
+            c: "Desayuno", img: "https://i.postimg.cc/wBhR2RDv/IMG-20260430-192623.jpg" 
+        },
+        { 
+            n_es: "Huevos Doña Ana", n_en: "Doña Ana eggs",
+            p: 295, d_es: "Sobre sope de maíz azul, frijol colado y salsa de recado negro.", 
+            d_en: "Served over a blue corn sope, refried beans, and recado negro sauce.",
+            c: "Desayuno", img: "https://i.postimg.cc/htx8dNwQ/IMG-20260216-112705.jpg" 
+        },
+        { 
+            n_es: "Tacos de huevo con longaniza de Valladolid", n_en: "Eggs tacos with Valladolid longaniza",
+            p: 285, d_es: "Frijoles colados, aguacate y chiltomate.", 
+            d_en: "Refried beans, avocado and chiltomate.",
+            c: "Desayuno", img: "https://i.postimg.cc/wBhR2RDv/IMG-20260430-192623.jpg" 
+        },
+        { 
+            n_es: "Omelette Tulum", n_en: "Tulum omelette",
+            p: 255, d_es: "Con hongos cremini, espinaca y queso de rancho. Acompañado de frijoles refritos o papas cambray al mojo de ajo.", 
+            d_en: "Cremini mushrooms, spinach and farmhouse cheese. Served with refried beans or garlic baby potatoes.",
+            c: "Desayuno", img: "https://i.postimg.cc/y6cR12Jf/IMG-20260429-190954.jpg" 
+        },
+        { 
+            n_es: "Omelette de la Granja", n_en: "Farm omelette",
+            p: 295, d_es: "Con jamón artesanal, papa cambray y queso cotija. Acompañado de frijoles refritos o papas cambray al mojo de ajo.", 
+            d_en: "Artisanal ham, baby potatoes and cotija cheese. Served with refried beans or garlic baby potatoes.",
+            c: "Desayuno", img: "https://i.postimg.cc/PfWLsZcN/IMG-20260429-191138.jpg" 
+        },
+        { 
+            n_es: "Omelette Caribeño", n_en: "Caribbean omelette",
+            p: 245, d_es: "Con camarón, pimiento asado y aguacate. Acompañado de frijoles refritos o papas cambray al mojo de ajo.", 
+            d_en: "Shrimp, roasted bell pepper and avocado. Served with refried beans or garlic baby potatoes.",
+            c: "Desayuno", img: "https://i.postimg.cc/gkbv3G9S/IMG-20260429-190815.jpg" 
+        },
+        { 
+            n_es: "Hot cakes de plátano y amaránto", n_en: "Banana & Amaranth hot cakes",
+            p: 275, d_es: "Miel melipona y fruta fresca.", 
+            d_en: "Melipona honey and fresh fruit.",
+            c: "Desayuno", img: "https://i.postimg.cc/5t33H5vc/IMG-20260214-083600.jpg" 
+        },
+        { 
+            n_es: "French toast de plátano y nuez caramelizada", n_en: "Banana French toast with caramelized nuts",
+            p: 245, d_es: "Miel de maple.", 
+            d_en: "Maple syrup.",
+            c: "Desayuno", img: "https://i.postimg.cc/T24sxLDL/IMG-20260429-191640.jpg" 
+        },
+        { 
+            n_es: "Tamal vegano de masa de plátano", n_en: "Vegan platain & coconut masa tamal",
+            p: 205, d_es: "Con salsa de chiltomate.", 
+            d_en: "Served with chiltomate sauce.",
+            c: "Desayuno", img: "https://i.postimg.cc/sx1wCBMd/IMG-20260214-080101.jpg" 
+        },
+        { 
+            n_es: "Guacamole del Huerto", n_en: "Guacamole from our garden",
+            p: 280, 
+            d_es: "Con plátano macho frito, semillas de calabaza y totopos de maíz.", 
+            d_en: "With fried platain, pumpkin seeds and corn totopos.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+    { 
+            n_es: "Palomitas de Camarón al chile dulce", n_en: "Sweet chili shrimp popcorn",
+            p: 305, 
+            d_es: "Camarón local rebosado con toque de limón y alioli de chile xcatic.", 
+            d_en: "Locally sourced battered shrimp with a hint of lime and xcatic alioli.",
+            c: "Lunch", img: "https://i.postimg.cc/rpk1CQ2q/IMG-20260213-WA0023.jpg" 
+        },
+    { 
+            n_es: "Ceviche de pescado del día", n_en: "Catch of the day ceviche",
+            p: 485, 
+            d_es: "Con lima, cilantro y chile habanero.", 
+            d_en: "With lime, coriander and habanero chili.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+    { 
+            n_es: "Ceviche Caribeño", n_en: "Caribbean ceviche",
+            p: 485, 
+            d_es: "Pescado fresco y camarón en leche de coco y maracuyá.", 
+            d_en: "Fresh fish and shrimp in coconut milk and passion fruit.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Tacos estilo Baja", n_en: "Baja style tacos",
+            p: 435, 
+            d_es: "Camarón o pescado en tempura con ensalada de col y salsa de tamarindo (3 piezas).", 
+            d_en: "Tempura shrimp or fish with coleslaw and tamarind sauce (3 pieces).",
+            c: "Lunch", img: "https://i.postimg.cc/hGBLbpRS/IMG-20260213-WA0021.jpg" 
+        },
+        { 
+            n_es: "Tacos de rib eye al carbón", n_en: "Charcoal-grilled Rib eye tacos",
+            p: 495, 
+            d_es: "Con guacamole y tortillas hechas a mano. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "With guacamole and handmade tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Lunch", img: "https://i.postimg.cc/pdHfYqb7/IMG-20260213-WA0028.jpg" 
+        },
+       { 
+            n_es: "Tacos de setas al recado negro (vegano)", n_en: "Recado negro mushroom tacos",
+            p: 325, 
+            d_es: "Con cebolla morada y aguacate.", 
+            d_en: "With pickled red onion and avocado",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+       { 
+            n_es: "Hamburguesa artesanal Ana y José", n_en: "Ana & José artisanal burguer",
+            p: 545, 
+            d_es: "Carne angus, queso gouda, tocino, lechuga y alioli de chile xcatic. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "Angus beef, gouda cheese, bacon, lettuce and xcatic chili alioli. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Lunch", img: "https://i.postimg.cc/vHs59RTT/SAVE-20260501-175829.jpg" 
+        },
+        { 
+            n_es: "Sandwich de short rib cocción lenta", n_en: "Slow-cooked short tib sandwich (10 h)",
+            p: 485, 
+            d_es: "Con cebolla caramelizada y pan brioche.", 
+            d_en: "Caramelized onion on brioche bread.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Pizza Margarita", n_en: "Margherita pizza",
+            p: 305, 
+            d_es: "Tomate fresco, mozzarella y albahaca.", 
+            d_en: "Fresh tomatoe, mozzarella and basil.",
+            c: "Lunch", img: "https://i.postimg.cc/SxZ9wJr6/IMG-20260501-175052.jpg" 
+        },
+        { 
+            n_es: "Pizza cuatro quesos", n_en: "Four cheese pizza",
+            p: 440, 
+            d_es: "Mozzarella, queso de bola, parmesano y gorgonzola.", 
+            d_en: "Mozzarella, Edam cheese, parmesan and gorgonzola.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Pizza vegetariana del huerto", n_en: "Vegetarian pizza from our garden",
+            p: 325, 
+            d_es: "Calabaza, chaya, cebolla, aceituna y pimientos.", 
+            d_en: "Zucchini, chaya, onion, olives and bell peppers.",
+            c: "Lunch", img: "https://i.postimg.cc/m2s7MxkD/SAVE-20260501-175804.jpg" 
+        },
+        { 
+            n_es: "Pescado zarandeado en hoja de platáno", n_en: "Grilled fish in banana leaf",
+            p: 645, 
+            d_es: "Recado negro, arroz pinto y vegetales.", 
+            d_en: "With recado negro, pinto rice and vegetables.",
+            c: "Lunch", img: "https://i.postimg.cc/cJSRMXyM/IMG-20260213-WA0030.jpg" 
+        },
+        { 
+            n_es: "Arrachera a la parrilla", n_en: "Grilled Arrachera",
+            p: 495, 
+            d_es: "Servida con cebolla asada, frijoles colados y tortilla recién hecha. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "Served wirh roasted onions, strained beans, and freshly made tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Curry de coco", n_en: "Coconut curry",
+            p: 290, 
+            d_es: "Con verduras al vapor y arroz integral.", 
+            d_en: "With steamed vegetables and brown rice.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Tacos de setas", n_en: "Mushroom tacos",
+            p: 305, 
+            d_es: "Al recado negro.", 
+            d_en: "In recado negro.",
+            c: "Lunch", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Guacamole del Huerto", n_en: "Guacamole from our garden",
+            p: 280, 
+            d_es: "Con plátano macho frito, semillas de calabaza y totopos de maíz.", 
+            d_en: "With fried platain, pumpkin seeds and corn totopos.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Palomitas de Camarón al chile dulce", n_en: "Sweet chili shrimp popcorn",
+            p: 305, 
+            d_es: "Camarón local rebosado con toque de limón y alioli de chile xcatic.", 
+            d_en: "Locally sourced battered shrimp with a hint of lime and xcatic alioli.",
+            c: "Cena", img: "https://i.postimg.cc/rpk1CQ2q/IMG-20260213-WA0023.jpg" 
+        },
+        { 
+            n_es: "Ceviche de pescado del día", n_en: "Catch of the day ceviche",
+            p: 485, 
+            d_es: "Con lima, cilantro y chile habanero.", 
+            d_en: "With lime, coriander and habanero chili.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Ceviche Caribeño", n_en: "Caribbean ceviche",
+            p: 485, 
+            d_es: "Pescado fresco y camarón en leche de coco y maracuyá.", 
+            d_en: "Fresh fish and shrimp in coconut milk and passion fruit.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Tacos estilo Baja", n_en: "Baja style tacos",
+            p: 435, 
+            d_es: "Camarón o pescado en tempura con ensalada de col y salsa de tamarindo (3 piezas).", 
+            d_en: "Tempura shrimp or fish with coleslaw and tamarind sauce (3 pieces).",
+            c: "Cena", img: "https://i.postimg.cc/hGBLbpRS/IMG-20260213-WA0021.jpg" 
+        },
+        { 
+            n_es: "Tacos de rib eye al carbón", n_en: "Charcoal-grilled Rib eye tacos",
+            p: 495, 
+            d_es: "Con guacamole y tortillas hechas a mano. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "With guacamole and handmade tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Cena", img: "https://i.postimg.cc/pdHfYqb7/IMG-20260213-WA0028.jpg" 
+        },
+        { 
+            n_es: "Tacos de setas al recado negro (vegano)", n_en: "Recado negro mushroom tacos",
+            p: 325, 
+            d_es: "Con cebolla morada y aguacate.", 
+            d_en: "With pickled red onion and avocado",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Hamburguesa artesanal Ana y José", n_en: "Ana & José artisanal burguer",
+            p: 545, 
+            d_es: "Carne angus, queso gouda, tocino, lechuga y alioli de chile xcatic. Cuál es el término de se preferencia? Rojo, medio o bien cocido", 
+            d_en: "Angus beef, gouda cheese, bacon, lettuce and xcatic chili alioli. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Cena", img: "https://i.postimg.cc/vHs59RTT/SAVE-20260501-175829.jpg" 
+        },
+        { 
+            n_es: "Sandwich de short rib cocción lenta", n_en: "Slow-cooked short tib sandwich (10 h)",
+            p: 485, 
+            d_es: "Con cebolla caramelizada y pan brioche.", 
+            d_en: "Caramelized onion on brioche bread.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Pizza Margarita", n_en: "Margherita pizza",
+            p: 305, 
+            d_es: "Tomate fresco, mozzarella y albahaca.", 
+            d_en: "Fresh tomatoe, mozzarella and basil.",
+            c: "Cena", img: "https://i.postimg.cc/SxZ9wJr6/IMG-20260501-175052.jpg" 
+        },
+        { 
+            n_es: "Pizza cuatro quesos", n_en: "Four cheese pizza",
+            p: 440, 
+            d_es: "Mozzarella, queso de bola, parmesano y gorgonzola.", 
+            d_en: "Mozzarella, Edam cheese, parmesan and gorgonzola.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Pizza vegetariana del huerto", n_en: "Vegetarian pizza from our garden",
+            p: 325, 
+            d_es: "Calabaza, chaya, cebolla, aceituna y pimientos.", 
+            d_en: "Zucchini, chaya, onion, olives and bell peppers.",
+            c: "Cena", img: "https://i.postimg.cc/m2s7MxkD/SAVE-20260501-175804.jpg" 
+        },
+        { 
+            n_es: "Pescado zarandeado en hoja de platáno", n_en: "Grilled fish in banana leaf",
+            p: 645, 
+            d_es: "Recado negro, arroz pinto y vegetales.", 
+            d_en: "With recado negro, pinto rice and vegetables.",
+            c: "Cena", img: "https://i.postimg.cc/cJSRMXyM/IMG-20260213-WA0030.jpg" 
+        },
+        { 
+            n_es: "Arrachera a la parrilla", n_en: "Grilled Arrachera",
+            p: 495, 
+            d_es: "Servida con cebolla asada, frijoles colados y tortilla recién hecha. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "Served wirh roasted onions, strained beans, and freshly made tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Curry de coco", n_en: "Coconut curry",
+            p: 290, 
+            d_es: "Con verduras al vapor y arroz integral.", 
+            d_en: "With steamed vegetables and brown rice.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Tacos de setas", n_en: "Mushroom tacos",
+            p: 305, 
+            d_es: "Al recado negro.", 
+            d_en: "In recado negro.",
+            c: "Cena", img: "URL_DE_TU_FOTO.jpg" 
+        }, 
+        { 
+            n_es: "Textura de chocolate criollo Maya", n_en: "Mayan criollo chocolate textures",
+            p: 250, 
+            d_es: "Bizcocho tibio de cacao, mouse de chocolate amargo, tierra de cacao y helado de chocolate con sal de mar.", 
+            d_en: "Warm cake with local cocoa, dark chocolate mouse, cocoa powder, and chocolate ice cream with sea salt",
+            c: "Postre", img: "https://i.postimg.cc/RZ9FX4xp/IMG-20260209-WA0023.jpg" 
+        },
+        { 
+            n_es: "Carpaccio con piña asada y menta", n_en: "Pineapple carpaccio with worm salt and agave honey",
+            p: 210, 
+            d_es: "Finas láminas de piña con ralladura de lima, chile seco y cristales de sal marina.", 
+            d_en: "Thinly sliced pineapple with lime zest, dried chili and sea salt crystals.",
+            c: "Postre", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Crumbule de guanabana y plátano macho", n_en: "Soursop and platain crumble",
+            p: 235, 
+            d_es: "Cocido al horno con azúcar de coco, acomoañado de helado artesanal de chaya.", 
+            d_en: "Oven-baked with coconut suggar, served with artisanal chaya ice cream.",
+            c: "Postre", img: "https://i.postimg.cc/Bns6M4fw/IMG-20260209-WA0024.jpg" 
+        },
+        { 
+            n_es: "Cielito Oaxaqueño", n_en: "Oaxacan Sky",
+            p: 390, 
+            d_es: "Mezcal, licor de violetas, arándano y escarcha de sal de gusano.", 
+            d_en: "Mezcal, violet liqueur, cranberry, and worm salt rim.",
+            c: "Mixología", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Piñada", n_en: "Piñada",
+            p: 180, 
+            d_es: "Mezcla cremosa de piña y coco, servida bien fría.", 
+            d_en: "Creamy blend of pineapple and coconut, served chilled.",
+            c: "Bebidas", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Fresada", n_en: "Fresada",
+            p: 180, 
+            d_es: "Frappé de fresas naturales con un toque de limón.", 
+            d_en: "Natural strawberry slushy with a hint of lime.",
+            c: "Bebidas", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Margarita", n_en: "Margarita",
+            p: 355, 
+            d_es: "Tequila antiguo reposado de Herradura, controy y jugo de limón. Opciones de sabor a elegir: Maracuyá, Tamarindo o clásico", 
+            d_en: "Tequila antiguo reposado de Herradura, controy and lemon juice. Flavor to choose: passion fruit, tamarind or classic.",
+            c: "Bebidas", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Mezcalrita", n_en: "Mezcalrita",
+            p: 355, 
+            d_es: "Mezcal Amarás joven espadín, controy, jugo de limón. Opciones de sabor a elegir: Fresa, Mango, Maracuyá, pepino o picante.", 
+            d_en: "Amaras joven espadín mezcal, controy, lemon juice. Flavor to chase: strawverry, passion fruit, cucumber, or spicy.",
+            c: "Bebidas", img: "URL_DE_TU_FOTO.jpg" 
+        },
+        { 
+            n_es: "Mojito tradicional", n_en: "Classic Mojito",
+            p: 355, 
+            d_es: "Ron Diplomatico mantuano, juho de limón, jarabe natural y menta fresca. Opciones de sabores: canela, chocolate o fresa.", 
+            d_en: "Diplomatico mantuano ron, lime juice, simple syrup and fresh mint. Flavor options: cinnamon, chocolate and strawverry.",
+            c: "Bebidas", img: "URL_DE_TU_FOTO.jpg" 
+        },
 
-        // LUNCH
-        { n: "Lobster Roll Tulum", p: 580, d: "Pan brioche artesanal, langosta a la mantequilla y alioli de lima.", c: "Lunch" },
-        { n: "Hamburguesa Signature", p: 545, d: "200g Carne Angus, queso gouda fundido y aderezo de xcatic.", c: "Lunch" },
-        { n: "Aguachile Negro Camarón", p: 490, d: "Camarón fresco en ceniza de habanero, pepino, cebolla y rábano.", c: "Lunch" },
-        { n: "Tacos de Rib Eye (3p)", p: 495, d: "Con costra de queso, guacamole y tortillas hechas a mano.", c: "Lunch" },
-        { n: "Poke Bowl Atún", p: 420, d: "Arroz jazmín, edamames, aguacate, alga nori y aderezo sriracha.", c: "Lunch" },
-        { n: "Guacamole de la Casa", p: 280, d: "Con totopos de maíz azul y plátano macho frito.", c: "Lunch" },
-
-        // CENAS
-        { n: "Ossobuco a la Leña", p: 1100, d: "Cocción lenta con reducción de vino tinto sobre risotto de parmesano.", c: "Cena" },
-        { n: "Langosta al Horno", p: 1350, d: "Mantequilla de cítricos, puré de camote y vegetales baby asados.", c: "Cena" },
-        { n: "Fettuccine Trufado", p: 580, d: "Pasta fresca en salsa cremosa de trufa blanca y lajas de parmesano.", c: "Cena" },
-        { n: "Pulpo a las Brasas", p: 550, d: "Adobado en chile pastilla, con crema de pimentón y papas cambray.", c: "Cena" },
-        { n: "Salmón Grillé & Quinoa", p: 620, d: "Sellado con costra de semillas y ensalada de quinoa cítrica.", c: "Cena" },
-        { n: "Carpaccio Wagyu", p: 1105, d: "Aceite de trufa, arúgula, alcaparras y queso Grana Padano.", c: "Cena" },
-
-        // MIXOLOGÍA DE AUTOR
-        { n: "Serpiente de Oro", p: 380, d: "Mezcal joven, jarabe de jengibre, piña asada y toque de cúrcuma.", c: "Mixología" },
-        { n: "Alma de Cenote", p: 360, d: "Gin, licor de damiana, pepino, albahaca y tónica premium.", c: "Mixología" },
-        { n: "Maya Mistique", p: 360, d: "Tequila reposado, infusión de jamaica, romero y sal de gusano.", c: "Mixología" },
-        { n: "Atardecer en Tulum", p: 340, d: "Ron añejo, maracuyá fresca, mango y jarabe de chile ancho.", c: "Mixología" },
-
-        // COCTELERÍA CLÁSICA
-        { n: "Carajillo Shakeado", p: 285, d: "Licor 43 y espresso italiano recién extraído.", c: "Clásicos" },
-        { n: "Margarita Tradicional", p: 290, d: "Tequila blanco, triple sec y jugo de limón fresco.", c: "Clásicos" },
-        { n: "Aperol Spritz Elite", p: 310, d: "Aperol, Prosecco, soda y rodaja de naranja fresca.", c: "Clásicos" },
-        { n: "Old Fashioned", p: 350, d: "Bourbon premium, azúcar mascabado y bitters de angostura.", c: "Clásicos" },
-
-        // SIN ALCOHOL
-        { n: "Jugo Detox Chaya", p: 155, d: "Chaya maya, piña, apio, naranja y un toque de miel.", c: "Bebidas" },
-        { n: "Smoothie Coco-Mango", p: 165, d: "Coco natural, mango orgánico y leche de almendras.", c: "Bebidas" },
-        { n: "Limonada Lavanda", p: 140, d: "Limón Eureka con infusión de lavanda natural.", c: "Bebidas" },
-        { n: "Agua Evian 750ml", p: 140, d: "Agua mineral natural de manantial.", c: "Bebidas" },
-        { n: "Té Matcha Helado", p: 160, d: "Matcha grado ceremonial con leche de coco.", c: "Bebidas" }
     ];
 
     let carrito = [];
 
-            function filtrar(cat) {
-        document.querySelectorAll('.btn-cat').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
-        const grid = document.getElementById('menu-grid');
-        grid.innerHTML = platillos.filter(p => p.c === cat).map((p, index) => `
-            <div class="card">
-                <div>
-                    <div class="card-info"><span>${p.n}</span><span class="precio">$${p.p} MXN</span></div>
-                    <div class="desc">${p.d}</div>
-                    <textarea id="nota-${index}" placeholder="Instrucciones especiales..." 
-                        style="width: 100%; border: 1px solid #eee; border-radius: 8px; padding: 8px; font-size: 0.8rem; margin-bottom: 10px; resize: none; font-family: inherit;"></textarea>
-                </div>
-                <button class="btn-add" onclick="agregar('${p.n}', ${p.p}, 'nota-${index}')">Añadir al Carrito</button>
-            </div>
-        `).join('');
-            }
-           function agregar(n, p, idNota) { 
-        const notaExtra = document.getElementById(idNota).value;
-        carrito.push({n, p, nota: notaExtra}); 
-        document.getElementById(idNota).value = ""; // Limpia el cuadro después de agregar
-        renderCart(); 
+    function toggleLang() {
+        currentLang = currentLang === 'es' ? 'en' : 'es';
+        updateUI();
     }
 
-    function renderCart() {
-        const box = document.getElementById('cart-items');
-        if (carrito.length === 0) {
-            box.innerHTML = '<p style="text-align:center;color:#999;font-size:0.9rem;padding:20px;">Su canasta está vacía</p>';
-            document.getElementById('total-val').innerText = "0";
-            document.getElementById('total-usd-val').innerText = "0.00";
-            return;
-        }
-        box.innerHTML = carrito.map((item, i) => `
-            <div class="item-carrito" style="flex-direction: column; align-items: flex-start; border-bottom: 1px solid #eee; padding: 10px 0;">
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                    <strong>${item.n}</strong>
-                    <span>$${item.p} <button onclick="quitar(${i})" class="btn-del">✕</button></span>
+    function updateUI() {
+        const t = translations[currentLang];
+        document.getElementById('txtFinalizar').innerText = t.finalizar;
+        document.getElementById('lblNombre').innerText = t.nombre;
+        document.getElementById('lblHab').innerText = t.hab;
+        document.getElementById('lblPago').innerText = t.pago;
+        document.getElementById('optCargo').innerText = t.cargo;
+        document.getElementById('optTarjeta').innerText = t.tarjeta;
+        document.getElementById('btnSend').innerText = t.enviar;
+        
+        const nav = document.getElementById('navCats');
+        nav.innerHTML = t.cats.map((catName, i) => `
+            <button class="btn-cat ${i===0?'active':''}" onclick="filtrar('${t.catsID[i]}', this)">${catName}</button>
+        `).join('');
+
+        filtrar('Desayuno', document.querySelector('.btn-cat'));
+        renderCarrito();
+    }
+        function filtrar(cat, btn) {
+        const ahora = new Date();
+        const horaActual = ahora.getHours() + (ahora.getMinutes() / 60);
+        
+        const horarios = {
+            "Desayuno": { inicio: 7.5, fin: 11.75, texto: "7:30 AM - 11:45 AM" },
+            "Lunch": { inicio: 11.5, fin: 18.0, texto: "11:30 AM - 6:00 PM" },
+            "Cena": { inicio: 18.01, fin: 22.5, texto: "6:01 PM - 10:30 PM" },
+            "Postre": { inicio: 7.5, fin: 23.5, texto: "7:30 AM - 10:30 PM" },
+            "Bebidas": { inicio: 9.0, fin: 23.5, texto: "9:00 AM - 10:30 PM" }
+        };
+
+        const config = horarios[cat];
+        const estaAbierto = horaActual >= config.inicio && horaActual <= config.fin;
+        
+        // DETALLE: Decidir si mostramos fotos según la categoría
+        const mostrarFoto = (cat !== 'Postre' && cat !== 'Bebidas');
+
+        document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const grid = document.getElementById('menu-grid');
+        const t = translations[currentLang];
+        
+        let bannerHorario = `<div style="grid-column: 1/-1; text-align: center; padding: 10px; background: ${estaAbierto ? '#e8f5e9' : '#ffebee'}; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; color: ${estaAbierto ? '#2e7d32' : '#c62828'}; border: 1px solid">
+            ${currentLang === 'es' ? 'Horario de servicio' : 'Service hours'}: ${config.texto} 
+            ${estaAbierto ? '' : (currentLang === 'es' ? ' - (CERRADO)' : ' - (CLOSED)')}
+        </div>`;
+
+        grid.innerHTML = bannerHorario + platillos.filter(p => p.c === cat).map((p, i) => `
+            <div class="card" style="opacity: ${estaAbierto ? '1' : '0.6'}; ${!estaAbierto ? 'filter: grayscale(100%);' : ''}">
+                ${mostrarFoto ? `<img src="${p.img}" class="card-img">` : ''}
+                <div class="card-body">
+                    <div class="card-info">
+                        <span style="font-size: ${mostrarFoto ? '1rem' : '1.1rem'}">${currentLang === 'es' ? p.n_es : p.n_en}</span>
+                        <span class="precio">$${p.p}</span>
+                    </div>
+                    <p class="desc">${currentLang === 'es' ? p.d_es : p.d_en}</p>
+                    ${estaAbierto ? `
+                        <textarea id="note-${cat}-${i}" placeholder="${t.notas}"></textarea>
+                        <button class="btn-add" onclick="agregar('${currentLang==='es'?p.n_es:p.n_en}', ${p.p}, 'note-${cat}-${i}')">${t.agregar}</button>
+                    ` : `<p style="color: red; font-weight: bold; text-align: center; font-size: 0.8rem; margin-top: 10px;">${currentLang === 'es' ? 'Fuera de horario' : 'Out of service hours'}</p>`}
                 </div>
-                ${item.nota ? `<span style="font-size: 0.8rem; color: #8d754a; font-style: italic;">Nota: ${item.nota}</span>` : ''}
             </div>
         `).join('');
-        
-        const totalMXN = carrito.reduce((s, i) => s + i.p, 0);
-        document.getElementById('total-val').innerText = totalMXN.toLocaleString();
-        document.getElementById('total-usd-val').innerText = (totalMXN / TIPO_CAMBIO).toFixed(2);
-
-        }
-
-    function quitar(i) { carrito.splice(i, 1); renderCart(); }
     
-    function enviar() {
-        const nombre = document.getElementById('nombre-huesped').value;
-        const hab = document.getElementById('habitacion').value;
-        const pago = document.getElementById('forma-pago').value;
-        const totalMXN = document.getElementById('total-val').innerText;
-        const totalUSD = document.getElementById('total-usd-val').innerText;
+    }
 
-        if(!nombre || !hab || carrito.length === 0) return alert("Por favor complete sus datos y seleccione sus platillos.");
+    function agregar(nombre, precio, idNota) {
+        const nota = document.getElementById(idNota).value;
+        carrito.push({ nombre, precio, nota });
+        document.getElementById(idNota).value = "";
+        renderCarrito();
+    }
 
-        let msg = `*ROOM SERVICE: ANA Y JOSÉ*%0A`;
-        msg += `*Huésped:* ${nombre}%0A`;
-        msg += `*Habitación:* ${hab}%0A`;
-        msg += `*Forma de Pago:* ${pago}%0A%0A`;
-        msg += `*PEDIDO:*%0A`;
-        
-        // MODIFICADO: Ahora incluye la nota en el mensaje de WhatsApp
-        carrito.forEach(item => {
-            msg += `• *${item.n}* ($${item.p} MXN)%0A`;
-            if(item.nota) msg += `   _Nota: ${item.nota}_%0A`;
-        });
+    function renderCarrito() {
+        const lista = document.getElementById('cart-list');
+        const resumen = document.getElementById('cart-summary');
+        const t = translations[currentLang];
+        if(carrito.length === 0) { lista.innerHTML = ""; resumen.innerHTML = ""; return; }
 
-        msg += `%0A*TOTAL MXN: $${totalMXN}*%0A`;
-        msg += `*TOTAL USD approx: $${totalUSD}*%0A%0A`;
-        msg += `_Nota: Propina no incluida / Gratuity not included_`;
+        lista.innerHTML = `<button onclick="carrito=[];renderCarrito()" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold; margin-bottom:10px;">${t.vaciar}</button>` + 
+            carrito.map((item, i) => `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;"><span><strong>${item.nombre}</strong><br><small>${item.nota}</small></span><span>$${item.precio} <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none;background:none;color:red;">✕</button></span></div>`).join('');
 
+        const sub = carrito.reduce((acc, item) => acc + item.precio, 0);
+        const serv = sub * 0.15;
+        const tot = sub + serv;
+
+        resumen.innerHTML = `
+            <div class="total-box">
+                <div class="total-row"><span>${t.sub}:</span><span>$${sub.toFixed(2)}</span></div>
+                <div class="total-row"><span>${t.serv}:</span><span>$${serv.toFixed(2)}</span></div>
+                <div class="total-row total-final"><span>${t.tot}:</span><span>$${tot.toFixed(2)} MXN</span></div>
+                <div style="text-align:right; font-size:0.85rem; color:#666;">Aprox. $${(tot/TIPO_CAMBIO).toFixed(2)} USD</div>
+            </div>`;
+    }
+
+    function enviarPedido() {
+        const nombre = document.getElementById('guest-name').value;
+        const hab = document.getElementById('room-num').value;
+        const pago = document.getElementById('payment-method').value;
+        if(!nombre || !hab || carrito.length === 0) return alert(currentLang === 'es' ? "Faltan datos" : "Missing data");
+
+        const sub = carrito.reduce((acc, item) => acc + item.precio, 0);
+        const serv = sub * 0.15;
+        const tot = sub + serv;
+
+        let msg = `*ORDER - ANA Y JOSÉ*%0A*Guest:* ${nombre}%0A*Room:* ${hab}%0A*Payment:* ${pago}%0A---%0A`;
+        carrito.forEach(i => msg += `• ${i.nombre} ($${i.precio})${i.nota ? ' ['+i.nota+']':''}%0A`);
+        msg += `---%0A*TOTAL: $${tot.toFixed(2)} MXN*`;
         window.open(`https://wa.me/5219841862451?text=${msg}`, '_blank');
-        }
+    }
 
-    document.querySelectorAll('.btn-cat').forEach(b => b.onclick = () => filtrar(b.dataset.cat));
-    renderCart();
-    filtrar('Desayuno');
+    updateUI();
 </script>
-
 </body>
 </html>
