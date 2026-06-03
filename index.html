@@ -675,7 +675,7 @@
 
         const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
         const cargoServicio = carrito.reduce((acc, item) => {
-            const porcentaje = (item.categoria === "Cena Romántica") ? 0.18 : 0.15;
+            const porcentaje = (item.categoria === "Experiencias") ? 0.18 : 0.15;
             return acc + (item.precio * porcentaje);
         }, 0);
         const tot = subtotal + cargoServicio;
