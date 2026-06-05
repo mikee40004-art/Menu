@@ -118,7 +118,8 @@
             cats: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
             catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
             cerrado: "CERRADO", soloHorario: "Disponible en su horario",
-            errDatos: "⚠️ Por favor ingresa nombre y habitación", errCarrito: "⚠️ Tu canasta está vacía"
+            errDatos: "⚠️ Por favor ingresa nombre y habitación", errCarrito: "⚠️ Tu canasta está vacía",
+            noServicio: "🚨 LA PROPINA NO ESTÁ INCLUIDA"
         },
         en: {
             finalizar: "Complete Order", nombre: "Name:", hab: "Room Number:", pago: "Payment Method:",
@@ -128,7 +129,8 @@
             cats: ["Breakfast", "Lunch", "Dinner", "Dessert", "Drinks", "Spa", "Experience"], 
             catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
             cerrado: "CLOSED", soloHorario: "Available only during hours",
-            errDatos: "⚠️ Please enter name and room number", errCarrito: "⚠️ Your cart is empty"
+            errDatos: "⚠️ Please enter name and room number", errCarrito: "⚠️ Your cart is empty",
+            noServicio: "🚨 THE TIP IS NOT INCLUDED"
         }
     };
 
@@ -265,7 +267,6 @@
             d_en: "With parmesan cheese crust.",
             c: "Lunch", img: "https://i.postimg.cc/4yhqQWKD/Screenshot-2026-05-15-14-57-20-585-com-google-android-googlequicksearchbox-edit.jpg" 
         },
-        
         { 
             n_es: "Pizza Margarita", n_en: "Margherita pizza",
             p: 305, d_es: "Tomate fresco, mozzarella y albahaca.", 
@@ -520,7 +521,7 @@
         },
         { 
             n_es: "Pixán", n_en: "Pixán", 
-            p: 2870, d_es: "Pixan signiﬁca (espíritu) en maya y esta terapia regresará tu espíritu y mente a su equilibrio. Masaje enfocado en las estructuras más profundas de los músculos, en el que se utiliza presión media-fuerte con el ﬁn de devolver movilidad a los músculos, liberar toxinas acumuladas en ellos y acelerar la circulación, complementado con la utilización de pindas herbales, las cuales ayudarán a los músculos y la mente a relajarse gracias a sus hierbas y esencias, ayudando a reducir el dolor. 70 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
+            p: 2870, d_es: "Pixan signiﬁca (espíritu) en maya y esta terapia regresará tu espíritu y mente a su equilibrio. Masaje enfocado en las estructuras más profundas de los muscles, en el que se utiliza presión media-fuerte con el fin de devolver movilidad a los músculos, liberar toxinas acumuladas en ellos y acelerar la circulación, complementado con la utilización de pindas herbales, las cuales ayudarán a los músculos y la mente a relajarse gracias a sus hierbas y esencias, ayudando a reducir el dolor. 70 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
             d_en: "Pixan means (spirit) in Mayan, and this therapy will bring your spirit and mind back into balance. Massage focused on the deepest structures of the muscles, in which medium-strong pressure is used in order to restore mobility to the muscles, release accumulated toxins, and accelerate circulation. This therapy is complemented with the use of herbal pindas, which help the muscles and mind relax thanks to their herbs, essences, and warm temperature, helping to reduce pain. 70 Min. If you book now, we'll include a refreshing face mask.", 
             c: "Spa", img: "https://i.postimg.cc/FKvKjvpr/SAVE-20260517-145341.jpg" 
         },
@@ -633,7 +634,7 @@
                 <div class="card-body">
                     <div class="card-info">
                         <span>${currentLang === 'es' ? p.n_es : p.n_en}</span>
-                        <span class="precio">$${p.p}</span>
+                        <span class="precio">$${Number(p.p).toFixed(2)}</span>
                     </div>
                     <p class="desc">${currentLang === 'es' ? p.d_es : p.d_en}</p>
                     ${estaAbierto ? `
@@ -670,20 +671,27 @@
         lista.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom: 2px solid #eee; padding-bottom:5px;"><span style="font-weight:bold;">Items:</span><button onclick="carrito=[];renderCarrito()" style="color:red; border:none; background:none; cursor:pointer; font-size:0.75rem;">${t.vaciar}</button></div>` + 
             carrito.map((item, i) => `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f9f9f9; font-size:0.9rem;">
                 <span style="flex:1;"><strong>${item.nombre}</strong>${item.nota ? `<br><small style="color:var(--oro);">"${item.nota}"</small>` : ''}</span>
-                <span style="white-space:nowrap;">$${item.precio} <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none;background:none;color:#ccc;padding:0 5px;">✕</button></span>
+                <span style="white-space:nowrap;">$${item.precio.toFixed(2)} <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none;background:none;color:#ccc;padding:0 5px;">✕</button></span>
             </div>`).join('');
 
         const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
         const cargoServicio = carrito.reduce((acc, item) => {
-            const porcentaje = (item.categoria === "Experiencias") ? 0.18 : 0.15;
+            const porcentaje = (item.categoria === "Experiencias") ? 0.18 : 0.00;
             return acc + (item.precio * porcentaje);
         }, 0);
         const tot = subtotal + cargoServicio;
 
+        let servicioHTML = '';
+        if (cargoServicio > 0) {
+            servicioHTML = `<div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#2e7d32; font-weight:600;"><span>${t.serv} (18%):</span><span>$${cargoServicio.toFixed(2)}</span></div>`;
+        } else {
+            servicioHTML = `<div style="text-align:center; font-size:0.8rem; color:#c62828; font-weight:bold; padding: 4px 0; border: 1px dashed #c62828; border-radius: 6px; margin: 6px 0; background-color: #fff5f5;">${t.noServicio}</div>`;
+        }
+
         resumen.innerHTML = `
             <div class="total-box">
                 <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;"><span>${t.sub}:</span><span>$${subtotal.toFixed(2)}</span></div>
-                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#666;"><span>${t.serv}:</span><span>$${cargoServicio.toFixed(2)}</span></div>
+                ${servicioHTML}
                 <div class="total-final"><span>${t.tot}:</span><span>$${tot.toFixed(2)} MXN</span></div>
                 <div style="text-align:right; font-size:0.75rem; color:#999; margin-top:5px;">Approx. $${(tot/TIPO_CAMBIO).toFixed(2)} USD</div>
             </div>`;
@@ -714,7 +722,7 @@
         }
 
         const tieneSpa = carrito.some(item => item.categoria === "Spa");
-        const tieneOtros = carrito.some(item => item.categoria !== "Spa"); 
+        const tieneOtros = carrito.some(item => item.carrito !== "Spa"); 
 
         if (tieneSpa && tieneOtros) {
             btn.innerText = currentLang === 'es' ? "⚠️ Envía Spa y Alimentos por separado" : "⚠️ Send Spa and Food separately";
@@ -742,8 +750,15 @@
         });
 
         const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
-        const serv = carrito.reduce((acc, item) => acc + (item.precio * (item.categoria === "Experiencias" ? 0.18 : 0.15)), 0);
-        msg += `---%0A*TOTAL: $${(subtotal + serv).toFixed(2)} MXN*`;
+        const serv = carrito.reduce((acc, item) => acc + (item.precio * (item.categoria === "Experiencias" ? 0.18 : 0.00)), 0);
+        
+        msg += `---%0A`;
+        if (serv > 0) {
+            msg += `*Servicio Incluido (18%): $${serv.toFixed(2)} MXN*%0A`;
+        } else {
+            msg += currentLang === 'es' ? `*LA PROPINA NO ESTÁ INCLUIDA*%0A` : `*GRATUITY IS NOT INCLUDED*%0A`;
+        }
+        msg += `*TOTAL: $${(subtotal + serv).toFixed(2)} MXN*`;
 
         window.open(`https://wa.me/${num}?text=${msg}`, '_blank', 'noopener');
     }
