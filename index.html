@@ -118,8 +118,7 @@
             cats: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
             catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
             cerrado: "CERRADO", soloHorario: "Disponible en su horario",
-            errDatos: "⚠️ Por favor ingresa nombre y habitación", errCarrito: "⚠️ Tu canasta está vacía",
-            noServicio: "🚨 LA PROPINA NO ESTÁ INCLUIDA"
+            errDatos: "⚠️ Por favor ingresa nombre y habitación", errCarrito: "⚠️ Tu canasta está vacía"
         },
         en: {
             finalizar: "Complete Order", nombre: "Name:", hab: "Room Number:", pago: "Payment Method:",
@@ -129,275 +128,148 @@
             cats: ["Breakfast", "Lunch", "Dinner", "Dessert", "Drinks", "Spa", "Experience"], 
             catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
             cerrado: "CLOSED", soloHorario: "Available only during hours",
-            errDatos: "⚠️ Please enter name and room number", errCarrito: "⚠️ Your cart is empty",
-            noServicio: "🚨 THE TIP IS NOT INCLUDED"
+            errDatos: "⚠️ Please enter name and room number", errCarrito: "⚠️ Your cart is empty"
         }
     };
 
     const platillos = [
         { 
-            n_es: "Fruta tropical Ana y José", n_en: "Ana & José tropical fruit",
-            p: 285, d_es: "Piña, papaya, melón, frutos rojos y granola casera.", 
-            d_en: "Pineapple, papaya, melon, berries and homemade granola.",
-            c: "Desayuno", img: "https://i.postimg.cc/JhwBj5H7/IMG-20260430-192553.jpg" 
+            n_es: "Fruta tropical", n_en: "Tropical fruit",
+            p: 160, d_es: "Piña, papaya, sandía y melón.", 
+            d_en: "Pineapple, papaya, watermelon and melon.",
+            c: "Desayuno", img: "" 
         },
         { 
-            n_es: "Yogurth griego con frutos rojos", n_en: "Greek yogurth with berries",
-            p: 295, d_es: "Acompañado de miel de agave y nibs de cacao.", 
-            d_en: "With agave honey and cacao nibs.",
-            c: "Desayuno", img: "https://i.postimg.cc/Qd67RHbk/IMG-20260501-143852.jpg" 
+            n_es: "Canasta de pan dulce", n_en: "Sweet bread basket",
+            p: 90, d_es: "Pan dulce, servido con mantequilla y mermelada casera del día.", 
+            d_en: "Sweet bread served with butter and the homemade jam of the day.",
+            c: "Desayuno", img: "" 
         },
         { 
-            n_es: "Avocado toast Tulum", n_en: "Avocado toast Tulum",
-            p: 350, d_es: "Pan masa madre, jitomate heirloom, limón curtido y brotes. Huevo +$40 / Salmón curado +$60 / Tocino artesanal +$45", 
-            d_en: "Sourdough bread, heirloom tomatoe, pickled lemon and sprouts. Egg +$40 / Cured salmon +$60 / Artisanal bacon +$45.",
-            c: "Desayuno", img: "https://i.postimg.cc/zGDWtnnJ/IMG-20260501-175132.jpg" 
+            n_es: "Chilaquiles", n_en: "Chilaquiles",
+            p: 235, d_es: "Con salsa verde o roja, gratinados con queso gouda, crema, cebolla y cilantro. Con huevo o con pollo.", 
+            d_en: "With red or green sauce with melted Gouda cheese, sour cream, onion and cilantro. Choose with eggs or chicken.",
+            c: "Desayuno", img: "" 
         },
         { 
-            n_es: "Chilaquiles verdes o rojos", n_en: "Green or red Chilaquiles",
-            p: 250, d_es: "Crema, aguacate, frijoles negros y brotes. Huevo +$285 / Pollo orgánico +$305 / Arrachera local +$365.", 
-            d_en: "Cream, avocado, black beans and sprouts. Egg +$285 / Organic chicken +$305 / Local flank steak +$365.",
-            c: "Desayuno", img: "https://i.postimg.cc/wBhR2RDv/IMG-20260430-192623.jpg" 
+            n_es: "Hot cakes", n_en: "Hot cakes",
+            p: 215, d_es: "Suaves y esponjosos, servidos con fruta de temporada y miel de abeja local.", 
+            d_en: "Soft and fluffy pancakes served with seasonal fruit and local honey.",
+            c: "Desayuno", img: "" 
         },
         { 
-            n_es: "Huevos Doña Ana", n_en: "Doña Ana eggs",
-            p: 295, d_es: "Sobre sope de maíz azul, frijol colado y salsa de recado negro.", 
-            d_en: "Served over a blue corn sope, refried beans, and recado negro sauce.",
-            c: "Desayuno", img: "https://i.postimg.cc/htx8dNwQ/IMG-20260216-112705.jpg" 
-        },
-        { 
-            n_es: "Tacos de huevo con longaniza de Valladolid", n_en: "Eggs tacos with Valladolid longaniza",
-            p: 285, d_es: "Frijoles colados, aguacate y chiltomate.", 
-            d_en: "Refried beans, avocado and chiltomate.",
-            c: "Desayuno", img: "https://i.postimg.cc/KvCr4m9L/IMG-20260429-085911.jpg" 
-        },
-        { 
-            n_es: "Omelette Tulum", n_en: "Tulum omelette",
-            p: 255, d_es: "Con hongos cremini, espinaca y queso de rancho. Acompañado de frijoles refritos o papas cambray al mojo de ajo.", 
-            d_en: "Cremini mushrooms, spinach and farmhouse cheese. Served with refried beans or garlic baby potatoes.",
-            c: "Desayuno", img: "https://i.postimg.cc/y6cR12Jf/IMG-20260429-190954.jpg" 
-        },
-        { 
-            n_es: "Omelette de la Granja", n_en: "Farm omelette",
-            p: 295, d_es: "Con jamón artesanal, papa cambray y queso cotija. Acompañado de frijoles refritos o papas cambray al mojo de ajo.", 
-            d_en: "Artisanal ham, baby potatoes and cotija cheese. Served with refried beans or garlic baby potatoes.",
-            c: "Desayuno", img: "https://i.postimg.cc/PfWLsZcN/IMG-20260429-191138.jpg" 
-        },
-        { 
-            n_es: "Omelette Caribeño", n_en: "Caribbean omelette",
-            p: 245, d_es: "Con camarón, pimiento asado y aguacate. Acompañado de frijoles refritos o papas cambray al mojo de ajo.", 
-            d_en: "Shrimp, roasted bell pepper and avocado. Served with refried beans or garlic baby potatoes.",
-            c: "Desayuno", img: "https://i.postimg.cc/gkbv3G9S/IMG-20260429-190815.jpg" 
-        },
-        { 
-            n_es: "Hot cakes de plátano y amaránto", n_en: "Banana & Amaranth hot cakes",
-            p: 275, d_es: "Miel melipona y fruta fresca.", 
-            d_en: "Melipona honey and fresh fruit.",
-            c: "Desayuno", img: "https://i.postimg.cc/5t33H5vc/IMG-20260214-083600.jpg" 
-        },
-        { 
-            n_es: "French toast de plátano y nuez caramelizada", n_en: "Banana French toast with caramelized nuts",
-            p: 245, d_es: "Miel de maple.", 
+            n_es: "Huevos al gusto", n_en: "Banana French toast with caramelized nuts",
+            p: 280, d_es: "Fritos, revueltos u omelette, servidos con frijoles refritos y papa rostizada.", 
             d_en: "Maple syrup.",
-            c: "Desayuno", img: "https://i.postimg.cc/T24sxLDL/IMG-20260429-191640.jpg" 
+            c: "Desayuno", img: "" 
         },
         { 
-            n_es: "Enchiladas de cochinita pibil", n_en: "Cochinita pibil enchiladas",
-            p: 305, d_es: "Con queso cotija y cebolla morada encurtida.", 
-            d_en: "With cotija cheese and pickled red onion.",
-            c: "Desayuno", img: "https://i.postimg.cc/8ckd31s8/IMG-20260517-131632.jpg" 
+            n_es: "Guacamole", n_en: "Guacamole",
+            p: 230, d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.", 
+            d_en: "Traditional guacamole served with corn totopos and fresh cheese.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Guacamole del Huerto", n_en: "Guacamole from our garden",
-            p: 280, d_es: "Con plátano macho frito, semillas de calabaza y totopos de maíz.", 
-            d_en: "With fried platain, pumpkin seeds and corn totopos.",
-            c: "Lunch", img: "https://i.postimg.cc/FH2Zjhb1/IMG-20260503-125707.jpg" 
+            n_es: "Bowl mexicano", n_en: "Mexican bowl",
+            p: 230, d_es: "Arroz rojo a la mexicana, frijoles enteros y rebanadas de aguacate, servido con queso panela y jalapeño toreado.", 
+            d_en: "Mexican style red rice, whole beans and avocado slices, served with panela cheese and charred jalapeño.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Palomitas de Camarón al chile dulce", n_en: "Sweet chili shrimp popcorn",
-            p: 305, d_es: "Camarón local rebosado con toque de limón y alioli de chile xcatic.", 
-            d_en: "Locally sourced battered shrimp with a hint of lime and xcatic alioli.",
-            c: "Lunch", img: "https://i.postimg.cc/rpk1CQ2q/IMG-20260213-WA0023.jpg" 
+            n_es: "Club sandwich", n_en: "Club sandwich",
+            p: 295, d_es: "Pollo a la parrilla, tocino, jamón y queso, servido con papas a la francesa.", 
+            d_en: "Grilled chicken, bacon, ham and cheese, served and french fries.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Ceviche de pescado del día", n_en: "Catch of the day ceviche",
-            p: 485, d_es: "Con lima, cilantro y chile habanero.", 
-            d_en: "With lime, coriander and habanero chili.",
-            c: "Lunch", img: "https://i.postimg.cc/g0Q0PgDV/IMG-20260502-170935.jpg" 
+            n_es: "Tacos al pastor", n_en: "Tacos al pastor",
+            p: 215, d_es: "Carne de cerdo marinada en adobo de chiles y especias con piña asada, cebolla y cilantro.", 
+            d_en: "Pork marinated in chili and spice adobo, served with grilled pineapple, onion and cilantro.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Ceviche Caribeño", n_en: "Caribbean ceviche",
-            p: 485, d_es: "Pescado fresco y camarón en leche de coco y maracuyá.", 
-            d_en: "Fresh fish and shrimp in coconut milk and passion fruit.",
-            c: "Lunch", img: "https://i.postimg.cc/xCm1jLxc/SAVE-20260502-170805.jpg" 
+            n_es: "Pasta cremosa", n_en: "Creamy pasta",
+            p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
+            d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Tacos estilo Baja", n_en: "Baja style tacos",
-            p: 435, d_es: "Camarón o pescado en tempura con ensalada de col y salsa de tamarindo (3 piezas).", 
-            d_en: "Tempura shrimp or fish with coleslaw and tamarind sauce (3 pieces).",
-            c: "Lunch", img: "https://i.postimg.cc/NjzZ8jb9/IMG-20260517-140637.jpg" 
+            n_es: "Tacos de pescado", n_en: "Fish tacos",
+            p: 270, d_es: "Rebosados en tempura de cerveza oscura y especias cajún, servidos con ensalada de col, mayonesa de chipotle y limón", 
+            d_en: "Dark beer and Cajun tempura battered fish, served with coleslaw, chipotle mayonnaise and lime",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Tacos de rib eye al carbón", n_en: "Charcoal-grilled Rib eye tacos",
-            p: 495, d_es: "Con guacamole y tortillas hechas a mano. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "With guacamole and handmade tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Lunch", img: "https://i.postimg.cc/yYc9Pgv2/IMG-20260517-132136.jpg" 
+            n_es: "Hamburguesa de la casa", n_en: "House burguer",
+            p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Tacos de setas al recado negro (vegano)", n_en: "Recado negro mushroom tacos",
-            p: 325, d_es: "Con cebolla morada y aguacate.", 
-            d_en: "With pickled red onion and avocado",
-            c: "Lunch", img: "https://i.postimg.cc/TYv1NN73/Screenshot-2026-05-02-18-06-48-208-com-google-android-googlequicksearchbox-edit.jpg" 
+            n_es: "Pizza Margarita", n_en: "Margaherita pizza",
+            p: 215, d_es: "Salsa pomodoro,mozzarella y albahaca fresca.", 
+            d_en: "Pomodoro sauce, mozzarella and fresh basil.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Hamburguesa artesanal Ana y José", n_en: "Ana & José artisanal burguer",
-            p: 545, d_es: "Carne angus, queso gouda, tocino, lechuga y alioli de chile xcatic. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "Angus beef, gouda cheese, bacon, lettuce and xcatic chili alioli. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Lunch", img: "https://i.postimg.cc/vHs59RTT/SAVE-20260501-175829.jpg" 
+            n_es: "Pizza veggie", n_en: "Pizza veggie",
+            p: 255, d_es: "Champiñon, cebolla, espinaca y calabaza.", 
+            d_en: "Mushrooms, onion, spinach and zucchini.",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Sandwich de short rib cocción lenta", n_en: "Slow-cooked short tib sandwich (10 h)",
-            p: 485, d_es: "Con cebolla caramelizada y pan brioche.", 
-            d_en: "Caramelized onion on brioche bread.",
-            c: "Lunch", img: "https://i.postimg.cc/1XcRwsZD/IMG-20260502-171046.jpg" 
+            n_es: "Guacamole", n_en: "Guacamole",
+            p: 230, d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.", 
+            d_en: "Traditional guacamole served with corn totopos and fresh cheese.",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Lasagna de ragú de ternera angus", n_en: "Angus beef ragú lasagna",
-            p: 305, d_es: "Con costra de queso parmesano.", 
-            d_en: "With parmesan cheese crust.",
-            c: "Lunch", img: "https://i.postimg.cc/4yhqQWKD/Screenshot-2026-05-15-14-57-20-585-com-google-android-googlequicksearchbox-edit.jpg" 
+            n_es: "Bowl mexicano", n_en: "Mexican bowl",
+            p: 230, d_es: "Arroz rojo a la mexicana, frijoles enteros y rebanadas de aguacate, servido con queso panela y jalapeño toreado.", 
+            d_en: "Mexican style red rice, whole beans and avocado slices, served with panela cheese and charred jalapeño.",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Pizza Margarita", n_en: "Margherita pizza",
-            p: 305, d_es: "Tomate fresco, mozzarella y albahaca.", 
-            d_en: "Fresh tomatoe, mozzarella and basil.",
-            c: "Lunch", img: "https://i.postimg.cc/SxZ9wJr6/IMG-20260501-175052.jpg" 
+            n_es: "Club sandwich", n_en: "Club sandwich",
+            p: 295, d_es: "Pollo a la parrilla, tocino, jamón y queso, servido con papas a la francesa.", 
+            d_en: "Grilled chicken, bacon, ham and cheese, served and french fries.",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Pizza cuatro quesos", n_en: "Four cheese pizza",
-            p: 440, d_es: "Mozzarella, queso de bola, parmesano y gorgonzola.", 
-            d_en: "Mozzarella, Edam cheese, parmesan and gorgonzola.",
-            c: "Lunch", img: "https://i.postimg.cc/1zwD2VGT/Screenshot-2026-05-02-17-54-01-633-com-google-android-googlequicksearchbox-edit.jpg" 
+            n_es: "Tacos al pastor", n_en: "Tacos al pastor",
+            p: 215, d_es: "Carne de cerdo marinada en adobo de chiles y especias con piña asada, cebolla y cilantro.", 
+            d_en: "Pork marinated in chili and spice adobo, served with grilled pineapple, onion and cilantro.",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Pizza vegetariana del huerto", n_en: "Vegetarian pizza from our garden",
-            p: 325, d_es: "Calabaza, chaya, cebolla, aceituna y pimientos.", 
-            d_en: "Zucchini, chaya, onion, olives and bell peppers.",
-            c: "Lunch", img: "https://i.postimg.cc/m2s7MxkD/SAVE-20260501-175804.jpg" 
+            n_es: "Pasta cremosa", n_en: "Creamy pasta",
+            p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
+            d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Pescado zarandeado en hoja de platáno", n_en: "Grilled fish in banana leaf",
-            p: 645, d_es: "Recado negro, arroz pinto y vegetales.", 
-            d_en: "With recado negro, pinto rice and vegetables.",
-            c: "Lunch", img: "https://i.postimg.cc/k5z5dTcW/IMG-20260502-170948.jpg" 
+            n_es: "Tacos de pescado", n_en: "Fish tacos",
+            p: 270, d_es: "Rebosados en tempura de cerveza oscura y especias cajún, servidos con ensalada de col, mayonesa de chipotle y limón", 
+            d_en: "Dark beer and Cajun tempura battered fish, served with coleslaw, chipotle mayonnaise and lime",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Arrachera a la parrilla", n_en: "Grilled Arrachera",
-            p: 495, d_es: "Servida con cebolla asada, frijoles colados y tortilla recién hecha. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "Served with roasted onions, strained beans, and freshly made tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Lunch", img: "https://i.postimg.cc/3wm2V0Xq/Screenshot-2026-05-02-17-56-31-293-com-google-android-googlequicksearchbox-edit.jpg" 
+            n_es: "Hamburguesa de la casa", n_en: "House burguer",
+            p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Curry de coco", n_en: "Coconut curry",
-            p: 290, d_es: "Con verduras al vapor y arroz integral.", 
-            d_en: "With steamed vegetables and brown rice.",
-            c: "Lunch", img: "https://i.postimg.cc/tRh4Ltn8/IMG-20260502-171137.jpg" 
+            n_es: "Pizza Margarita", n_en: "Margaherita pizza",
+            p: 215, d_es: "Salsa pomodoro,mozzarella y albahaca fresca.", 
+            d_en: "Pomodoro sauce, mozzarella and fresh basil.",
+            c: "Cena", img: "" 
         },
         { 
-            n_es: "Guacamole del Huerto", n_en: "Guacamole from our garden",
-            p: 280, d_es: "Con plátano macho frito, semillas de calabaza y totopos de maíz.", 
-            d_en: "With fried platain, pumpkin seeds and corn totopos.",
-            c: "Cena", img: "https://i.postimg.cc/FH2Zjhb1/IMG-20260503-125707.jpg" 
-        },
-        { 
-            n_es: "Palomitas de Camarón al chile dulce", n_en: "Sweet chili shrimp popcorn",
-            p: 305, d_es: "Camarón local rebosado con toque de limón y alioli de chile xcatic.", 
-            d_en: "Locally sourced battered shrimp with a hint of lime and xcatic alioli.",
-            c: "Cena", img: "https://i.postimg.cc/rpk1CQ2q/IMG-20260213-WA0023.jpg" 
-        },
-        { 
-            n_es: "Ceviche de pescado del día", n_en: "Catch of the day ceviche",
-            p: 485, d_es: "Con lima, cilantro y chile habanero.", 
-            d_en: "With lime, coriander and habanero chili.",
-            c: "Cena", img: "https://i.postimg.cc/g0Q0PgDV/IMG-20260502-170935.jpg" 
-        },
-        { 
-            n_es: "Ceviche Caribeño", n_en: "Caribbean ceviche",
-            p: 485, d_es: "Pescado fresco y camarón en leche de coco y maracuyá.", 
-            d_en: "Fresh fish and shrimp in coconut milk and passion fruit.",
-            c: "Cena", img: "https://i.postimg.cc/xCm1jLxc/SAVE-20260502-170805.jpg" 
-        },
-        { 
-            n_es: "Tacos estilo Baja", n_en: "Baja style tacos",
-            p: 435, d_es: "Camarón o pescado en tempura con ensalada de col y salsa de tamarindo (3 piezas).", 
-            d_en: "Tempura shrimp or fish with coleslaw and tamarind sauce (3 pieces).",
-            c: "Cena", img: "https://i.postimg.cc/NjzZ8jb9/IMG-20260517-140637.jpg" 
-        },
-        { 
-            n_es: "Tacos de rib eye al carbón", n_en: "Charcoal-grilled Rib eye tacos",
-            p: 495, d_es: "Con guacamole y tortillas hechas a mano. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "With guacamole and handmade tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Cena", img: "https://i.postimg.cc/yYc9Pgv2/IMG-20260517-132136.jpg" 
-        },
-        { 
-            n_es: "Tacos de setas al recado negro (vegano)", n_en: "Recado negro mushroom tacos",
-            p: 325, d_es: "Con cebolla morada y aguacate.", 
-            d_en: "With pickled red onion and avocado",
-            c: "Cena", img: "https://i.postimg.cc/TYv1NN73/Screenshot-2026-05-02-18-06-48-208-com-google-android-googlequicksearchbox-edit.jpg" 
-        },
-        { 
-            n_es: "Hamburguesa artesanal Ana y José", n_en: "Ana & José artisanal burguer",
-            p: 545, d_es: "Carne angus, queso gouda, tocino, lechuga y alioli de chile xcatic. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "Angus beef, gouda cheese, bacon, lettuce and xcatic chili alioli. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Cena", img: "https://i.postimg.cc/vHs59RTT/SAVE-20260501-175829.jpg" 
-        },
-        { 
-            n_es: "Sandwich de short rib cocción lenta", n_en: "Slow-cooked short tib sandwich (10 h)",
-            p: 485, d_es: "Con cebolla caramelizada y pan brioche.", 
-            d_en: "Caramelized onion on brioche bread.",
-            c: "Cena", img: "https://i.postimg.cc/1XcRwsZD/IMG-20260502-171046.jpg" 
-        },
-        { 
-            n_es: "Lasagna de ragú de ternera angus", n_en: "Angus beef ragú lasagna",
-            p: 305, d_es: "Con costra de queso parmesano.", 
-            d_en: "With parmesan cheese crust.",
-            c: "Cena", img: "https://i.postimg.cc/4yhqQWKD/Screenshot-2026-05-15-14-57-20-585-com-google-android-googlequicksearchbox-edit.jpg" 
-        },
-        { 
-            n_es: "Pizza Margarita", n_en: "Margherita pizza",
-            p: 305, d_es: "Tomate fresco, mozzarella y albahaca.", 
-            d_en: "Fresh tomatoe, mozzarella and basil.",
-            c: "Cena", img: "https://i.postimg.cc/SxZ9wJr6/IMG-20260501-175052.jpg" 
-        },
-        { 
-            n_es: "Pizza cuatro quesos", n_en: "Four cheese pizza",
-            p: 440, d_es: "Mozzarella, queso de bola, parmesano y gorgonzola.", 
-            d_en: "Mozzarella, Edam cheese, parmesan and gorgonzola.",
-            c: "Cena", img: "https://i.postimg.cc/1zwD2VGT/Screenshot-2026-05-02-17-54-01-633-com-google-android-googlequicksearchbox-edit.jpg" 
-        },
-        { 
-            n_es: "Pizza vegetariana del huerto", n_en: "Vegetarian pizza from our garden",
-            p: 325, d_es: "Calabaza, chaya, cebolla, aceituna y pimientos.", 
-            d_en: "Zucchini, chaya, onion, olives and bell peppers.",
-            c: "Cena", img: "https://i.postimg.cc/m2s7MxkD/SAVE-20260501-175804.jpg" 
-        },
-        { 
-            n_es: "Pescado zarandeado en hoja de platáno", n_en: "Grilled fish in banana leaf",
-            p: 645, d_es: "Recado negro, arroz pinto y vegetales.", 
-            d_en: "With recado negro, pinto rice and vegetables.",
-            c: "Cena", img: "https://i.postimg.cc/k5z5dTcW/IMG-20260502-170948.jpg" 
-        },
-        { 
-            n_es: "Arrachera a la parrilla", n_en: "Grilled Arrachera",
-            p: 495, d_es: "Servida con cebolla asada, frijoles colados y tortilla recién hecha. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "Served with roasted onions, strained beans, and freshly made tortillas. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Cena", img: "https://i.postimg.cc/3wm2V0Xq/Screenshot-2026-05-02-17-56-31-293-com-google-android-googlequicksearchbox-edit.jpg" 
-        },
-        { 
-            n_es: "Curry de coco", n_en: "Coconut curry",
-            p: 290, d_es: "Con verduras al vapor y arroz integral.", 
-            d_en: "With steamed vegetables and brown rice.",
-            c: "Cena", img: "https://i.postimg.cc/tRh4Ltn8/IMG-20260502-171137.jpg" 
+            n_es: "Pizza veggie", n_en: "Pizza veggie",
+            p: 255, d_es: "Champiñon, cebolla, espinaca y calabaza.", 
+            d_en: "Mushrooms, onion, spinach and zucchini.",
+            c: "Cena", img: "" 
         },
         { 
             n_es: "Textura de chocolate criollo Maya", n_en: "Mayan criollo chocolate textures",
@@ -406,9 +278,9 @@
             c: "Postre", img: "" 
         },
         { 
-            n_es: "Carpaccio con piña asada y menta", n_en: "Pineapple carpaccio with worm salt and agave honey",
-            p: 210, d_es: "Finas láminas de piña con ralladura de lima, chile seco y cristales de sal marina.", 
-            d_en: "Thinly sliced pineapple with lime zest, dried chili and sea salt crystals.",
+            n_es: "Flan de Vainilla", n_en: "Vanilla flan",
+            p: 70, d_es: "Cremoso, suave y dulce, que se deshace en cada bocado con el toque de caramelo dorado que recuerda a la cocina de la abuela.", 
+            d_en: "Creamy, smooth, and sweet, melting in every bite with a touch of golden caramel reminiscent of grandma's kitchen .",
             c: "Postre", img: "" 
         },
         { 
@@ -419,14 +291,14 @@
         },
         { 
             n_es: "Agua Evian natural", n_en: "Natural water Evian",
-            p: 205, d_es: "750 ml", 
-            d_en: "750 ml",
+            p: 205, d_es: "750 ml. No incluye el plan Todo Incluído", 
+            d_en: "750 ml. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
-            n_es: "Agua Evian mineral", n_en: "Sparkling water Evian",
-            p: 195, d_es: "750 ml", 
-            d_en: "750 ml",
+            n_es: "Agua Evian mineral", n_en: "Sparkling water Evian. No incluye en el plan Todo Incluído",
+            p: 195, d_es: "750 ml. No incluye en el plan Todo Incluído.", 
+            d_en: "750 ml. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
@@ -443,26 +315,26 @@
         },
         { 
             n_es: "Jugo verde Maya", n_en: "Mayan green juice",
-            p: 155, d_es: "Chaya, piña, pepino, apio y hierbabuena fresco y alcalino", 
-            d_en: "Chaya, pineapple, cucumber, celery and spearmint fresh and alcaline",
+            p: 155, d_es: "Chaya, piña, pepino, apio y hierbabuena fresco y alcalino. No incluye en el plan Todo Incluído", 
+            d_en: "Chaya, pineapple, cucumber, celery and spearmint fresh and alcaline. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Smoothie tropical", n_en: "Tropical smoothie",
-            p: 165, d_es: "Mango, plátano y leche de coco con semillas de chía", 
-            d_en: "Mango, banana and coconut milk wuth chia seeds.",
+            p: 165, d_es: "Mango, plátano y leche de coco con semillas de chía. No incluye en el plan Todo Incluído", 
+            d_en: "Mango, banana and coconut milk wuth chia seeds. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Piñada", n_en: "Piñada",
-            p: 180, d_es: "Mezcla cremosa de piña y coco, servida bien fría.", 
-            d_en: "Creamy blend of pineapple and coconut, served chilled.",
+            p: 180, d_es: "Mezcla cremosa de piña y coco, servida bien fría. No incluye en el plan Todo Incluído", 
+            d_en: "Creamy blend of pineapple and coconut, served chilled. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Fresada", n_en: "Fresada",
-            p: 180, d_es: "Frappé de fresas naturales con un toque de limón.", 
-            d_en: "Natural strawberry slushy with a hint of lime.",
+            p: 180, d_es: "Frappé de fresas naturales con un toque de limón. No incluye en el plan Todo Incluído", 
+            d_en: "Natural strawberry slushy with a hint of lime. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
@@ -485,32 +357,32 @@
         },
         { 
             n_es: "Cielito Oaxaqueño", n_en: "Oaxacan Sky",
-            p: 390, d_es: "Mezcal, licor de violetas, arándano y escarcha de sal de gusano.", 
-            d_en: "Mezcal, violet liqueur, cranberry, and worm salt rim.",
+            p: 390, d_es: "Mezcal, licor de violetas, arándano y escarcha de sal de gusano. No incluye en el plan Todo Incluído", 
+            d_en: "Mezcal, violet liqueur, cranberry, and worm salt rim. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Margarita Golden", n_en: "Golden Margarita",
-            p: 385, d_es: "Tequila Herradura reposado, grand marnier, jugo de limón.", 
-            d_en: "Herradura reposado tequila, grand marnier, lemon juice.",
+            p: 385, d_es: "Tequila Herradura reposado, grand marnier, jugo de limón. No incluye en el plan Todo Incluído", 
+            d_en: "Herradura reposado tequila, grand marnier, lemon juice. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Tulum sunset", n_en: "Tulum sunset",
-            p: 395, d_es: "Whisky Jack Daniel's, campari, jugo de toronja, miel y agua quina.", 
-            d_en: "Jack Daniel's Whiskey, campari, grapefruit juice, honey and quina.",
+            p: 395, d_es: "Whisky Jack Daniel's, campari, jugo de toronja, miel y agua quina. No incluye en el plan Todo Incluído", 
+            d_en: "Jack Daniel's Whiskey, campari, grapefruit juice, honey and quina. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Alebrije", n_en: "Alebrije",
-            p: 355, d_es: "Mezcal amarás joven, chartreuse, jugo de piña, cilantro y jalapeño.", 
-            d_en: "Amaras joven mezcal, chartreuse, pineapple juice, cilantro and jalapeño.",
+            p: 355, d_es: "Mezcal amarás joven, chartreuse, jugo de piña, cilantro y jalapeño. No incluye en el plan Todo Incluído", 
+            d_en: "Amaras joven mezcal, chartreuse, pineapple juice, cilantro and jalapeño. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Ana y José", n_en: "Ana y Jose",
-            p: 385, d_es: "Mezcal 400 conejos blanco, Ron Diplomático Mantuano, pulpa de mango, piña, manzana y maracuyá.", 
-            d_en: "400 conejos white mezcal, Diplomatico Mantuano rum, mango pulp, pineapple, apple and passion fruit.",
+            p: 385, d_es: "Mezcal 400 conejos blanco, Ron Diplomático Mantuano, pulpa de mango, piña, manzana y maracuyá. No incluye en el plan Todo Incluído", 
+            d_en: "400 conejos white mezcal, Diplomatico Mantuano rum, mango pulp, pineapple, apple and passion fruit. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
@@ -521,7 +393,7 @@
         },
         { 
             n_es: "Pixán", n_en: "Pixán", 
-            p: 2870, d_es: "Pixan signiﬁca (espíritu) en maya y esta terapia regresará tu espíritu y mente a su equilibrio. Masaje enfocado en las estructuras más profundas de los muscles, en el que se utiliza presión media-fuerte con el fin de devolver movilidad a los músculos, liberar toxinas acumuladas en ellos y acelerar la circulación, complementado con la utilización de pindas herbales, las cuales ayudarán a los músculos y la mente a relajarse gracias a sus hierbas y esencias, ayudando a reducir el dolor. 70 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
+            p: 2870, d_es: "Pixan signiﬁca (espíritu) en maya y esta terapia regresará tu espíritu y mente a su equilibrio. Masaje enfocado en las estructuras más profundas de los músculos, en el que se utiliza presión media-fuerte con el ﬁn de devolver movilidad a los músculos, liberar toxinas acumuladas en ellos y acelerar la circulación, complementado con la utilización de pindas herbales, las cuales ayudarán a los músculos y la mente a relajarse gracias a sus hierbas y esencias, ayudando a reducir el dolor. 70 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
             d_en: "Pixan means (spirit) in Mayan, and this therapy will bring your spirit and mind back into balance. Massage focused on the deepest structures of the muscles, in which medium-strong pressure is used in order to restore mobility to the muscles, release accumulated toxins, and accelerate circulation. This therapy is complemented with the use of herbal pindas, which help the muscles and mind relax thanks to their herbs, essences, and warm temperature, helping to reduce pain. 70 Min. If you book now, we'll include a refreshing face mask.", 
             c: "Spa", img: "https://i.postimg.cc/FKvKjvpr/SAVE-20260517-145341.jpg" 
         },
@@ -634,7 +506,7 @@
                 <div class="card-body">
                     <div class="card-info">
                         <span>${currentLang === 'es' ? p.n_es : p.n_en}</span>
-                        <span class="precio">$${Number(p.p).toFixed(2)}</span>
+                        <span class="precio">$${p.p}</span>
                     </div>
                     <p class="desc">${currentLang === 'es' ? p.d_es : p.d_en}</p>
                     ${estaAbierto ? `
@@ -671,27 +543,20 @@
         lista.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom: 2px solid #eee; padding-bottom:5px;"><span style="font-weight:bold;">Items:</span><button onclick="carrito=[];renderCarrito()" style="color:red; border:none; background:none; cursor:pointer; font-size:0.75rem;">${t.vaciar}</button></div>` + 
             carrito.map((item, i) => `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f9f9f9; font-size:0.9rem;">
                 <span style="flex:1;"><strong>${item.nombre}</strong>${item.nota ? `<br><small style="color:var(--oro);">"${item.nota}"</small>` : ''}</span>
-                <span style="white-space:nowrap;">$${item.precio.toFixed(2)} <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none;background:none;color:#ccc;padding:0 5px;">✕</button></span>
+                <span style="white-space:nowrap;">$${item.precio} <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none;background:none;color:#ccc;padding:0 5px;">✕</button></span>
             </div>`).join('');
 
         const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
         const cargoServicio = carrito.reduce((acc, item) => {
-            const porcentaje = (item.categoria === "Experiencias") ? 0.18 : 0.00;
+            const porcentaje = (item.categoria === "Experiencias") ? 0.18 : 0.15;
             return acc + (item.precio * porcentaje);
         }, 0);
         const tot = subtotal + cargoServicio;
 
-        let servicioHTML = '';
-        if (cargoServicio > 0) {
-            servicioHTML = `<div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#2e7d32; font-weight:600;"><span>${t.serv} (18%):</span><span>$${cargoServicio.toFixed(2)}</span></div>`;
-        } else {
-            servicioHTML = `<div style="text-align:center; font-size:0.8rem; color:#c62828; font-weight:bold; padding: 4px 0; border: 1px dashed #c62828; border-radius: 6px; margin: 6px 0; background-color: #fff5f5;">${t.noServicio}</div>`;
-        }
-
         resumen.innerHTML = `
             <div class="total-box">
                 <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;"><span>${t.sub}:</span><span>$${subtotal.toFixed(2)}</span></div>
-                ${servicioHTML}
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#666;"><span>${t.serv}:</span><span>$${cargoServicio.toFixed(2)}</span></div>
                 <div class="total-final"><span>${t.tot}:</span><span>$${tot.toFixed(2)} MXN</span></div>
                 <div style="text-align:right; font-size:0.75rem; color:#999; margin-top:5px;">Approx. $${(tot/TIPO_CAMBIO).toFixed(2)} USD</div>
             </div>`;
@@ -722,7 +587,7 @@
         }
 
         const tieneSpa = carrito.some(item => item.categoria === "Spa");
-        const tieneOtros = carrito.some(item => item.carrito !== "Spa"); 
+        const tieneOtros = carrito.some(item => item.categoria !== "Spa"); 
 
         if (tieneSpa && tieneOtros) {
             btn.innerText = currentLang === 'es' ? "⚠️ Envía Spa y Alimentos por separado" : "⚠️ Send Spa and Food separately";
@@ -750,15 +615,8 @@
         });
 
         const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
-        const serv = carrito.reduce((acc, item) => acc + (item.precio * (item.categoria === "Experiencias" ? 0.18 : 0.00)), 0);
-        
-        msg += `---%0A`;
-        if (serv > 0) {
-            msg += `*Servicio Incluido (18%): $${serv.toFixed(2)} MXN*%0A`;
-        } else {
-            msg += currentLang === 'es' ? `*LA PROPINA NO ESTÁ INCLUIDA*%0A` : `*GRATUITY IS NOT INCLUDED*%0A`;
-        }
-        msg += `*TOTAL: $${(subtotal + serv).toFixed(2)} MXN*`;
+        const serv = carrito.reduce((acc, item) => acc + (item.precio * (item.categoria === "Experiencias" ? 0.18 : 0.15)), 0);
+        msg += `---%0A*TOTAL: $${(subtotal + serv).toFixed(2)} MXN*`;
 
         window.open(`https://wa.me/${num}?text=${msg}`, '_blank', 'noopener');
     }
