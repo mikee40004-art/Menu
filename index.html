@@ -6,17 +6,78 @@
     <title>Ana y José Tulum - Signature Menu</title>
     <style>
         :root { --oro: #8d754a; --oscuro: #2c3e50; --beige: #f9f7f2; --blanco: #ffffff; }
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--beige); margin: 0; padding: 0; color: #333; padding-bottom: calc(160px + env(safe-area-inset-bottom)); }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--beige); margin: 0; padding: 0; color: #333; padding-bottom: calc(180px + env(safe-area-inset-bottom)); }
         
         .container { max-width: 800px; margin: auto; background: var(--blanco); min-height: 100vh; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.05); padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
         
-        /* Botones VIP Flotantes con Desenfoque Inteligente y soporte iOS */
-        .vip-experience-bar { position: fixed; bottom: calc(15px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 2000; width: 92%; max-width: 450px; background: rgba(44, 62, 80, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 8px; border-radius: 16px; border: 1px solid var(--oro); box-sizing: border-box; }
-        .btn-vip { flex: 1; background: var(--oscuro); color: white; border: 1px solid var(--oro); padding: 14px 5px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        /* Botones VIP Flotantes - 3 Columnas */
+        .vip-experience-bar { position: fixed; bottom: calc(15px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 2000; width: 94%; max-width: 500px; background: rgba(44, 62, 80, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 8px; border-radius: 16px; border: 1px solid var(--oro); box-sizing: border-box; align-items: center; }
+        
+        .btn-vip { flex: 2; background: var(--oscuro); color: white; border: 1px solid var(--oro); padding: 14px 5px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: 0.2s; }
+        .btn-vip.btn-small { flex: 1.5; background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 12px 3px; font-size: 0.7rem; color: #f4f1ea; }
 
         .lang-switch { position: absolute; top: 27px; right: 15px; z-index: 1001; background: rgba(255,255,255,0.9); color: var(--oscuro); border: 1px solid var(--oro); padding: 6px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.7rem; }
-        .exchange-banner { background: var(--oscuro); color: white; text-align: center; padding: 6px; font-size: 0.7rem; letter-spacing: 1px; border-bottom: 2px solid var(--oro); }
+        .exchange-banner { background: var(--oscuro); color: white; text-align: center; padding: 6px; font-size: 0.7rem; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         
+        /* BANNER WI-FI */
+        .wifi-banner {
+            background: #233140;
+            color: #f4f1ea;
+            text-align: center;
+            padding: 7px 15px;
+            font-size: 0.78rem;
+            border-bottom: 2px solid var(--oro);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .wifi-banner:hover { background: #1a2530; }
+        .wifi-btn-label {
+            background: var(--oro);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* MODAL WI-FI */
+        .wifi-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.65);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .wifi-modal-card {
+            background: white;
+            width: 88%;
+            max-width: 360px;
+            border-radius: 16px;
+            padding: 22px;
+            border: 2px solid var(--oro);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .wifi-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            line-height: 1;
+        }
+
         .hero { width: 100%; height: 200px; background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://i.postimg.cc/3wvwQcbD/SAVE-20260518-152440.jpg'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; }
         
         .nav-menu { display: flex; overflow-x: auto; gap: 10px; padding: 15px; position: sticky; top: 0; background: white; z-index: 1000; border-bottom: 1px solid #eee; -webkit-overflow-scrolling: touch; }
@@ -29,39 +90,123 @@
         @media(min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
         
         .card { border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
-        .card-img { width: 100%; height: auto; max-height: 480px; object-fit: contain; background: #f9f9f9; }
-        
-        /* Ajuste para tarjetas sin foto */
         .card.no-photo { border-left: 4px solid var(--oro); }
-        .card.no-photo .card-img { display: none; }
 
         .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; color: var(--oscuro); font-size: 1rem; }
-        .precio { color: var(--oro); margin-left: 10px; }
-        .desc { font-size: 0.85rem; color: #666; font-style: italic; margin-bottom: 12px; flex-grow: 1; }
+        .card-info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; color: var(--oscuro); font-size: 1rem; flex-wrap: wrap; gap: 5px; }
+        .precio { color: var(--oro); }
+        .desc { font-size: 0.85rem; color: #666; font-style: italic; margin-bottom: 8px; flex-grow: 1; }
+        
+        .tag-container { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+        .tag-badge { font-size: 0.65rem; font-weight: bold; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
+        .tag-badge.vegan { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .tag-badge.gf { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+        .tag-badge.df { background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+        .tag-badge.nuts { background: #efebe9; color: #4e342e; border: 1px solid #d7ccc8; }
         
         textarea { width: 100%; border: 1px solid #eee; border-radius: 8px; padding: 8px; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; font-family: inherit; background: #fcfcfc; resize: none; }
-        .btn-add { background: var(--oscuro); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        textarea:disabled { background: #f5f5f5; color: #aaa; cursor: not-allowed; }
+        .btn-add { background: var(--oscuro); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: background 0.3s ease; }
 
         .canasta { background: #fdfcf9; border-top: 4px solid var(--oro); padding: 20px; margin-top: 20px; }
         .form-input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-        .total-box { background: white; padding: 15px; border-radius: 10px; border: 1px solid var(--oro); margin: 15px 0; }
-        .total-final { font-size: 1.3rem; font-weight: bold; color: var(--oscuro); border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; }
         
-        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        /* Contenedor de Totales */
+        .total-box { background: white; padding: 18px; border-radius: 14px; border: 1px solid #e2ded5; margin: 20px 0 12px 0; }
+        .total-row-item { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; color: #555; }
+        .total-final-row { border-top: 1px solid #eee; margin-top: 12px; padding-top: 12px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .total-title { font-size: 1.4rem; font-weight: bold; color: var(--oscuro); }
+        .total-amount-block { text-align: right; }
+        .amount-mxn { font-size: 1.4rem; font-weight: bold; color: var(--oscuro); }
+        .amount-usd { font-size: 0.8rem; color: #888; font-weight: normal; margin-top: 2px; }
+
+        .propina-warning { text-align: center; color: #c9302c; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; display: none; }
+
+        /* Animación y estilo para mensaje intermitente en la canasta */
+        @keyframes parpadeo {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        .mensaje-intermitente {
+            animation: parpadeo 1.2s infinite;
+            color: #c9302c;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px;
+            background: #fff5f5;
+            border: 2px solid #c9302c;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        /* ESTILO PARA EL AVISO FLOTANTE PREMIUM */
+        .custom-toast {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(44, 62, 80, 0.96);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            border: 1px solid var(--oro);
+            font-weight: bold;
+            font-size: 1.15rem;
+            z-index: 10000;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            text-align: center;
+            max-width: 82%;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
         .credits { text-align: center; padding: 40px 10px; background: #f4f1ea; }
     </style>
 </head>
 <body>
 
+<!-- DIV DEL AVISO FLOTANTE ELEGANTE -->
+<div id="toast-notification" class="custom-toast">Ok</div>
+
+<!-- MODAL DE WI-FI -->
+<div id="wifi-modal" class="wifi-modal-overlay" onclick="cerrarWifiModal(event)">
+    <div class="wifi-modal-card">
+        <span class="wifi-modal-close" onclick="cerrarWifiModalDirecto()">&times;</span>
+        <h3 style="margin-top: 0; color: var(--oscuro); font-size: 1.2rem;">📶 Red Wi-Fi</h3>
+        <p style="font-size: 0.85rem; color: #555; margin-bottom: 15px;">Escanea el código QR o copia la contraseña para conectarte:</p>
+        
+        <div style="background: #f9f7f2; padding: 12px; border-radius: 10px; border: 1px solid var(--oro); text-align: left; margin-bottom: 15px; font-size: 0.9rem;">
+            <div style="margin-bottom: 6px;"><strong>Red:</strong> <span id="modal-wifi-ssid">Arcos_Micknet</span></div>
+            <div><strong>Contraseña:</strong> <span id="modal-wifi-pass" style="font-family: monospace; font-weight: bold; color: var(--oscuro);">Tulum2025</span></div>
+        </div>
+
+        <button onclick="copiarWifiPass()" style="background: var(--oscuro); color: white; border: 1px solid var(--oro); padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 15px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            📋 Copiar Contraseña
+        </button>
+
+        <div style="text-align: center;">
+            <img id="wifi-qr-img" src="" alt="Wi-Fi QR Code" style="border-radius: 10px; border: 1px solid #ddd; padding: 6px; background: white; width: 170px; height: 170px; display: block; margin: auto;">
+            <div style="font-size: 0.75rem; color: #888; margin-top: 8px;">Escanea con la cámara de tu celular</div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="exchange-banner">Exchange Rate: 1 USD = 18.00 MXN</div>
+    
+    <!-- BANNER WI-FI INTERACTIVO -->
+    <div class="wifi-banner" onclick="abrirWifiModal()">
+        <span>📶 <strong>Wi-Fi:</strong> <span id="wifi-ssid-banner">Hotel Ana y José</span></span>
+        <span class="wifi-btn-label">Ver clave / QR 🔍</span>
+    </div>
+
     <div class="hero">
         <button class="lang-switch" onclick="toggleLang()" id="langBtn">🇺🇸 EN / 🇲🇽 ES</button>
-        <div class="logo-overlay">
-            <h1></h1>
-            <small style="display: block; letter-spacing: 2px; color: #666; font-style: italic;"></small>
-        </div>
     </div>
 
     <div class="nav-menu" id="navCats"></div>
@@ -70,13 +215,15 @@
         <div id="menu-grid" class="grid"></div>
     </div>
 
+    <!-- MÓDULO DE LA CANASTA -->
     <div class="canasta">
-        <h3 id="txtFinalizar" style="text-align: center; margin-top: 0;">Finalizar Pedido</h3>
+        <h3 id="txtFinalizar" style="text-align: center; margin-top: 0; color: var(--oscuro);">Finalizar Pedido</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
             <div><label id="lblNombre" style="font-size: 0.75rem; font-weight:bold;">Nombre:</label><input type="text" id="guest-name" class="form-input" placeholder="Guest"></div>
-            <div><label id="lblHab" style="font-size: 0.75rem; font-weight:bold;">Habitación:</label><input type="text" id="room-num" class="form-input" placeholder="Ej. 110A"></div>
+            <div><label id="lblHab" style="font-size: 0.75rem; font-weight:bold;">Habitación:</label><input type="text" id="room-num" class="form-input" placeholder="ABCDE"></div>
         </div>
-        <div style="margin-bottom: 20px;">
+        
+        <div style="margin-bottom: 20px;" id="payment-wrapper">
             <label id="lblPago" style="font-size: 0.75rem; font-weight:bold;">Forma de Pago:</label>
             <select id="payment-method" class="form-input">
                 <option value="Cargo a la Habitación" id="optCargo">Cargo a la Habitación</option>
@@ -85,26 +232,59 @@
                 <option value="Efectivo USD">Efectivo (USD)</option>
             </select>
         </div>
+
+        <!-- Lista de productos añadidos -->
+        <div id="cart-header-wrapper"></div>
         <div id="cart-list"></div>
-        <div id="cart-summary"></div>
+
+        <!-- RECUADRO INTERMITENTE PARA CONTROL DE MEZCLA -->
+        <div id="mezcla-warning-msg" class="mensaje-intermitente" style="display: none;"></div>
+
+        <!-- Recuadro de desglose financiero -->
+        <div id="cart-summary-box" class="total-box" style="display: none;">
+            <div class="total-row-item">
+                <span id="lblSubtotal">Subtotal:</span>
+                <span id="summary-subtotal">$0.00</span>
+            </div>
+            <div class="total-row-item" id="summary-service-row" style="display: none;">
+                <span id="lblServicio">Servicio incluido:</span>
+                <span id="summary-service">$0.00</span>
+            </div>
+            <div class="total-final-row">
+                <span class="total-title" id="lblTotal">Total:</span>
+                <div class="total-amount-block">
+                    <span id="summary-total-mxn" class="amount-mxn">$0.00 MXN</span>
+                    <div id="summary-total-usd" class="amount-usd">Approx. $0.00 USD</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="propina-warning-msg" class="propina-warning"></div>
+
         <button class="btn-whatsapp" onclick="enviarPedido()" id="btnSend">
-            <span id="btnText">Enviar Pedido vía WhatsApp</span>
+            <span id="btnText">Enviar vía WhatsApp</span>
         </button>
     </div>
 
     <div class="credits">
-        <p style="margin:0; font-size: 0.7rem; color: #888;">Software de uso exclusivo</p>
         <p style="color: var(--oro); font-weight: bold; font-size: 1rem; margin-top: 5px;">Hotel Boutique Ana y José Tulum</p>
-        <p style="font-size: 0.6rem; color: #bbb; margin-top: 5px;">Signature Software © 2026</p>
     </div>
 </div>
 
 <div class="vip-experience-bar">
-    <button class="btn-vip" onclick="irAExperiencia('Spa')">✨ Spa & Wellness</button>
-    <button class="btn-vip" onclick="irAExperiencia('Experiencias')">🕯️ Experiencias</button>
+    <button class="btn-vip" onclick="irAExperiencia('Spa')">✨ Spa</button>
+    <button class="btn-vip" onclick="irAExperiencia('Experiencias')">🔥 Experiencias</button>
+    <button class="btn-vip btn-small" onclick="irAExperiencia('Concierge')">🌴 Tours & Concierge</button>
 </div>
 
 <script>
+    // ==========================================
+    // CONFIGURACIÓN DE RED WI-FI 
+    // (Cambia estos dos valores al estar en el hotel)
+    // ==========================================
+    const WIFI_SSID = "Hotel Ana y José";
+    const WIFI_PASS = "WelcometoParadise";
+
     const TIPO_CAMBIO = 18.00;
     let currentLang = 'es';
     let carrito = [];
@@ -113,182 +293,234 @@
         es: {
             finalizar: "Finalizar Pedido", nombre: "Nombre:", hab: "Habitación:", pago: "Forma de Pago:",
             cargo: "Cargo a la Habitación", tarjeta: "Tarjeta Crédito-Débito", enviar: "Enviar vía WhatsApp",
-            sub: "Subtotal", serv: "Servicio incluido", tot: "Total", vaciar: "🗑 Vaciar", agregar: "Agregar",
-            notas: "Notas: ...", notasReserva: "Notas: (Reserve con anticipación, Por favor, indique la fecha y horario)...",
-            cats: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
-            catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
-            cerrado: "CERRADO", soloHorario: "Disponible en su horario",
-            errDatos: "⚠️ Por favor ingresa nombre y habitación", errCarrito: "⚠️ Tu canasta está vacía"
+            agregar: "Agregar", fueraHorario: "Fuera de Horario", subtotal: "Subtotal:", servicio: "Servicio incluido:", total: "Total:",
+            errDatos: "⚠️ Por favor ingresa tu nombre y número de habitación",
+            errMezcla: "⚠️ Por favor, envía los alimentos, experiencias o spa por separado.",
+            propinaLeyenda: "⚠️ La propina no está incluida",
+            vegan: "🌱 Vegano", gf: "🌾 Sin Gluten", df: "🥛 Sin Lácteos", nuts: "🥜 Contiene Nueces",
+            cats: ["Desayuno", "Lunch", "Cena", "Bebidas", "Spa", "Experiencias", "Tours & Concierge"],
+            catsID: ["Desayuno", "Lunch", "Cena", "Bebidas", "Spa", "Experiencias", "Concierge"]
         },
         en: {
             finalizar: "Complete Order", nombre: "Name:", hab: "Room Number:", pago: "Payment Method:",
             cargo: "Room Charge", tarjeta: "Credit/Debit Card", enviar: "Send via WhatsApp",
-            sub: "Subtotal", serv: "Service charge included", tot: "Total", vaciar: "🗑 Empty", agregar: "Add to Order",
-            notas: "Notes:  ...", notasReserva: "Notes: (Reserve in advance, Please, indicate the date and time.)...",
-            cats: ["Breakfast", "Lunch", "Dinner", "Dessert", "Drinks", "Spa", "Experience"], 
-            catsID: ["Desayuno", "Lunch", "Cena", "Postre", "Bebidas", "Spa", "Experiencias"],
-            cerrado: "CLOSED", soloHorario: "Available only during hours",
-            errDatos: "⚠️ Please enter name and room number", errCarrito: "⚠️ Your cart is empty"
+            agregar: "Add to Order", fueraHorario: "Outside Hours", subtotal: "Subtotal:", servicio: "Service charge:", total: "Total:",
+            errDatos: "⚠️ Please enter your name and room number",
+            errMezcla: "⚠️ Please send food, experiences, or spa requests separately.",
+            propinaLeyenda: "⚠️ Tip is not included",
+            vegan: "🌱 Vegan", gf: "🌾 Gluten Free", df: "🥛 Dairy Free", nuts: "🥜 Contains Nuts",
+            cats: ["Breakfast", "Lunch", "Dinner", "Drinks", "Spa", "Experiences", "Tours & Concierge"],
+            catsID: ["Desayuno", "Lunch", "Cena", "Bebidas", "Spa", "Experiencias", "Concierge"]
         }
     };
 
     const platillos = [
         { 
-            n_es: "Fruta tropical", n_en: "Tropical fruit",
-            p: 160, d_es: "Piña, papaya, sandía y melón.", 
+            n_es: "Fruta Tropical", n_en: "Tropical Fruit", p: 160, c: "Desayuno", 
+            d_es: "Piña, papaya, sandía y melón",
             d_en: "Pineapple, papaya, watermelon and melon.",
-            c: "Desayuno", img: "" 
+            tags: ["vegan", "gf", "df"],
+            img: "https://i.postimg.cc/0ydn1Ygz/IMG-20260629-081837.jpg" 
         },
         { 
-            n_es: "Canasta de pan dulce", n_en: "Sweet bread basket",
-            p: 90, d_es: "Pan dulce, servido con mantequilla y mermelada casera del día.", 
+            n_es: "Canasta de pan dulce", n_en: "Sweet bread basket", p: 90, c: "Desayuno", 
+            d_es: "Pan dulce, servido con mantequilla y mermelada casera del día.",
             d_en: "Sweet bread served with butter and the homemade jam of the day.",
-            c: "Desayuno", img: "" 
+            tags: [],
+            img: "https://i.postimg.cc/qqdHxND0/IMG-20260725-081956.jpg" 
         },
         { 
-            n_es: "Chilaquiles", n_en: "Chilaquiles",
-            p: 235, d_es: "Con salsa verde o roja, gratinados con queso gouda, crema, cebolla y cilantro. Con huevo o con pollo.", 
-            d_en: "With red or green sauce with melted Gouda cheese, sour cream, onion and cilantro. Choose with eggs or chicken.",
-            c: "Desayuno", img: "" 
+            n_es: "Chilaquiles Tradicionales", n_en: "Chilaquiles", p: 235, c: "Desayuno", 
+            d_es: "Con salsa verde o roja, gratinados con queso gouda, crema, cebolla y cilantro. Con huevo o con pollo..",
+            d_en: "With red or green sauce with melted Gouda cheese, sour cream, onion and cilantro. Choose with eggs or chicken..",
+            tags: ["gf"],
+            img: "https://i.postimg.cc/wBhR2RDv/IMG-20260430-192623.jpg" 
         },
         { 
-            n_es: "Hot cakes", n_en: "Hot cakes",
-            p: 215, d_es: "Suaves y esponjosos, servidos con fruta de temporada y miel de abeja local.", 
+            n_es: "Hot cakes", n_en: "Hot cakes", p: 215, c: "Desayuno", 
+            d_es: "Suaves y esponjosos, servidos con fruta de temporada y miel de abeja local.",
             d_en: "Soft and fluffy pancakes served with seasonal fruit and local honey.",
-            c: "Desayuno", img: "" 
+            tags: [],
+            img: "https://i.postimg.cc/MG6D6nxj/IMG-20260618-082735.jpg" 
         },
         { 
-            n_es: "Huevos al gusto", n_en: "Banana French toast with caramelized nuts",
-            p: 280, d_es: "Fritos, revueltos u omelette, servidos con frijoles refritos y papa rostizada.", 
-            d_en: "Maple syrup.",
-            c: "Desayuno", img: "" 
+            n_es: "Huevos al gusto", n_en: "Eggs to taste", p: 280, c: "Desayuno", 
+            d_es: "Fritos, revueltos u omelette, servidos con frijoles refritos y papa rostizada.",
+            d_en: "Fried, scrambled, or omelet, served with refried beans and roasted potatoes..",
+            tags: [],
+            img: "https://i.postimg.cc/FzD046qx/IMG-20260724-084235.jpg" 
         },
+        
+    
         { 
-            n_es: "Guacamole", n_en: "Guacamole",
-            p: 230, d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.", 
+            n_es: "Guacamole", n_en: "Guacamole", p: 230, c: "Lunch", 
+            d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.",
             d_en: "Traditional guacamole served with corn totopos and fresh cheese.",
-            c: "Lunch", img: "" 
+            tags: ["gf"],
+            img: "https://i.postimg.cc/x89hgb8k/IMG-20260620-120203.jpg"
         },
         { 
-            n_es: "Bowl mexicano", n_en: "Mexican bowl",
-            p: 230, d_es: "Arroz rojo a la mexicana, frijoles enteros y rebanadas de aguacate, servido con queso panela y jalapeño toreado.", 
-            d_en: "Mexican style red rice, whole beans and avocado slices, served with panela cheese and charred jalapeño.",
-            c: "Lunch", img: "" 
+            n_es: "Bowl Mexicano", n_en: "Mexican Bowl", p: 230, c: "Lunch", 
+            d_es: "Arroz rojo a la mexicana, frijoles enteros y rebanadas de aguacate, servido con queso panela y jalapeño toreado.",
+            d_en: "Mexican style red rice, whole beans and avocado slices, served with panela cheese and charred jalapeño..",
+            tags: ["gf", "df"],
+            img: "https://i.postimg.cc/FzD046qP/IMG-20260722-162534.jpg" 
         },
         { 
-            n_es: "Club sandwich", n_en: "Club sandwich",
-            p: 295, d_es: "Pollo a la parrilla, tocino, jamón y queso, servido con papas a la francesa.", 
-            d_en: "Grilled chicken, bacon, ham and cheese, served and french fries.",
-            c: "Lunch", img: "" 
+            n_es: "Club Sandwich", n_en: "Club Sandwich", p: 295, c: "Lunch", 
+            d_es: "Pollo a la parrilla, tocino, jamón y queso, servido con papas a la francesa.",
+            d_en: "Grilled chicken, bacon, ham and cheese, served and french fries..",
+            tags: [],
+            img: "https://i.postimg.cc/RFB3dhNM/IMG-20260716-145447.jpg" 
         },
+    
         { 
-            n_es: "Tacos al pastor", n_en: "Tacos al pastor",
-            p: 215, d_es: "Carne de cerdo marinada en adobo de chiles y especias con piña asada, cebolla y cilantro.", 
+            n_es: "Tacos al pastor", n_en: "Tacos al pastor", p: 255, c: "Lunch", 
+            d_es: "Salsa de tomate artesanal, queso mozzarella, pimientos, cebolla y champiñones.",
             d_en: "Pork marinated in chili and spice adobo, served with grilled pineapple, onion and cilantro.",
-            c: "Lunch", img: "" 
+            tags: ["df"],
+            img: "https://i.postimg.cc/j2NBDqVZ/IMG-20260720-203905.jpg"
         },
         { 
             n_es: "Pasta cremosa", n_en: "Creamy pasta",
             p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
             d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
+            tags: [],
             c: "Lunch", img: "" 
         },
         { 
             n_es: "Tacos de pescado", n_en: "Fish tacos",
             p: 270, d_es: "Rebosados en tempura de cerveza oscura y especias cajún, servidos con ensalada de col, mayonesa de chipotle y limón", 
             d_en: "Dark beer and Cajun tempura battered fish, served with coleslaw, chipotle mayonnaise and lime",
-            c: "Lunch", img: "" 
+            tags: [],
+            c: "Lunch", img: "https://i.postimg.cc/hGBLbpRS/IMG-20260213-WA0021.jpg" 
         },
         { 
             n_es: "Hamburguesa de la casa", n_en: "House burguer",
             p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
             d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Lunch", img: "" 
+            tags: [],
+            c: "Lunch", img: "https://i.postimg.cc/vHs59RTT/SAVE-20260501-175829.jpg" 
         },
         { 
-            n_es: "Pizza Margarita", n_en: "Margaherita pizza",
+            n_es: "Pizza Margarita", n_en: "Margherita pizza",
             p: 215, d_es: "Salsa pomodoro,mozzarella y albahaca fresca.", 
             d_en: "Pomodoro sauce, mozzarella and fresh basil.",
-            c: "Lunch", img: "" 
+            tags: [],
+            c: "Lunch", img: "https://i.postimg.cc/FRbBhDc7/SAVE-20260604-183113.jpg" 
         },
         { 
             n_es: "Pizza veggie", n_en: "Pizza veggie",
             p: 255, d_es: "Champiñon, cebolla, espinaca y calabaza.", 
             d_en: "Mushrooms, onion, spinach and zucchini.",
+            tags: [],
+            c: "Lunch", img: "https://i.postimg.cc/26dKC2vb/SAVE-20260501-175804.jpg" 
+        },
+        
+        { 
+            n_es: "Arroz con leche", n_en: "Rice pudding",
+            p: 80, d_es: "Postre: Cremoso, con notas de canela y vainilla, acompañado de pasitas.", 
+            d_en: "Dessert: Creamy rice pudding with notes of cinnamon and vanilla, acompanied by raisins.",
             c: "Lunch", img: "" 
-        },
-        { 
-            n_es: "Guacamole", n_en: "Guacamole",
-            p: 230, d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.", 
-            d_en: "Traditional guacamole served with corn totopos and fresh cheese.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Bowl mexicano", n_en: "Mexican bowl",
-            p: 230, d_es: "Arroz rojo a la mexicana, frijoles enteros y rebanadas de aguacate, servido con queso panela y jalapeño toreado.", 
-            d_en: "Mexican style red rice, whole beans and avocado slices, served with panela cheese and charred jalapeño.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Club sandwich", n_en: "Club sandwich",
-            p: 295, d_es: "Pollo a la parrilla, tocino, jamón y queso, servido con papas a la francesa.", 
-            d_en: "Grilled chicken, bacon, ham and cheese, served and french fries.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Tacos al pastor", n_en: "Tacos al pastor",
-            p: 215, d_es: "Carne de cerdo marinada en adobo de chiles y especias con piña asada, cebolla y cilantro.", 
-            d_en: "Pork marinated in chili and spice adobo, served with grilled pineapple, onion and cilantro.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Pasta cremosa", n_en: "Creamy pasta",
-            p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
-            d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Tacos de pescado", n_en: "Fish tacos",
-            p: 270, d_es: "Rebosados en tempura de cerveza oscura y especias cajún, servidos con ensalada de col, mayonesa de chipotle y limón", 
-            d_en: "Dark beer and Cajun tempura battered fish, served with coleslaw, chipotle mayonnaise and lime",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Hamburguesa de la casa", n_en: "House burguer",
-            p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
-            d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Pizza Margarita", n_en: "Margaherita pizza",
-            p: 215, d_es: "Salsa pomodoro,mozzarella y albahaca fresca.", 
-            d_en: "Pomodoro sauce, mozzarella and fresh basil.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Pizza veggie", n_en: "Pizza veggie",
-            p: 255, d_es: "Champiñon, cebolla, espinaca y calabaza.", 
-            d_en: "Mushrooms, onion, spinach and zucchini.",
-            c: "Cena", img: "" 
-        },
-        { 
-            n_es: "Textura de chocolate criollo Maya", n_en: "Mayan criollo chocolate textures",
-            p: 250, d_es: "Bizcocho tibio de cacao, mousse de chocolate amargo, tierra de cacao y helado de chocolate con sal de mar.", 
-            d_en: "Warm cake with local cocoa, dark chocolate mousse, cocoa powder, and chocolate ice cream with sea salt.",
-            c: "Postre", img: "" 
         },
         { 
             n_es: "Flan de Vainilla", n_en: "Vanilla flan",
-            p: 70, d_es: "Cremoso, suave y dulce, que se deshace en cada bocado con el toque de caramelo dorado que recuerda a la cocina de la abuela.", 
-            d_en: "Creamy, smooth, and sweet, melting in every bite with a touch of golden caramel reminiscent of grandma's kitchen .",
-            c: "Postre", img: "" 
+            p: 70, d_es: "Postre: Cremoso, suave y dulce, que se deshace en cada bocado con el toque de caramelo dorado que recuerda a la cocina de la abuela.", 
+            d_en: "Dessert: Creamy, smooth, and sweet, melting in every bite with a touch of golden caramel reminiscent of grandma's kitchen .",
+            c: "Lunch", img: "" 
         },
         { 
-            n_es: "Crumble de guanabana y plátano macho", n_en: "Soursop and plantain crumble",
-            p: 235, d_es: "Cocido al horno con azúcar de coco, acompañado de helado artesanal de chaya.", 
-            d_en: "Oven-baked with coconut sugar, served with artisanal chaya ice cream.",
-            c: "Postre", img: "" 
+            n_es: "Carlota de limón", n_en: "Key lime Charlotte",
+            p: 95, d_es: "Postre: Delicioso postre fresco con sabor cítrico, elaborado en suaves capas de crema y galleta.", 
+            d_en: " Dessert: A refreshing citrus dessert made with delicate layers of cream and coockies.",
+            c: "Lunch", img: "" 
         },
+        
+
+        { 
+            n_es: "Guacamole", n_en: "Guacamole", p: 230, c: "Cena", 
+            d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.",
+            d_en: "Traditional guacamole served with corn totopos and fresh cheese.",
+            tags: ["gf"],
+            img: "https://i.postimg.cc/x89hgb8k/IMG-20260620-120203.jpg"
+        },
+        { 
+            n_es: "Bowl Mexicano", n_en: "Mexican Bowl", p: 230, c: "Cena", 
+            d_es: "Arroz rojo a la mexicana, frijoles enteros y rebanadas de aguacate, servido con queso panela y jalapeño toreado.",
+            d_en: "Mexican style red rice, whole beans and avocado slices, served with panela cheese and charred jalapeño..",
+            tags: ["gf", "df"],
+            img: "https://i.postimg.cc/FzD046qP/IMG-20260722-162534.jpg" 
+        },
+        { 
+            n_es: "Club Sandwich", n_en: "Club Sandwich", p: 295, c: "Cena", 
+            d_es: "Pollo a la parrilla, tocino, jamón y queso, servido con papas a la francesa.",
+            d_en: "Grilled chicken, bacon, ham and cheese, served and french fries..",
+            tags: ["gf"],
+            img: "https://i.postimg.cc/RFB3dhNM/IMG-20260716-145447.jpg" 
+        },
+    
+        { 
+            n_es: "Tacos al pastor", n_en: "Tacos al pastor", p: 255, c: "Cena", 
+            d_es: "Salsa de tomate artesanal, queso mozzarella, pimientos, cebolla y champiñones.",
+            d_en: "Pork marinated in chili and spice adobo, served with grilled pineapple, onion and cilantro.",
+            tags: ["df"],
+            img: "https://i.postimg.cc/j2NBDqVZ/IMG-20260720-203905.jpg"
+        },
+        { 
+            n_es: "Pasta cremosa", n_en: "Creamy pasta",
+            p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
+            d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
+            tags: [],
+            c: "Cena", img: "" 
+        },
+        { 
+            n_es: "Tacos de pescado", n_en: "Fish tacos",
+            p: 270, d_es: "Rebosados en tempura de cerveza oscura y especias cajún, servidos con ensalada de col, mayonesa de chipotle y limón", 
+            d_en: "Dark beer and Cajun tempura battered fish, served with coleslaw, chipotle mayonnaise and lime",
+            tags: [],
+            c: "Cena", img: "https://i.postimg.cc/hGBLbpRS/IMG-20260213-WA0021.jpg" 
+        },
+        { 
+            n_es: "Hamburguesa de la casa", n_en: "House burguer",
+            p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
+            d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
+            tags: [],
+            c: "Cena", img: "https://i.postimg.cc/vHs59RTT/SAVE-20260501-175829.jpg" 
+        },
+        { 
+            n_es: "Pizza Margarita", n_en: "Margherita pizza",
+            p: 215, d_es: "Salsa pomodoro,mozzarella y albahaca fresca.", 
+            d_en: "Pomodoro sauce, mozzarella and fresh basil.",
+            tags: [],
+            c: "Cena", img: "https://i.postimg.cc/FRbBhDc7/SAVE-20260604-183113.jpg" 
+        },
+        { 
+            n_es: "Pizza veggie", n_en: "Pizza veggie",
+            p: 255, d_es: "Champiñon, cebolla, espinaca y calabaza.", 
+            d_en: "Mushrooms, onion, spinach and zucchini.",
+            tags: [],
+            c: "Cena", img: "https://i.postimg.cc/26dKC2vb/SAVE-20260501-175804.jpg" 
+        },
+        
+        { 
+            n_es: "Arroz con leche", n_en: "Rice pudding",
+            p: 80, d_es: "Postre: Cremoso, con notas de canela y vainilla, acompañado de pasitas.", 
+            d_en: "Dessert: Creamy rice pudding with notes of cinnamon and vanilla, acompanied by raisins.",
+            c: "Cena", img: "" 
+        },
+        { 
+            n_es: "Flan de Vainilla", n_en: "Vanilla flan",
+            p: 70, d_es: "Postre: Cremoso, suave y dulce, que se deshace en cada bocado con el toque de caramelo dorado que recuerda a la cocina de la abuela.", 
+            d_en: "Dessert: Creamy, smooth, and sweet, melting in every bite with a touch of golden caramel reminiscent of grandma's kitchen .",
+            c: "Cena", img: "" 
+        },
+        { 
+            n_es: "Carlota de limón", n_en: "Key lime Charlotte",
+            p: 95, d_es: "Postre: Delicioso postre fresco con sabor cítrico, elaborado en suaves capas de crema y galleta.", 
+            d_en: " Dessert: A refreshing citrus dessert made with delicate layers of cream and coockies.",
+            c: "Cena", img: "" 
+        },
+    
         { 
             n_es: "Agua Evian natural", n_en: "Natural water Evian",
             p: 205, d_es: "750 ml. No incluye el plan Todo Incluído", 
@@ -296,7 +528,7 @@
             c: "Bebidas", img: "" 
         },
         { 
-            n_es: "Agua Evian mineral", n_en: "Sparkling water Evian. No incluye en el plan Todo Incluído",
+            n_es: "Agua Evian mineral", n_en: "Sparkling water Evian",
             p: 195, d_es: "750 ml. No incluye en el plan Todo Incluído.", 
             d_en: "750 ml. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
@@ -327,14 +559,14 @@
         },
         { 
             n_es: "Piñada", n_en: "Piñada",
-            p: 180, d_es: "Mezcla cremosa de piña y coco, servida bien fría. No incluye en el plan Todo Incluído", 
-            d_en: "Creamy blend of pineapple and coconut, served chilled. Not included in the All-Inclusive plan.",
+            p: 180, d_es: "Mezcla cremosa de piña y coco, servida bien fría.", 
+            d_en: "Creamy blend of pineapple and coconut, served chilled.",
             c: "Bebidas", img: "" 
         },
         { 
             n_es: "Fresada", n_en: "Fresada",
-            p: 180, d_es: "Frappé de fresas naturales con un toque de limón. No incluye en el plan Todo Incluído", 
-            d_en: "Natural strawberry slushy with a hint of lime. Not included in the All-Inclusive plan.",
+            p: 180, d_es: "Frappé de fresas naturales con un toque de limón. ", 
+            d_en: "Natural strawberry slushy with a hint of lime.",
             c: "Bebidas", img: "" 
         },
         { 
@@ -383,43 +615,20 @@
             n_es: "Ana y José", n_en: "Ana y Jose",
             p: 385, d_es: "Mezcal 400 conejos blanco, Ron Diplomático Mantuano, pulpa de mango, piña, manzana y maracuyá. No incluye en el plan Todo Incluído", 
             d_en: "400 conejos white mezcal, Diplomatico Mantuano rum, mango pulp, pineapple, apple and passion fruit. Not included in the All-Inclusive plan.",
+            tags: ["vegan", "df"],
             c: "Bebidas", img: "" 
-        },
-        { 
-            n_es: "Apapacho", n_en: "Apapacho", 
-            p: 2460, d_es: "De origen náhuatl, apapacho signiﬁca abrazar con el alma, eso es lo que su cuerpo sentirá con este masaje de presión suave a media, en el que el sistema nervioso y muscular se sentirán relajados, dejando el estrés atrás. 50 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
-            d_en: "Náhuatl origin, apapacho means to embrace with the soul, and that is what your body will feel with this massage of soft to medium pressure, in which the nervous and muscular systems will feel relaxed, leaving stress behind. 50 Min. If you book now, we'll include a refreshing face mask.", 
-            c: "Spa", img: "https://i.postimg.cc/XNDx4vr8/magic-edit-TUFISV9WRFFCMj-Qj-MSM4ODdh-Njg1Yz-U4Mm-I3OGI1ZWY4YWJi-NTI0Yz-Zl-Yz-Fk-My-M0-20260507-0847.jpg" 
-        },
-        { 
-            n_es: "Pixán", n_en: "Pixán", 
-            p: 2870, d_es: "Pixan signiﬁca (espíritu) en maya y esta terapia regresará tu espíritu y mente a su equilibrio. Masaje enfocado en las estructuras más profundas de los músculos, en el que se utiliza presión media-fuerte con el ﬁn de devolver movilidad a los músculos, liberar toxinas acumuladas en ellos y acelerar la circulación, complementado con la utilización de pindas herbales, las cuales ayudarán a los músculos y la mente a relajarse gracias a sus hierbas y esencias, ayudando a reducir el dolor. 70 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
-            d_en: "Pixan means (spirit) in Mayan, and this therapy will bring your spirit and mind back into balance. Massage focused on the deepest structures of the muscles, in which medium-strong pressure is used in order to restore mobility to the muscles, release accumulated toxins, and accelerate circulation. This therapy is complemented with the use of herbal pindas, which help the muscles and mind relax thanks to their herbs, essences, and warm temperature, helping to reduce pain. 70 Min. If you book now, we'll include a refreshing face mask.", 
-            c: "Spa", img: "https://i.postimg.cc/FKvKjvpr/SAVE-20260517-145341.jpg" 
-        },
-        { 
-            n_es: "Otoch", n_en: "Otoch", 
-            p: 1435, d_es: "Para los mayas, otoch signiﬁca hogar, y nuestro deseo es que a través de este masaje personalizado pueda regresar al suyo totalmente renovado y sanado por medio de varias técnicas de masaje, como el relajante, tejido profundo y estiramientos según sean requeridos. 30 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
-            d_en: "For the Mayan people, otoch means home, and our desire is that through this personalized massage you can return to yours totally renewed and healed through various massage techniques such as relaxing, deep tissue, and stretching as required. 30 Min. If you book now, we'll include a refreshing face mask.", 
-            c: "Spa", img: "https://i.postimg.cc/j5vJF22r/Screenshot-2026-05-17-16-26-37-357-com-google-android-googlequicksearchbox-edit.jpg" 
-        },
-        { 
-            n_es: "JUNTOS POR SIEMPRE (Menú de 4 Tiempos)", n_en: "TOGETHER FOREVER (4-Course Menu)", 
-            p: 8325, d_es: "Montaje privado bajo las estrellas. Incluye: Coctel de bienvenida, menú maridaje con Tequila o Mezcal, Botella de vino de la casa, decoración romántica con pétalos y velas. Selección coordinada de entradas, plato fuerte y postre. Ver opciones de platillos en la imagen superior.", 
-            d_en: "Private setup under the stars. Includes: Welcome cocktail, pairing menu with Tequila or Mezcal, House bottle of wine, romantic decoration with petals and candles. See dish choices in the image above.", 
-            c: "Experiencias", img: "https://i.postimg.cc/wMfF2KWT/IMG-20260517-121820.jpg" 
         },
         { 
             n_es: "ANOCHECER (Menú de 4 Tiempos)", n_en: "DUSK (4-Course Menu)", 
             p: 3700, d_es: "Montaje privado bajo las estrellas. Incluye: Martini de Maracuyá, Botella de agua, Copa de vino de la casa. Selección coordinada de entradas, plato fuerte y postre. Ver opciones de platillos en la imagen superior.", 
             d_en: "Private setup under the stars. Includes: Passion fruit martini, Bottle of water, Glass of house wine. See dish choices in the image above.", 
-            c: "Experiencias", img: "https://i.postimg.cc/Wz80VxCY/IMG-20260517-123224.jpg" 
+            c: "Experiencias", img: "https://i.postimg.cc/Wz80VxCY/IMG-20260517-123224.jpg"
         },
         { 
-            n_es: "ATARDECER (Menú de 3 Tiempos)", n_en: "SUNSET (3-Course Menu)", 
-            p: 2775, d_es: "Montaje privado bajo las estrellas. Incluye: Copa de vino espumoso de bienvenida. Selección coordinada de entradas, plato fuerte y postre (Ver opciones de platillos en la imagen superior).", 
-            d_en: "Private setup under the stars. Includes: Welcome glass of sparkling wine. Choice of appetizers, main course, and dessert (See alternatives in the image above).", 
-            c: "Experiencias", img: "https://i.postimg.cc/BbnXTb7T/IMG-20260517-123422.jpg" 
+            n_es: "Cena Romántica", n_en: "Romantic dinner", 
+            p: 3730, d_es: "Disfrute de una cena íntima a la luz de las velas con esa persona especial mientras disfruta de las impresionantes vistas al océano. Prepárese para deleitar sus sentidos con esta experiencia inolvidable. Se servirán en platones diferentes entradas, una variedad de proteínas y guarniciones, acompañadasde un petit de postres, todo para degustar en pareja, compartir y reafirmar el compromiso mutuo del amor.", 
+            d_en: "Enjoy an intimate, candlelight dinner with that special someone while taking in breathtaking ocean views. Prepare to delight your senses with this unforgettable experience. A selection of appetizers, proteins, and side dishes will be served on platters, accompanied by an assortment of mini desserts—all designed for the two of you to savor and share as you reaffirm your commitment to one another.", 
+            c: "Experiencias", img: "https://i.postimg.cc/fbxTWbz7/IMG-20251203-145706.jpg" 
         },
         { 
             n_es: "TEQUILA TASTING", n_en: "TEQUILA TASTING", 
@@ -438,12 +647,111 @@
             p: 2312.5, d_es: "En Hoteles Ana y José Collection es un honor guiarlos en una experiencia cultural y sensorial de nuestras regiones vitivinícolas y la gastronomía mexicana, para descubrir y apreciar los sabores y aromas de esta bebida ancestral. Reserva mínima 2 personas.", 
             d_en: "At Ana y José Hotels Collection, it is an honor to guide you through a cultural and sensory journey across our wine regions and Mexican gastronomy, inviting you to discover and appreciate the ﬂavors and aromas of this ancestral beverage. Minimun 2 guest", 
             c: "Experiencias", img: "https://i.postimg.cc/0jMNx0PD/IMG-20251219-WA0034.jpg" 
-        }     
+        },   
+        { 
+            n_es: "Renueva cuerpo y sentidos", n_en: "Renew body and senses", 
+            p: 2460, d_es: "De vacaciones en  pareja, familia y/o celebrando cumpleaños, aniversario o solo para relajarte?... waooo, tenemos el regalo perfecto para ella, para él o para tí...Un masaje relajante de 50 min + 15 min de exfoliación corporal (a elegir exfoliación de fresa con leche o chocolate) incluyendo 1 mimosa.... Reserva ya!!!! El precio es por persona..", 
+            d_en: "Vacationing as a couple or with family, celebrating a birthday or anniversary, or just looking to relax? Wow—we have the perfect gift for him, her or you!!!... A 50-minute relaxing massage plus a 15-minute body scrub (choose between strawberry & milk or chocolate), including a mimosa... Book now! Price is per person..", 
+            c: "Spa", img: "https://i.postimg.cc/j5vJF22r/Screenshot-2026-05-17-16-26-37-357-com-google-android-googlequicksearchbox-edit.jpg" 
+        },
+        { 
+            n_es: "Apapacho para pareja", n_en: "Couples massage", 
+            p: 4200, d_es: "De origen náhuatl, apapacho signiﬁca abrazar con el alma, eso es lo que su cuerpo sentirá con este masaje de presión suave a media, en el que el sistema nervioso y muscular se sentirán relajados, dejando el estrés atrás. 50 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
+            d_en: "Náhuatl origin, apapacho means to embrace with the soul, and that is what your body will feel with this massage of soft to medium pressure, in which the nervous and muscular systems will feel relaxed, leaving stress behind. 50 Min. If you book now, we'll include a refreshing face mask.", 
+            c: "Spa", img: "https://i.postimg.cc/MHW1gwsD/IMG-20260723-WA0029.jpg" 
+        },
+        { 
+            n_es: "Pixán", n_en: "Pixán", 
+            p: 2870, d_es: "Pixan signiﬁca (espíritu) en maya y esta terapia regresará tu espíritu y mente a su equilibrio. Masaje enfocado en las estructuras más profundas de los músculos, en el que se utiliza presión media-fuerte con el ﬁn de devolver movilidad a los músculos, liberar toxinas acumuladas en ellos y acelerar la circulación, complementado con la utilización de pindas herbales, las cuales ayudarán a los músculos y la mente a relajarse gracias a sus hierbas y esencias, ayudando a reducir el dolor. 70 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
+            d_en: "Pixan means (spirit) in Mayan, and this therapy will bring your spirit and mind back into balance. Massage focused on the deepest structures of the muscles, in which medium-strong pressure is used in order to restore mobility to the muscles, release accumulated toxins, and accelerate circulation. This therapy is complemented with the use of herbal pindas, which help the muscles and mind relax thanks to their herbs, essences, and warm temperature, helping to reduce pain. 70 Min. If you book now, we'll include a refreshing face mask.", 
+            c: "Spa", img: "https://i.postimg.cc/FKvKjvpr/SAVE-20260517-145341.jpg" 
+        },
+        { 
+            n_es: "Otoch", n_en: "Otoch", 
+            p: 1435, d_es: "Para los mayas, otoch signiﬁca hogar, y nuestro deseo es que a través de este masaje personalizado pueda regresar al suyo totalmente renovado y sanado por medio de varias técnicas de masaje, como el relajante, tejido profundo y estiramientos según sean requeridos. 30 Min. Si usted reserva ahora le incluímos una mascarilla refrescante.", 
+            d_en: "For the Mayan people, otoch means home, and our desire is that through this personalized massage you can return to yours totally renewed and healed through various massage techniques such as relaxing, deep tissue, and stretching as required. 30 Min. If you book now, we'll include a refreshing face mask.", 
+            c: "Spa", img: "https://i.postimg.cc/Wz20xV9w/IMG-20260723-WA0028.jpg" 
+        },
+       
+        // SERVICIOS CONCIERGE (Operativos / Asistencias)
+        { n_es: "Asistencia Bellboy (Check-out)", n_en: "Bellboy Assistance", p: 0, d_es: "Solicite ayuda con su equipaje directamente en su puerta.", d_en: "Request luggage assistance directly at your door.", c: "Concierge", img: "" },
+        { n_es: "Consulta con Concierge", n_en: "Concierge Consultation", p: 0, d_es: "Recomendaciones de cenotes, zonas Arqueológicas, tours y transporte.", d_en: "Cenotes, archaeological ruins, tours and transportation recommendations.", c: "Concierge", img: "" },
+        { n_es: "Boxlunch (Tour/Early Check-out)", n_en: "Early Boxlunch", p: 0, d_es: "Si usted, va a algún tour o realiza el check out muy temprano, no se preocupe le ofrecemos un boxlunch, solicitelo con anticipación, el boxlunch es un Sándwich de jamón y queso, fruta de mano. Coordine con su concierge.", d_en: "If you are going on a tour or checking out very early, don't worry—we offer a boxed lunch; please request it in advance. The boxed lunch consists of a ham and cheese sandwich and fresh fruit. Coordinate with your concierge..", c: "Concierge", img: "" },
+        { n_es: "Chef Privado en Habitación", n_en: "Private Chef", p: 0, d_es: "Experiencia culinaria privada.", d_en: "Private culinary experience.", c: "Concierge", img: "" },
+        { n_es: "Bartender Privado", n_en: "Private Bartender", p: 0, d_es: "Servicio de mixología a la medida.", d_en: "Custom mixology service.", c: "Concierge", img: "" },
+        { n_es: "Reserva Cava de Vino", n_en: "Wine Cellar Reservation", p: 0, d_es: "Espacio privado para juntas o micro-eventos (Max 8 personas).", d_en: "Private space for meetings or micro-events (Max 8 pax).", c: "Concierge", img: "" },
+        { n_es: "Solicitud Especial (Fuera de carta)", n_en: "Off-menu Food Request", p: 0, d_es: "Si tienes antojo de algún platillo que no encuentras en el menú, no te preocupes!!, podemos consultar con el Chef Ejecutivo la posibilidad de realizarlo.", d_en: "If you have a craving for a dish that isn't on the menu, don't worry; we can check with the Executive Chef about the possibility of preparing it for you.", c: "Concierge", img: "" },
+        { n_es: "Evento/Programa en Restaurante", n_en: "Restaurant Event/TV", p: 0, d_es: "Solicite sintonizar un partido o evento especial en pantallas en nuestro restaurante Palapa.", d_en: "Request to tune into a match or special event on screens at our Palapa restaurant.", c: "Concierge", img: "" },
+        { n_es: "Eventos en Grupo (Family Style)", n_en: "Group Events (Family Style)", p: 0, d_es: " También realizamos eventos para grupos, ya sea boda, cumpleaños, alguna conferencia de presentación, ofrecernos Tacobar, Servicio Family Style, Barra Libre, nuestro Restaurante puede brindarle más información sin compromiso.", d_en: "We also host group events—such as weddings, birthdays, or presentation conferences—offering options like a taco bar, family-style service, and open bar; our restaurant can provide you with further information without obligation.", c: "Concierge", img: "" },
+        { n_es: "Consulta con Concierge / Tours", n_en: "Concierge & Tours Consultation", p: 0, d_es: "Recomendaciones personalizadas de renta de scooter, ATV, bicicletas o necesitas toallas extra para llevar, etc.", d_en: "Personalized recommendations for  Scooter, ATV, and bicycle rentals or you need extra towels to take with you.", c: "Concierge", tags: [], img: "" },
+        { n_es: "Que puedo encontrar en la Boutique?", n_en: "What can I find in the boutique?", p: 0, d_es: "Ahi puedes encontrar variedad de modelos de ropa de playa, flotadores, souvenirs, cepillos dentales, pasta dental, cigarros. Tambien puedes pagar con efectivo, dólares, tarjetas de crédito y/o débito..", d_en: "There, you can find a variety of beachwear, pool floats, souvenirs, toothbrushes, toothpaste, and cigarettes. You can also pay with cash, dollars, and credit or debit cards.", c: "Concierge", tags: [] }
     ];
 
-    function toggleLang() {
-        currentLang = currentLang === 'es' ? 'en' : 'es';
-        updateUI();
+    function toggleLang() { currentLang = currentLang === 'es' ? 'en' : 'es'; updateUI(); }
+
+    function mostrarToast(mensaje) {
+        const toast = document.getElementById('toast-notification');
+        toast.innerHTML = mensaje;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 1500);
+    }
+
+    /* FUNCIONES DE MODAL Y CONFIGURACIÓN WI-FI */
+    function abrirWifiModal() {
+        document.getElementById('modal-wifi-ssid').innerText = WIFI_SSID;
+        document.getElementById('modal-wifi-pass').innerText = WIFI_PASS;
+        document.getElementById('wifi-ssid-banner').innerText = WIFI_SSID;
+        
+        // Genera QR dinámico para conexión directa a Wi-Fi
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=WIFI%3AS%3A${encodeURIComponent(WIFI_SSID)}%3BT%3AWPA%3BP%3A${encodeURIComponent(WIFI_PASS)}%3B%3B&size=200x200`;
+        document.getElementById('wifi-qr-img').src = qrUrl;
+        
+        document.getElementById('wifi-modal').style.display = 'flex';
+    }
+
+    function cerrarWifiModal(e) {
+        if (e.target.id === 'wifi-modal') {
+            document.getElementById('wifi-modal').style.display = 'none';
+        }
+    }
+
+    function cerrarWifiModalDirecto() {
+        document.getElementById('wifi-modal').style.display = 'none';
+    }
+
+    function copiarWifiPass() {
+        navigator.clipboard.writeText(WIFI_PASS).then(() => {
+            mostrarToast("📋 ¡Contraseña copiada!");
+        }).catch(() => {
+            const tempInput = document.createElement("input");
+            tempInput.value = WIFI_PASS;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            mostrarToast("📋 ¡Contraseña copiada!");
+        });
+    }
+
+    function estaEnHorario(categoria) {
+        const ahora = new Date();
+        const minsActuales = ahora.getHours() * 60 + ahora.getMinutes();
+
+        if (categoria === 'Desayuno') {
+            return (minsActuales >= 450 && minsActuales <= 705);
+        }
+        if (categoria === 'Lunch') {
+            return (minsActuales >= 690 && minsActuales <= 1110);
+        }
+        if (categoria === 'Cena') {
+            return (minsActuales >= 1110 && minsActuales <= 1350);
+        }
+        if (categoria === 'Bebidas') {
+            return (minsActuales >= 450 && minsActuales <= 1350);
+        }
+        return true; 
     }
 
     function updateUI() {
@@ -455,67 +763,174 @@
         document.getElementById('optCargo').innerText = t.cargo;
         document.getElementById('optTarjeta').innerText = t.tarjeta;
         document.getElementById('btnText').innerText = t.enviar;
+        document.getElementById('lblSubtotal').innerText = t.subtotal;
+        document.getElementById('lblServicio').innerText = t.servicio;
+        document.getElementById('lblTotal').innerText = t.total;
+        document.getElementById('wifi-ssid-banner').innerText = WIFI_SSID;
         
         const nav = document.getElementById('navCats');
-        const activeBtn = document.querySelector('.btn-cat.active');
-        const activeCat = activeBtn ? activeBtn.getAttribute('data-cat') : 'Desayuno';
+        const activeCat = document.querySelector('.btn-cat.active')?.getAttribute('data-cat') || 'Desayuno';
         
         nav.innerHTML = t.cats.map((catName, i) => `
             <button class="btn-cat ${t.catsID[i] === activeCat ? 'active' : ''}" 
-                    data-cat="${t.catsID[i]}"
-                    onclick="filtrar('${t.catsID[i]}', this)">${catName}</button>
+                    data-cat="${t.catsID[i]}" onclick="filtrar('${t.catsID[i]}', this)">${catName}</button>
         `).join('');
         
         filtrar(activeCat, document.querySelector(`[data-cat="${activeCat}"]`));
         renderCarrito();
     }
 
-    function filtrar(cat, btn) {
-        const ahora = new Date();
-        const horaActual = ahora.getHours() + (ahora.getMinutes() / 60);
-        const horarios = {
-            "Desayuno": { inicio: 7.5, fin: 11.75, texto: "7:30 AM - 11:45 AM" },
-            "Lunch": { inicio: 11.5, fin: 18.0, texto: "11:30 AM - 6:00 PM" },
-            "Cena": { inicio: 18.0, fin: 22.5, texto: "6:00 PM - 10:30 PM" },
-            "Postre": { inicio: 7.5, fin: 22.5, texto: "7:30 AM - 10:30 PM" },
-            "Bebidas": { inicio: 7.5, fin: 22.5, texto: "7:30 AM - 10:30 PM" },
-            "Spa": { inicio: 0, fin: 24, texto: "9:00 AM - 5:00 PM / Pregunte por la promoción del día / Ask about today's special offer." },
-            "Experiencias": { inicio: 0, fin: 24, texto: "24h con previa reserva /with prior reservation"},
-        };
-
-        const config = horarios[cat];
-        const estaAbierto = horaActual >= config.inicio && horaActual <= config.fin;
+    function actualizarBotonConcierge() {
+        const chk = document.getElementById('concierge-attention-pref');
+        const btn = document.getElementById('btn-concierge-submit');
+        const urgentFields = document.getElementById('concierge-urgent-fields');
+        if (!chk || !btn) return;
         
+        if (chk.checked) {
+            if (urgentFields) urgentFields.style.display = "block";
+            btn.innerText = currentLang === 'es' ? "Enviar directo a WhatsApp" : "Send directly to WhatsApp";
+            btn.style.background = "#25D366";
+            
+            const mainName = document.getElementById('guest-name').value;
+            const mainRoom = document.getElementById('room-num').value;
+            const urgentNameInput = document.getElementById('concierge-urgent-name');
+            const urgentRoomInput = document.getElementById('concierge-urgent-room');
+            if (mainName && urgentNameInput && !urgentNameInput.value) urgentNameInput.value = mainName;
+            if (mainRoom && urgentRoomInput && !urgentRoomInput.value) urgentRoomInput.value = mainRoom;
+        } else {
+            if (urgentFields) urgentFields.style.display = "none";
+            btn.innerText = translations[currentLang].agregar;
+            btn.style.background = "var(--oro)";
+        }
+    }
+
+    function filtrar(cat, btn) {
         document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if(btn) {
+            btn.classList.add('active');
+        } else {
+            const fallbackBtn = document.querySelector(`[data-cat="${cat}"]`);
+            if(fallbackBtn) fallbackBtn.classList.add('active');
+        }
         
         const grid = document.getElementById('menu-grid');
         const t = translations[currentLang];
         
-        let banner = `<div style="grid-column: 1/-1; text-align: center; padding: 10px; background: ${estaAbierto ? '#f1f8e9' : '#fff1f1'}; color: ${estaAbierto ? '#2e7d32' : '#c62828'}; border-radius: 8px; margin-bottom: 10px; font-size: 0.75rem; border: 1px solid">${currentLang === 'es' ? 'Horario' : 'Hours'}: ${config.texto} ${estaAbierto ? '' : ' - ' + t.cerrado}</div>`;
-        
-        grid.innerHTML = banner + platillos.filter(p => p.c === cat).map((p, i) => {
-            const hasImg = p.img && p.img.includes('http');
-            const inputID = `note-${cat.replace(/\s+/g, '')}-${i}`;
-            
-            const placeholderTexto = (cat === "Spa" || cat === "Experiencias") ? t.notasReserva : t.notas;
+        let infoBanner = "";
+        if (cat === 'Desayuno') {
+            infoBanner = `<div style="grid-column: 1/-1; background:#f9f7f2; padding:15px; border:1px solid var(--oro); border-radius:8px; font-size:0.85rem; margin-bottom:10px;">
+                ⏰ <strong>${currentLang === 'es' ? 'Horario de Desayuno:' : 'Breakfast Hours:'}</strong> 7:30 AM - 11:45 AM<br>
+                📌 <em style="color:#d9534f; font-weight:bold;">${t.propinaLeyenda}</em>
+            </div>`;
+        } else if (cat === 'Lunch') {
+            infoBanner = `<div style="grid-column: 1/-1; background:#f9f7f2; padding:15px; border:1px solid var(--oro); border-radius:8px; font-size:0.85rem; margin-bottom:10px;">
+                ⏰ <strong>${currentLang === 'es' ? 'Horario de Lunch:' : 'Lunch Hours:'}</strong> 11:30 AM - 6:30 PM<br>
+                📌 <em style="color:#d9534f; font-weight:bold;">${t.propinaLeyenda}</em>
+            </div>`;
+        } else if (cat === 'Cena') {
+            infoBanner = `<div style="grid-column: 1/-1; background:#f9f7f2; padding:15px; border:1px solid var(--oro); border-radius:8px; font-size:0.85rem; margin-bottom:10px;">
+                ⏰ <strong>${currentLang === 'es' ? 'Horario de Cena:' : 'Dinner Hours:'}</strong> 6:30 PM - 10:30 PM<br>
+                📌 <em style="color:#d9534f; font-weight:bold;">${t.propinaLeyenda}</em>
+            </div>`;
+        } else if (cat === 'Bebidas') {
+            infoBanner = `<div style="grid-column: 1/-1; background:#f9f7f2; padding:15px; border:1px solid var(--oro); border-radius:8px; font-size:0.85rem; margin-bottom:10px;">
+                ⏰ <strong>${currentLang === 'es' ? 'Horario de Bebidas:' : 'Drinks Hours:'}</strong> 7:30 AM - 10:30 PM<br>
+                📌 <em style="color:#d9534f; font-weight:bold;">${t.propinaLeyenda}</em>
+            </div>`;
+        } else if (cat === 'Spa') {
+            /* FOTO Y DESCRIPCIÓN EXCLUSIVA DEL SPA */
+            const fotoSpa = "https://i.postimg.cc/T3YcmZSQ/spagen.webp";
+            const descEs = "Bienvenido a nuestro santuario de bienestar. Disfrute de una experiencia holística diseñada para restaurar el equilibrio entre cuerpo y mente a través de masajes curativos, terapias ancestrales y tratamientos corporales revitalizantes frente al mar.";
+            const descEn = "Welcome to our wellness sanctuary. Enjoy a holistic experience designed to restore balance between body and mind through healing massages, ancient therapies, and revitalizing body treatments by the sea.";
 
-            return `
-            <div class="card ${!hasImg ? 'no-photo' : ''}" style="opacity: ${estaAbierto ? '1' : '0.6'};">
-                ${hasImg ? `<img src="${p.img}" class="card-img" loading="lazy">` : ''}
+            infoBanner = `
+            <div style="grid-column: 1/-1; background:#ffffff; border:1px solid var(--oro); border-radius:12px; overflow:hidden; margin-bottom:15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <img src="${fotoSpa}" alt="Spa Ana y José" style="width:100%; height:200px; object-fit:cover; display:block;">
+                <div style="padding:15px;">
+                    <h3 style="margin:0 0 6px 0; color:var(--oscuro); font-size:1.1rem; font-weight:bold;">🌿 Spa & Wellness</h3>
+                    <p style="margin:0; font-size:0.85rem; color:#555; line-height:1.4;">
+                        ${currentLang === 'es' ? descEs : descEn}
+                    </p>
+                </div>
+            </div>`;
+        } else if (cat === 'Experiencias') {
+            let extraTipsMsg = `<br>✨ <strong style="color:#2e7d32;">${currentLang === 'es' ? 'Incluye 18% de servicio (tips)' : 'Includes 18% service (tips)'}</strong>`;
+            infoBanner = `<div style="grid-column: 1/-1; background:#f9f7f2; padding:15px; border:1px solid var(--oro); border-radius:8px; font-size:0.85rem; margin-bottom:10px;">
+                <strong>💡 Información de Interés / General Info:</strong><br>
+                🏊 <strong>Alberca / Pool:</strong> 9:00 AM - 7:00 PM.<br>
+                🏋️ <strong>Gimnasio/ Gym:</strong> 7:00 AM - 9:00 PM.<br>
+                🛍️ <strong>Boutique:</strong> 11:00 AM - 9:00 PM.  
+                <strong>En nuestras experiencias:</strong>${extraTipsMsg}
+            </div>`;
+        }
+
+        let customBoxHtml = "";
+        if (cat === 'Concierge') {
+            customBoxHtml = `
+            <div class="card no-photo" style="grid-column: 1/-1; border-left: 4px solid var(--oscuro); background: #faf9f5; margin-bottom:15px;">
                 <div class="card-body">
                     <div class="card-info">
-                        <span>${currentLang === 'es' ? p.n_es : p.n_en}</span>
-                        <span class="precio">$${p.p}</span>
+                        <span style="color: var(--oro);">${currentLang === 'es' ? '✨ Solicitar atención personalizada de su Concierge' : '✨ Request personalized attention from your concierge'}</span>
                     </div>
+                    <textarea id="concierge-custom-text" style="height: 100px;" placeholder="${currentLang === 'es' ? 'Escribe aquí la atención o información que necesitas...' : 'Write the assistance or information you need here....'}"></textarea>
+                    
+                    <div style="margin: 10px 0 12px 0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="concierge-attention-pref" style="width: auto; margin: 0; cursor: pointer;" onchange="actualizarBotonConcierge()">
+                        <label for="concierge-attention-pref" style="font-weight: 600; color: var(--oscuro); cursor: pointer;">
+                            ${currentLang === 'es' ? '¿Desea recibir atención directa por WhatsApp?' : 'Would you like to receive direct attention via WhatsApp?'}
+                        </label>
+                    </div>
+
+                    <div id="concierge-urgent-fields" style="display: none; background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid var(--oro); margin-bottom: 12px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 0.75rem; font-weight:bold; color:var(--oscuro);">${currentLang === 'es' ? 'Nombre:' : 'Name:'}</label>
+                                <input type="text" id="concierge-urgent-name" class="form-input" placeholder="${currentLang === 'es' ? 'Su Nombre' : 'Your Name'}" style="margin-top: 4px; padding: 8px;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.75rem; font-weight:bold; color:var(--oscuro);">${currentLang === 'es' ? 'Habitación:' : 'Room:'}</label>
+                                <input type="text" id="concierge-urgent-room" class="form-input" placeholder="${currentLang === 'es' ? 'ABCDE' : 'ABCDE'}" style="margin-top: 4px; padding: 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btn-concierge-submit" class="btn-add" style="background: var(--oro);" onclick="agregarConciergePersonalizado()">${t.agregar}</button>
+                </div>
+            </div>`;
+        }
+
+        let itemsHtml = platillos.filter(p => p.c === cat).map((p, i) => {
+            const inputID = `note-${cat.replace(/\s+/g, '')}-${i}`;
+            let placeholderText = ['Desayuno', 'Lunch', 'Cena', 'Bebidas'].includes(cat) ? 
+                (currentLang === 'es' ? "Notas: por favor indique preferencia y/o alguna restricción alimenticia..." : "Notes: please indicate preference and/or any dietary restriction...") :
+                (currentLang === 'es' ? "Notas particulares para esta solicitud..." : "Special notes for this request...");
+
+            let tagsHtml = (p.tags || []).map(tagKey => `<span class="tag-badge ${tagKey}">${t[tagKey]}</span>`).join('');
+            const precioUSD = p.p > 0 ? (p.p / TIPO_CAMBIO).toFixed(2) : 0;
+            const precioDisplay = p.p > 0 ? `<span class="precio">$${p.p} MXN <small style="font-size:0.75rem; color:#888; font-weight:normal;">($${precioUSD} USD)</small></span>` : '';
+
+            let fotoHtml = p.img ? `<img src="${p.img}" alt="${p.n_es}" style="width: 100%; height: 180px; object-fit: contain; background: #faf9f5;">` : '';
+            let cardClass = p.img ? 'card' : 'card no-photo';
+
+            const disponible = estaEnHorario(cat);
+            const btnTexto = disponible ? t.agregar : t.fueraHorario;
+            const btnEstilo = disponible ? '' : 'background: #7f8c8d; opacity: 0.6; cursor: not-allowed;';
+            const attrDisabled = disponible ? '' : 'disabled';
+
+            return `
+            <div class="${cardClass}">
+                ${fotoHtml}
+                <div class="card-body">
+                    <div class="card-info"><span>${currentLang === 'es' ? p.n_es : p.n_en}</span>${precioDisplay}</div>
                     <p class="desc">${currentLang === 'es' ? p.d_es : p.d_en}</p>
-                    ${estaAbierto ? `
-                        <textarea id="${inputID}" placeholder="${placeholderTexto}"></textarea>
-                        <button class="btn-add" onclick="agregar('${currentLang==='es'?p.n_es:p.n_en}', ${p.p}, '${inputID}', '${p.c}')">${t.agregar}</button>
-                    ` : `<p style="color:#c62828; font-size:0.75rem; font-weight:bold; text-align:center; margin-top:10px;">${t.soloHorario}</p>`}
+                    <div class="tag-container">${tagsHtml}</div>
+                    <textarea id="${inputID}" placeholder="${placeholderText}" ${attrDisabled}></textarea>
+                    <button class="btn-add" ${attrDisabled} style="${btnEstilo}" onclick="agregar('${currentLang==='es'?p.n_es:p.n_en}', ${p.p}, '${inputID}', '${p.c}')">${btnTexto}</button>
                 </div>
             </div>`;
         }).join('');
+
+        grid.innerHTML = infoBanner + customBoxHtml + itemsHtml;
     }
 
     function agregar(nombre, precio, idNota, categoria) {
@@ -523,43 +938,158 @@
         carrito.push({ nombre, precio, nota, categoria });
         document.getElementById(idNota).value = "";
         renderCarrito();
-        const btn = event.target;
-        const originalText = btn.innerText;
-        btn.innerText = "✓ OK";
-        setTimeout(() => btn.innerText = originalText, 1000);
+        mostrarToast("Ok"); 
+    }
+
+    function agregarConciergePersonalizado() {
+        const text = document.getElementById('concierge-custom-text').value.trim();
+        const t = translations[currentLang];
+        
+        if(!text) {
+            mostrarToast(currentLang === 'es' ? "⚠️ Por favor escribe tu solicitud" : "⚠️ Please write your request");
+            return;
+        }
+
+        const prefAtencion = document.getElementById('concierge-attention-pref').checked;
+
+        if (prefAtencion) {
+            let nom = document.getElementById('concierge-urgent-name')?.value.trim();
+            let hab = document.getElementById('concierge-urgent-room')?.value.trim();
+
+            if(!nom || !hab) {
+                mostrarToast(t.errDatos);
+                if(!nom && document.getElementById('concierge-urgent-name')) document.getElementById('concierge-urgent-name').focus();
+                else if(!hab && document.getElementById('concierge-urgent-room')) document.getElementById('concierge-urgent-room').focus();
+                return;
+            }
+
+            if(document.getElementById('guest-name')) document.getElementById('guest-name').value = nom;
+            if(document.getElementById('room-num')) document.getElementById('room-num').value = hab;
+
+            const NUMERO_CONCIERGE = "5219985777525"; 
+            const cabecera = "*SOLICITUD URGENTE / CONCIERGE DIRECTO*";
+            const msg = `${cabecera}\n*Nombre:* ${nom}\n*Habitación:* ${hab}\n*Notas:* ${text}`;
+
+            window.open(`https://wa.me/${NUMERO_CONCIERGE}?text=${encodeURIComponent(msg)}`, '_blank');
+
+            document.getElementById('concierge-custom-text').value = "";
+            if(document.getElementById('concierge-urgent-name')) document.getElementById('concierge-urgent-name').value = "";
+            if(document.getElementById('concierge-urgent-room')) document.getElementById('concierge-urgent-room').value = "";
+            document.getElementById('concierge-attention-pref').checked = false;
+            actualizarBotonConcierge();
+        } else {
+            const nombreItem = currentLang === 'es' ? "Solicitud Tours / Concierge" : "Tours / Concierge Request";
+            carrito.push({ nombre: nombreItem, precio: 0, nota: text, categoria: "Concierge" });
+            document.getElementById('concierge-custom-text').value = "";
+            renderCarrito();
+            mostrarToast("Ok"); 
+        }
     }
 
     function renderCarrito() {
+        const headerWrapper = document.getElementById('cart-header-wrapper');
         const lista = document.getElementById('cart-list');
-        const resumen = document.getElementById('cart-summary');
-        const t = translations[currentLang];
-
+        const box = document.getElementById('cart-summary-box');
+        const propinaMsg = document.getElementById('propina-warning-msg');
+        const mezclaWarning = document.getElementById('mezcla-warning-msg');
+        const paymentWrapper = document.getElementById('payment-wrapper');
+        
         if(carrito.length === 0) { 
-            lista.innerHTML = `<p style="text-align:center; color:#999; font-style:italic; font-size:0.85rem; margin: 20px 0;">Canasta vacía / Empty cart</p>`; 
-            resumen.innerHTML = ""; 
+            headerWrapper.innerHTML = ""; lista.innerHTML = ""; box.style.display = "none"; 
+            propinaMsg.style.display = "none"; mezclaWarning.style.display = "none"; 
+            paymentWrapper.style.display = "block"; 
             return; 
         }
         
-        lista.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom: 2px solid #eee; padding-bottom:5px;"><span style="font-weight:bold;">Items:</span><button onclick="carrito=[];renderCarrito()" style="color:red; border:none; background:none; cursor:pointer; font-size:0.75rem;">${t.vaciar}</button></div>` + 
-            carrito.map((item, i) => `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f9f9f9; font-size:0.9rem;">
-                <span style="flex:1;"><strong>${item.nombre}</strong>${item.nota ? `<br><small style="color:var(--oro);">"${item.nota}"</small>` : ''}</span>
-                <span style="white-space:nowrap;">$${item.precio} <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none;background:none;color:#ccc;padding:0 5px;">✕</button></span>
-            </div>`).join('');
-
-        const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
-        const cargoServicio = carrito.reduce((acc, item) => {
-            const porcentaje = (item.categoria === "Experiencias") ? 0.18 : 0.15;
-            return acc + (item.precio * porcentaje);
-        }, 0);
-        const tot = subtotal + cargoServicio;
-
-        resumen.innerHTML = `
-            <div class="total-box">
-                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;"><span>${t.sub}:</span><span>$${subtotal.toFixed(2)}</span></div>
-                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#666;"><span>${t.serv}:</span><span>$${cargoServicio.toFixed(2)}</span></div>
-                <div class="total-final"><span>${t.tot}:</span><span>$${tot.toFixed(2)} MXN</span></div>
-                <div style="text-align:right; font-size:0.75rem; color:#999; margin-top:5px;">Approx. $${(tot/TIPO_CAMBIO).toFixed(2)} USD</div>
+        headerWrapper.innerHTML = `
+            <div style="display: flex; justify-content: space-between; font-weight: bold; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                <span style="font-size:1.1rem; color:var(--oscuro);">Items:</span>
+                <button onclick="carrito=[];renderCarrito()" style="border:none; background:none; color:#c9302c; font-weight:600; cursor:pointer; font-size:0.9rem;">🗑️ ${currentLang==='es'?'Vaciar':'Clear'}</button>
             </div>`;
+
+        lista.innerHTML = carrito.map((item, i) => {
+            const itemPriceText = item.precio > 0 ? `$${item.precio}` : '';
+            return `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f6f6f6;">
+                <div style="flex-grow: 1; padding-right: 10px;">
+                    <span style="font-size:0.95rem; font-weight:500; color:#333;">${item.nombre}</span>
+                    ${item.nota ? `<br><small style="color:var(--oro); font-style:italic; font-size:0.8rem;">[${item.nota}]</small>` : ''}
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size:0.95rem; color:#555; font-weight:500;">${itemPriceText}</span>
+                    <button onclick="carrito.splice(${i},1);renderCarrito()" style="border:none; background:none; color:#ccc; font-size:1.2rem; cursor:pointer; padding:0 4px;">✕</button>
+                </div>
+            </div>`;
+        }).join('');
+
+        let subtotal = 0;
+        let servicio = 0;
+        let requiereAvisoPropina = false;
+
+        const tieneSpa = carrito.some(item => item.categoria === "Spa");
+        const tieneExperiencias = carrito.some(item => item.categoria === "Experiencias");
+        const tieneConcierge = carrito.some(item => item.categoria === "Concierge");
+        const tieneAlimentos = carrito.some(item => !["Spa", "Experiencias", "Concierge"].includes(item.categoria));
+
+        carrito.forEach(item => {
+            subtotal += item.precio;
+            if (item.categoria === "Experiencias") {
+                servicio += item.precio * 0.18;
+            } else if (['Desayuno', 'Lunch', 'Cena', 'Bebidas', 'Postre', 'Spa'].includes(item.categoria)) {
+                requiereAvisoPropina = true;
+            }
+        });
+
+        let contadorGrupos = 0;
+        if(tieneSpa) contadorGrupos++;
+        if(tieneExperiencias) contadorGrupos++;
+        if(tieneConcierge) contadorGrupos++;
+        if(tieneAlimentos) contadorGrupos++;
+
+        if(contadorGrupos > 1) {
+            mezclaWarning.style.display = "block";
+            mezclaWarning.innerText = currentLang === 'es' ? 
+                "⚠️ Envía los alimentos, experiencias o spa por separado" : 
+                "⚠️ Please send food, experiences, or spa requests separately";
+            document.getElementById('btnSend').style.opacity = "0.4";
+            document.getElementById('btnSend').style.cursor = "not-allowed";
+        } else {
+            mezclaWarning.style.display = "none";
+            document.getElementById('btnSend').style.opacity = "1";
+            document.getElementById('btnSend').style.cursor = "pointer";
+        }
+
+        if (tieneConcierge) {
+            paymentWrapper.style.display = "none";
+            box.style.display = "none";
+            propinaMsg.style.display = "none";
+        } else {
+            paymentWrapper.style.display = "block";
+            box.style.display = "block";
+            
+            let totalMxn = subtotal + servicio;
+            let totalUsd = totalMxn / TIPO_CAMBIO;
+
+            document.getElementById('summary-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            
+            const serviceRow = document.getElementById('summary-service-row');
+            if (servicio > 0) {
+                serviceRow.style.display = "flex";
+                document.getElementById('summary-service').innerText = `$${servicio.toFixed(2)}`;
+            } else {
+                serviceRow.style.display = "none";
+            }
+
+            document.getElementById('summary-total-mxn').innerText = `$${totalMxn.toFixed(2)} MXN`;
+            document.getElementById('summary-total-usd').innerText = `Approx. $${totalUsd.toFixed(2)} USD`;
+
+            if (requiereAvisoPropina) {
+                propinaMsg.style.display = "block";
+                propinaMsg.innerText = currentLang === 'es' ? "* La propina no está incluida / Tip is not included" : "* Tip is not included";
+            } else {
+                propinaMsg.style.display = "none";
+            }
+        }
     }
 
     function enviarPedido() {
@@ -567,64 +1097,59 @@
         const hab = document.getElementById('room-num').value.trim();
         const pago = document.getElementById('payment-method').value;
         const t = translations[currentLang];
-        const btn = document.getElementById('btnSend');
-
-        if(!nom || !hab || carrito.length === 0) {
-            const originalText = btn.innerHTML;
-            btn.style.background = "#c62828";
-            
-            if(!nom || !hab) {
-                btn.innerText = currentLang === 'es' ? "⚠️ Ingresa nombre y habitación" : "⚠️ Enter name and room";
-            } else if(carrito.length === 0) {
-                btn.innerText = currentLang === 'es' ? "⚠️ Tu canasta está vacía" : "⚠️ Your cart is empty";
-            }
-
-            setTimeout(() => {
-                btn.style.background = "#25D366";
-                btn.innerHTML = originalText;
-            }, 3000);
-            return;
-        }
+        
+        if(!nom || !hab || carrito.length === 0) { mostrarToast(t.errDatos); return; }
 
         const tieneSpa = carrito.some(item => item.categoria === "Spa");
-        const tieneOtros = carrito.some(item => item.categoria !== "Spa"); 
+        const tieneExperiencias = carrito.some(item => item.categoria === "Experiencias");
+        const tieneConcierge = carrito.some(item => item.categoria === "Concierge");
+        const tieneAlimentos = carrito.some(item => !["Spa", "Experiencias", "Concierge"].includes(item.categoria));
 
-        if (tieneSpa && tieneOtros) {
-            btn.innerText = currentLang === 'es' ? "⚠️ Envía Spa y Alimentos por separado" : "⚠️ Send Spa and Food separately";
-            btn.style.background = "#c62828";
-            setTimeout(() => {
-                btn.style.background = "#25D366";
-                btn.innerHTML = t.enviar;
-            }, 3000);
-            return;
+        if ((tieneSpa && tieneAlimentos) || (tieneExperiencias && tieneAlimentos) || (tieneConcierge && tieneAlimentos) || 
+            (tieneSpa && tieneExperiencias) || (tieneSpa && tieneConcierge) || (tieneExperiencias && tieneConcierge)) {
+            mostrarToast(t.errMezcla); return;
         }
 
-        const num = tieneSpa ? "5219981960490" : "5219841870476";
+        const NUMERO_RESTAURANTE = "5219841870476";
+        const NUMERO_SPA = "5219985777525";
+        const NUMERO_CONCIERGE = "5219985777525";    
+        const NUMERO_EXPERIENCIAS = "5219985777525"; 
+
+        let num = NUMERO_RESTAURANTE;
+        let cabecera = "*SOLICITUD DE ALIMENTOS Y BEBIDAS*";
         
-        let tipoOrden = "ORDEN";
-        if (tieneSpa) {
-            tipoOrden = "SPA";
-        } else if (carrito.some(item => item.categoria === "Experiencias")) {
-            tipoOrden = "Experiencias";
+        if(tieneSpa) { num = NUMERO_SPA; cabecera = "*RESERVA DE SPA ANA Y JOSÉ*"; } 
+        else if(tieneExperiencias) { num = NUMERO_EXPERIENCIAS; cabecera = "*SOLICITUD DE EXPERIENCIAS VIP*"; } 
+        else if(tieneConcierge) { num = NUMERO_CONCIERGE; cabecera = "*SOLICITUD DE TOURS & CONCIERGE*"; }
+
+        let msg = "";
+
+        if (tieneConcierge) {
+            msg = `${cabecera}\n*Nombre:* ${nom}\n*Habitación:* ${hab}\n`;
+            let lineasNotas = [];
+            carrito.forEach(i => {
+                if (i.nombre.includes("Solicitud") || i.nombre.includes("Request")) {
+                    lineasNotas.push(i.nota);
+                } else {
+                    if (i.nota) { lineasNotas.push(`${i.nombre} (${i.nota})`); } 
+                    else { lineasNotas.push(i.nombre); }
+                }
+            });
+            msg += `*Notas:* ${lineasNotas.join(", ")}`;
+        } else {
+            msg = `${cabecera}\n*Nombre:* ${nom}\n*Habitación:* ${hab}\n*Forma de Pago:* ${pago}\n---\n`;
+            carrito.forEach(i => msg += `• ${i.nombre} ${i.nota ? `[Detalles: ${i.nota}]` : ''}\n`);
         }
 
-        let msg = `*${tipoOrden} - ANA Y JOSÉ*%0A*Nombre:* ${nom}%0A*Hab:* ${hab}%0A*Pago:* ${pago}%0A---%0A`;
-        
-        carrito.forEach((item, i) => {
-            msg += `${i+1}. *${item.nombre}*%0A${item.nota ? `   _Nota: ${item.nota}_%0A` : ''}`;
-        });
+        window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
 
-        const subtotal = carrito.reduce((acc, item) => acc + item.precio, 0);
-        const serv = carrito.reduce((acc, item) => acc + (item.precio * (item.categoria === "Experiencias" ? 0.18 : 0.15)), 0);
-        msg += `---%0A*TOTAL: $${(subtotal + serv).toFixed(2)} MXN*`;
-
-        window.open(`https://wa.me/${num}?text=${msg}`, '_blank', 'noopener');
+        carrito = [];
+        renderCarrito();
     }
 
     function irAExperiencia(tipo) {
-        const btns = Array.from(document.querySelectorAll('.btn-cat'));
-        const target = btns.find(b => b.innerText.includes(tipo)) || btns.find(b => b.getAttribute('data-cat') === tipo);
-        if(target) target.click();
+        const btn = document.querySelector(`[data-cat="${tipo}"]`);
+        if(btn) btn.click();
         window.scrollTo({ top: 150, behavior: 'smooth' });
     }
 
