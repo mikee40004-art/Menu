@@ -43,7 +43,7 @@
             font-weight: bold;
         }
 
-        /* MODAL WI-FI */
+        /* MODAL WI-FI Y ESTADÍSTICAS */
         .wifi-modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -58,7 +58,7 @@
         .wifi-modal-card {
             background: white;
             width: 88%;
-            max-width: 360px;
+            max-width: 400px;
             border-radius: 16px;
             padding: 22px;
             border: 2px solid var(--oro);
@@ -66,6 +66,8 @@
             position: relative;
             box-sizing: border-box;
             text-align: center;
+            max-height: 85vh;
+            overflow-y: auto;
         }
         .wifi-modal-close {
             position: absolute;
@@ -111,7 +113,6 @@
         .canasta { background: #fdfcf9; border-top: 4px solid var(--oro); padding: 20px; margin-top: 20px; }
         .form-input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
         
-        /* Contenedor de Totales */
         .total-box { background: white; padding: 18px; border-radius: 14px; border: 1px solid #e2ded5; margin: 20px 0 12px 0; }
         .total-row-item { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; color: #555; }
         .total-final-row { border-top: 1px solid #eee; margin-top: 12px; padding-top: 12px; display: flex; justify-content: space-between; align-items: flex-start; }
@@ -122,7 +123,6 @@
 
         .propina-warning { text-align: center; color: #c9302c; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; display: none; }
 
-        /* Animación y estilo para mensaje intermitente en la canasta */
         @keyframes parpadeo {
             0% { opacity: 1; }
             50% { opacity: 0.2; }
@@ -141,7 +141,6 @@
             font-size: 0.9rem;
         }
 
-        /* ESTILO PARA EL AVISO FLOTANTE PREMIUM */
         .custom-toast {
             position: fixed;
             top: 45%;
@@ -166,6 +165,13 @@
 
         .btn-whatsapp { background: #25D366; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
         .credits { text-align: center; padding: 40px 10px; background: #f4f1ea; }
+
+        /* Estilos de Tabla de Métricas */
+        .stats-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; text-align: left; }
+        .stats-table th, .stats-table td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+        .stats-table th { background-color: var(--beige); color: var(--oscuro); font-weight: bold; }
+        .stats-table tr:hover { background-color: #fafafa; }
+        .stats-badge { background: var(--oro); color: white; padding: 2px 8px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; }
     </style>
 </head>
 <body>
@@ -192,6 +198,31 @@
         <div style="text-align: center;">
             <img id="wifi-qr-img" src="" alt="Wi-Fi QR Code" style="border-radius: 10px; border: 1px solid #ddd; padding: 6px; background: white; width: 170px; height: 170px; display: block; margin: auto;">
             <div style="font-size: 0.75rem; color: #888; margin-top: 8px;">Escanea con la cámara de tu celular</div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE ESTADÍSTICAS / MÉTRICAS (OPCIÓN 2: CON CAMPO DE CONTRASEÑA EN INTERFAZ) -->
+<div id="stats-modal" class="wifi-modal-overlay" onclick="cerrarStatsModal(event)">
+    <div class="wifi-modal-card">
+        <span class="wifi-modal-close" onclick="cerrarStatsModalDirecto()">&times;</span>
+        <h3 style="margin-top: 0; color: var(--oscuro); font-size: 1.2rem;">📊 Métricas de Interacción</h3>
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Mide cuántos huéspedes consultaron y enviaron solicitudes por departamento:</p>
+        
+        <div id="stats-content"></div>
+
+        <!-- SECCIÓN DE REINICIO CON CONTRASEÑA TIPO PASSWORD (SIN POPUPS) -->
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; text-align: left;">
+            <label id="lblAdminPass" style="font-size: 0.75rem; font-weight: bold; color: var(--oscuro); display: block; margin-bottom: 6px;">
+                🔒 Clave de Administrador para reiniciar:
+            </label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="password" id="reset-pass-input" class="form-input" placeholder="Ingresa la clave..." style="margin-top: 0; padding: 10px; font-size: 0.85rem; flex-grow: 1;" onkeypress="if(event.key==='Enter') resetearMetricasConClave()">
+                <button onclick="resetearMetricasConClave()" style="background: #c9302c; color: white; border: none; padding: 10px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.8rem; white-space: nowrap;">
+                    🔄 Reiniciar
+                </button>
+            </div>
+            <div id="reset-error-msg" style="color: #c9302c; font-size: 0.75rem; margin-top: 6px; display: none; font-weight: bold;"></div>
         </div>
     </div>
 </div>
@@ -233,14 +264,11 @@
             </select>
         </div>
 
-        <!-- Lista de productos añadidos -->
         <div id="cart-header-wrapper"></div>
         <div id="cart-list"></div>
 
-        <!-- RECUADRO INTERMITENTE PARA CONTROL DE MEZCLA -->
         <div id="mezcla-warning-msg" class="mensaje-intermitente" style="display: none;"></div>
 
-        <!-- Recuadro de desglose financiero -->
         <div id="cart-summary-box" class="total-box" style="display: none;">
             <div class="total-row-item">
                 <span id="lblSubtotal">Subtotal:</span>
@@ -268,6 +296,9 @@
 
     <div class="credits">
         <p style="color: var(--oro); font-weight: bold; font-size: 1rem; margin-top: 5px;">Hotel Boutique Ana y José Tulum</p>
+        <button onclick="abrirStatsModal()" style="margin-top: 10px; background: transparent; border: 1px solid var(--oro); color: var(--oscuro); border-radius: 20px; padding: 6px 14px; font-size: 0.75rem; cursor: pointer; font-weight: bold;">
+            📊 Métricas de Uso
+        </button>
     </div>
 </div>
 
@@ -278,16 +309,121 @@
 </div>
 
 <script>
-    // ==========================================
-    // CONFIGURACIÓN DE RED WI-FI 
-    // (Cambia estos dos valores al estar en el hotel)
-    // ==========================================
     const WIFI_SSID = "Hotel Ana y José";
     const WIFI_PASS = "WelcometoParadise";
 
     const TIPO_CAMBIO = 18.00;
     let currentLang = 'es';
     let carrito = [];
+
+    // ==========================================
+    // SISTEMA DE MÉTRICAS Y ESTADÍSTICAS
+    // ==========================================
+    function obtenerMetricas() {
+        return JSON.parse(localStorage.getItem('aj_metrics_v2')) || {
+            vistas: { Desayuno: 0, Lunch: 0, Cena: 0, Bebidas: 0, Spa: 0, Experiencias: 0, Concierge: 0 },
+            solicitudes: { Restaurante: 0, Spa: 0, Experiencias: 0, Concierge: 0 }
+        };
+    }
+
+    function registrarVisita(categoria) {
+        if (!categoria) return;
+        let m = obtenerMetricas();
+        if (!m.vistas[categoria]) m.vistas[categoria] = 0;
+        m.vistas[categoria]++;
+        localStorage.setItem('aj_metrics_v2', JSON.stringify(m));
+    }
+
+    function registrarSolicitud(departamento) {
+        if (!departamento) return;
+        let m = obtenerMetricas();
+        if (!m.solicitudes[departamento]) m.solicitudes[departamento] = 0;
+        m.solicitudes[departamento]++;
+        localStorage.setItem('aj_metrics_v2', JSON.stringify(m));
+    }
+
+    function abrirStatsModal() {
+        const m = obtenerMetricas();
+        const content = document.getElementById('stats-content');
+        
+        // Limpiar errores y campo de contraseña
+        const errorMsg = document.getElementById('reset-error-msg');
+        if (errorMsg) errorMsg.style.display = 'none';
+        const passInput = document.getElementById('reset-pass-input');
+        if (passInput) passInput.value = '';
+
+        let html = `
+        <h4 style="margin: 10px 0 5px 0; color: var(--oscuro); text-align: left;">👀 Visitas a Secciones (Interés):</h4>
+        <table class="stats-table">
+            <thead>
+                <tr><th>Departamento / Categoría</th><th>Visitas</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>✨ Spa</td><td><span class="stats-badge">${m.vistas.Spa || 0}</span></td></tr>
+                <tr><td>🔥 Experiencias VIP</td><td><span class="stats-badge">${m.vistas.Experiencias || 0}</span></td></tr>
+                <tr><td>🌴 Tours & Concierge</td><td><span class="stats-badge">${m.vistas.Concierge || 0}</span></td></tr>
+                <tr><td>🍳 Desayuno</td><td>${m.vistas.Desayuno || 0}</td></tr>
+                <tr><td>🥗 Lunch</td><td>${m.vistas.Lunch || 0}</td></tr>
+                <tr><td>🍷 Cena</td><td>${m.vistas.Cena || 0}</td></tr>
+                <tr><td>🍹 Bebidas</td><td>${m.vistas.Bebidas || 0}</td></tr>
+            </tbody>
+        </table>
+
+        <h4 style="margin: 18px 0 5px 0; color: var(--oscuro); text-align: left;">📲 Solicitudes/Consultas Enviadas:</h4>
+        <table class="stats-table">
+            <thead>
+                <tr><th>Departamento</th><th>Solicitudes</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>🌿 Spa & Wellness</td><td><span class="stats-badge" style="background:#2e7d32;">${m.solicitudes.Spa || 0}</span></td></tr>
+                <tr><td>🔥 Experiencias VIP</td><td><span class="stats-badge" style="background:#2e7d32;">${m.solicitudes.Experiencias || 0}</span></td></tr>
+                <tr><td>🌴 Tours & Concierge</td><td><span class="stats-badge" style="background:#2e7d32;">${m.solicitudes.Concierge || 0}</span></td></tr>
+                <tr><td>🍽️ Restaurante (Alimentos/Bebidas)</td><td>${m.solicitudes.Restaurante || 0}</td></tr>
+            </tbody>
+        </table>`;
+
+        content.innerHTML = html;
+        document.getElementById('stats-modal').style.display = 'flex';
+    }
+
+    function cerrarStatsModal(e) {
+        if (e.target.id === 'stats-modal') {
+            document.getElementById('stats-modal').style.display = 'none';
+        }
+    }
+
+    function cerrarStatsModalDirecto() {
+        document.getElementById('stats-modal').style.display = 'none';
+    }
+
+    // OPCIÓN 2: REINICIO VALIDADO EN INTERFAZ CON TIPO PASSWORD
+    function resetearMetricasConClave() {
+        const passInput = document.getElementById('reset-pass-input');
+        const errorMsg = document.getElementById('reset-error-msg');
+        const claveIngresada = passInput ? passInput.value.trim() : '';
+
+        if (!claveIngresada) {
+            if (errorMsg) {
+                errorMsg.innerText = currentLang === 'es' ? "⚠️ Ingresa la clave de administrador" : "⚠️ Please enter admin password";
+                errorMsg.style.display = 'block';
+            }
+            return;
+        }
+
+        // CLAVES VÁLIDAS ACEPTADAS ("1234", "2026", "admin")
+        if (claveIngresada === "1983" || claveIngresada === "2010" || claveIngresada === "admin") {
+            localStorage.removeItem('aj_metrics_v2');
+            if (passInput) passInput.value = "";
+            if (errorMsg) errorMsg.style.display = 'none';
+            abrirStatsModal();
+            mostrarToast(currentLang === 'es' ? "🔄 Contadores reiniciados" : "🔄 Metrics reset successfully");
+        } else {
+            if (errorMsg) {
+                errorMsg.innerText = currentLang === 'es' ? "❌ Clave incorrecta" : "❌ Incorrect password";
+                errorMsg.style.display = 'block';
+            }
+        }
+    }
 
     const translations = {
         es: {
@@ -351,7 +487,6 @@
             img: "https://i.postimg.cc/FzD046qx/IMG-20260724-084235.jpg" 
         },
         
-    
         { 
             n_es: "Guacamole", n_en: "Guacamole", p: 230, c: "Lunch", 
             d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.",
@@ -373,7 +508,6 @@
             tags: [],
             img: "https://i.postimg.cc/RFB3dhNM/IMG-20260716-145447.jpg" 
         },
-    
         { 
             n_es: "Tacos al pastor", n_en: "Tacos al pastor", p: 255, c: "Lunch", 
             d_es: "Salsa de tomate artesanal, queso mozzarella, pimientos, cebolla y champiñones.",
@@ -384,7 +518,7 @@
         { 
             n_es: "Pasta cremosa", n_en: "Creamy pasta",
             p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
-            d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
+            d_en: "Spaghetti prepared with your choice of chipotle sauce, tomato sauce or butter sauce, served with parmesan cheese and toasted bread.",
             tags: [],
             c: "Lunch", img: "" 
         },
@@ -396,7 +530,7 @@
             c: "Lunch", img: "https://i.postimg.cc/hGBLbpRS/IMG-20260213-WA0021.jpg" 
         },
         { 
-            n_es: "Hamburguesa de la casa", n_en: "House burguer",
+            n_es: "Hamburguesa de la casa", n_en: "House burger",
             p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
             d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
             tags: [],
@@ -416,7 +550,6 @@
             tags: [],
             c: "Lunch", img: "https://i.postimg.cc/26dKC2vb/SAVE-20260501-175804.jpg" 
         },
-        
         { 
             n_es: "Arroz con leche", n_en: "Rice pudding",
             p: 80, d_es: "Postre: Cremoso, con notas de canela y vainilla, acompañado de pasitas.", 
@@ -432,11 +565,9 @@
         { 
             n_es: "Carlota de limón", n_en: "Key lime Charlotte",
             p: 95, d_es: "Postre: Delicioso postre fresco con sabor cítrico, elaborado en suaves capas de crema y galleta.", 
-            d_en: " Dessert: A refreshing citrus dessert made with delicate layers of cream and coockies.",
+            d_en: " Dessert: A refreshing citrus dessert made with delicate layers of cream and cookies.",
             c: "Lunch", img: "" 
         },
-        
-
         { 
             n_es: "Guacamole", n_en: "Guacamole", p: 230, c: "Cena", 
             d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.",
@@ -458,7 +589,6 @@
             tags: ["gf"],
             img: "https://i.postimg.cc/RFB3dhNM/IMG-20260716-145447.jpg" 
         },
-    
         { 
             n_es: "Tacos al pastor", n_en: "Tacos al pastor", p: 255, c: "Cena", 
             d_es: "Salsa de tomate artesanal, queso mozzarella, pimientos, cebolla y champiñones.",
@@ -469,7 +599,7 @@
         { 
             n_es: "Pasta cremosa", n_en: "Creamy pasta",
             p: 260, d_es: "Espaguetti al gusto con chipotle, salsa de tomate o al burro, servido con queso parmesano y pan tostado.", 
-            d_en: "Spaguetti prepared with your choise of chipotle sauce, tomatoe sauce or butter sauce, served with parmesan cheese and toasted bread.",
+            d_en: "Spaghetti prepared with your choice of chipotle sauce, tomato sauce or butter sauce, served with parmesan cheese and toasted bread.",
             tags: [],
             c: "Cena", img: "" 
         },
@@ -481,7 +611,7 @@
             c: "Cena", img: "https://i.postimg.cc/hGBLbpRS/IMG-20260213-WA0021.jpg" 
         },
         { 
-            n_es: "Hamburguesa de la casa", n_en: "House burguer",
+            n_es: "Hamburguesa de la casa", n_en: "House burger",
             p: 315, d_es: "Hecha con sirloin y arrachera, pan brioche y servida con papas a la francesa. Cuál es el término de su preferencia? Rojo, medio o bien cocido", 
             d_en: "Made with sirloin and flank steak, served on a brioche bun with french fries. What is your preferred level of doneness? Rare, medium, or well-done",
             tags: [],
@@ -501,7 +631,6 @@
             tags: [],
             c: "Cena", img: "https://i.postimg.cc/26dKC2vb/SAVE-20260501-175804.jpg" 
         },
-        
         { 
             n_es: "Arroz con leche", n_en: "Rice pudding",
             p: 80, d_es: "Postre: Cremoso, con notas de canela y vainilla, acompañado de pasitas.", 
@@ -517,10 +646,9 @@
         { 
             n_es: "Carlota de limón", n_en: "Key lime Charlotte",
             p: 95, d_es: "Postre: Delicioso postre fresco con sabor cítrico, elaborado en suaves capas de crema y galleta.", 
-            d_en: " Dessert: A refreshing citrus dessert made with delicate layers of cream and coockies.",
+            d_en: " Dessert: A refreshing citrus dessert made with delicate layers of cream and cookies.",
             c: "Cena", img: "" 
         },
-    
         { 
             n_es: "Agua Evian natural", n_en: "Natural water Evian",
             p: 205, d_es: "750 ml. No incluye el plan Todo Incluído", 
@@ -554,7 +682,7 @@
         { 
             n_es: "Smoothie tropical", n_en: "Tropical smoothie",
             p: 165, d_es: "Mango, plátano y leche de coco con semillas de chía. No incluye en el plan Todo Incluído", 
-            d_en: "Mango, banana and coconut milk wuth chia seeds. Not included in the All-Inclusive plan.",
+            d_en: "Mango, banana and coconut milk with chia seeds. Not included in the All-Inclusive plan.",
             c: "Bebidas", img: "" 
         },
         { 
@@ -633,19 +761,19 @@
         { 
             n_es: "TEQUILA TASTING", n_en: "TEQUILA TASTING", 
             p: 2312.5, d_es: "En Hoteles Ana y José Collection es un honor poder llevarlos a este viaje de experiencia cultural, sensorial de nuestros tequila y gastronomía mexicana, esperando les permita descubrir, apreciar los sabores y aromas únicos de esta bebida mexicana ancestral milenaria. Reserva mínima 2 personas.", 
-            d_en: " At Ana y José Collection Hotels, it is an honor to take you on this cultural and sensory journey through our tequilas and Mexican gastronomy, hoping it will allow you to discover and appreciate the unique ﬂavors and aromas of this ancient Mexican beverage. Minimun 2 guest", 
+            d_en: " At Ana y José Collection Hotels, it is an honor to take you on this cultural and sensory journey through our tequilas and Mexican gastronomy, hoping it will allow you to discover and appreciate the unique ﬂavors and aromas of this ancient Mexican beverage. Minimum 2 guest", 
             c: "Experiencias", img: "https://i.postimg.cc/vTgmMtbr/IMG-20251219-WA0040.jpg" 
         },
         { 
             n_es: "MEZCAL TASTING", n_en: "MEZCAL TASTING", 
             p: 2312.5, d_es: "En Hoteles Ana y José Collection es un honor poder llevarlos a este viaje de experiencia cultural, sensorial de nuestros mezcales y gastronomía mexicana, esperando les permita descubrir, apreciar los sabores y aromas únicos de esta bebida mexicana ancestral milenaria. Reserva mínima 2 personas.", 
-            d_en: "At Ana y José Collection Hotels, it is an honor to take you on this cultural and sensory journey through our mezcals and Mexican gastronomy, hoping it will allow you to discover and appreciate the unique ﬂavors and aromas of this ancient Mexican beverage. Minimun 2 guest.", 
+            d_en: "At Ana y José Collection Hotels, it is an honor to take you on this cultural and sensory journey through our mezcals and Mexican gastronomy, hoping it will allow you to discover and appreciate the unique ﬂavors and aromas of this ancient Mexican beverage. Minimum 2 guest.", 
             c: "Experiencias", img: "https://i.postimg.cc/NF90YkBR/IMG-20251219-WA0032.jpg" 
         },
         { 
             n_es: "WINE TASTING", n_en: "WINE TASTING", 
             p: 2312.5, d_es: "En Hoteles Ana y José Collection es un honor guiarlos en una experiencia cultural y sensorial de nuestras regiones vitivinícolas y la gastronomía mexicana, para descubrir y apreciar los sabores y aromas de esta bebida ancestral. Reserva mínima 2 personas.", 
-            d_en: "At Ana y José Hotels Collection, it is an honor to guide you through a cultural and sensory journey across our wine regions and Mexican gastronomy, inviting you to discover and appreciate the ﬂavors and aromas of this ancestral beverage. Minimun 2 guest", 
+            d_en: "At Ana y José Hotels Collection, it is an honor to guide you through a cultural and sensory journey across our wine regions and Mexican gastronomy, inviting you to discover and appreciate the ﬂavors and aromas of this ancestral beverage. Minimum 2 guest", 
             c: "Experiencias", img: "https://i.postimg.cc/0jMNx0PD/IMG-20251219-WA0034.jpg" 
         },   
         { 
@@ -672,8 +800,6 @@
             d_en: "For the Mayan people, otoch means home, and our desire is that through this personalized massage you can return to yours totally renewed and healed through various massage techniques such as relaxing, deep tissue, and stretching as required. 30 Min. If you book now, we'll include a refreshing face mask.", 
             c: "Spa", img: "https://i.postimg.cc/Wz20xV9w/IMG-20260723-WA0028.jpg" 
         },
-       
-        // SERVICIOS CONCIERGE (Operativos / Asistencias)
         { n_es: "Asistencia Bellboy (Check-out)", n_en: "Bellboy Assistance", p: 0, d_es: "Solicite ayuda con su equipaje directamente en su puerta.", d_en: "Request luggage assistance directly at your door.", c: "Concierge", img: "" },
         { n_es: "Consulta con Concierge", n_en: "Concierge Consultation", p: 0, d_es: "Recomendaciones de cenotes, zonas Arqueológicas, tours y transporte.", d_en: "Cenotes, archaeological ruins, tours and transportation recommendations.", c: "Concierge", img: "" },
         { n_es: "Boxlunch (Tour/Early Check-out)", n_en: "Early Boxlunch", p: 0, d_es: "Si usted, va a algún tour o realiza el check out muy temprano, no se preocupe le ofrecemos un boxlunch, solicitelo con anticipación, el boxlunch es un Sándwich de jamón y queso, fruta de mano. Coordine con su concierge.", d_en: "If you are going on a tour or checking out very early, don't worry—we offer a boxed lunch; please request it in advance. The boxed lunch consists of a ham and cheese sandwich and fresh fruit. Coordinate with your concierge..", c: "Concierge", img: "" },
@@ -698,13 +824,11 @@
         }, 1500);
     }
 
-    /* FUNCIONES DE MODAL Y CONFIGURACIÓN WI-FI */
     function abrirWifiModal() {
         document.getElementById('modal-wifi-ssid').innerText = WIFI_SSID;
         document.getElementById('modal-wifi-pass').innerText = WIFI_PASS;
         document.getElementById('wifi-ssid-banner').innerText = WIFI_SSID;
         
-        // Genera QR dinámico para conexión directa a Wi-Fi
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=WIFI%3AS%3A${encodeURIComponent(WIFI_SSID)}%3BT%3AWPA%3BP%3A${encodeURIComponent(WIFI_PASS)}%3B%3B&size=200x200`;
         document.getElementById('wifi-qr-img').src = qrUrl;
         
@@ -768,6 +892,12 @@
         document.getElementById('lblTotal').innerText = t.total;
         document.getElementById('wifi-ssid-banner').innerText = WIFI_SSID;
         
+        // Textos del área administrativa en el modal de estadísticas
+        const lblAdmin = document.getElementById('lblAdminPass');
+        if(lblAdmin) lblAdmin.innerText = currentLang === 'es' ? '🔒 Clave de Administrador para reiniciar:' : '🔒 Admin Password to reset:';
+        const inputPass = document.getElementById('reset-pass-input');
+        if(inputPass) inputPass.placeholder = currentLang === 'es' ? 'Ingresa la clave...' : 'Enter password...';
+
         const nav = document.getElementById('navCats');
         const activeCat = document.querySelector('.btn-cat.active')?.getAttribute('data-cat') || 'Desayuno';
         
@@ -805,6 +935,9 @@
     }
 
     function filtrar(cat, btn) {
+        // REGISTRAR VISTA DE DEPARTAMENTO/CATEGORÍA
+        registrarVisita(cat);
+
         document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
         if(btn) {
             btn.classList.add('active');
@@ -838,7 +971,6 @@
                 📌 <em style="color:#d9534f; font-weight:bold;">${t.propinaLeyenda}</em>
             </div>`;
         } else if (cat === 'Spa') {
-            /* FOTO Y DESCRIPCIÓN EXCLUSIVA DEL SPA */
             const fotoSpa = "https://i.postimg.cc/T3YcmZSQ/spagen.webp";
             const descEs = "Bienvenido a nuestro santuario de bienestar. Disfrute de una experiencia holística diseñada para restaurar el equilibrio entre cuerpo y mente a través de masajes curativos, terapias ancestrales y tratamientos corporales revitalizantes frente al mar.";
             const descEn = "Welcome to our wellness sanctuary. Enjoy a holistic experience designed to restore balance between body and mind through healing massages, ancient therapies, and revitalizing body treatments by the sea.";
@@ -965,6 +1097,9 @@
 
             if(document.getElementById('guest-name')) document.getElementById('guest-name').value = nom;
             if(document.getElementById('room-num')) document.getElementById('room-num').value = hab;
+
+            // REGISTRAR SOLICITUD A CONCIERGE DIRECTO
+            registrarSolicitud('Concierge');
 
             const NUMERO_CONCIERGE = "5219985777525"; 
             const cabecera = "*SOLICITUD URGENTE / CONCIERGE DIRECTO*";
@@ -1117,10 +1252,14 @@
 
         let num = NUMERO_RESTAURANTE;
         let cabecera = "*SOLICITUD DE ALIMENTOS Y BEBIDAS*";
+        let deptNombre = "Restaurante";
         
-        if(tieneSpa) { num = NUMERO_SPA; cabecera = "*RESERVA DE SPA ANA Y JOSÉ*"; } 
-        else if(tieneExperiencias) { num = NUMERO_EXPERIENCIAS; cabecera = "*SOLICITUD DE EXPERIENCIAS VIP*"; } 
-        else if(tieneConcierge) { num = NUMERO_CONCIERGE; cabecera = "*SOLICITUD DE TOURS & CONCIERGE*"; }
+        if(tieneSpa) { num = NUMERO_SPA; cabecera = "*RESERVA DE SPA ANA Y JOSÉ*"; deptNombre = "Spa"; } 
+        else if(tieneExperiencias) { num = NUMERO_EXPERIENCIAS; cabecera = "*SOLICITUD DE EXPERIENCIAS VIP*"; deptNombre = "Experiencias"; } 
+        else if(tieneConcierge) { num = NUMERO_CONCIERGE; cabecera = "*SOLICITUD DE TOURS & CONCIERGE*"; deptNombre = "Concierge"; }
+
+        // REGISTRAR LA SOLICITUD EN LAS MÉTRICAS
+        registrarSolicitud(deptNombre);
 
         let msg = "";
 
