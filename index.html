@@ -202,7 +202,7 @@
     </div>
 </div>
 
-<!-- MODAL DE ESTADÍSTICAS / MÉTRICAS (OPCIÓN 2: CON CAMPO DE CONTRASEÑA EN INTERFAZ) -->
+<!-- MODAL DE ESTADÍSTICAS / MÉTRICAS -->
 <div id="stats-modal" class="wifi-modal-overlay" onclick="cerrarStatsModal(event)">
     <div class="wifi-modal-card">
         <span class="wifi-modal-close" onclick="cerrarStatsModalDirecto()">&times;</span>
@@ -211,7 +211,7 @@
         
         <div id="stats-content"></div>
 
-        <!-- SECCIÓN DE REINICIO CON CONTRASEÑA TIPO PASSWORD (SIN POPUPS) -->
+        <!-- SECCIÓN DE REINICIO CON CONTRASEÑA -->
         <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; text-align: left;">
             <label id="lblAdminPass" style="font-size: 0.75rem; font-weight: bold; color: var(--oscuro); display: block; margin-bottom: 6px;">
                 🔒 Clave de Administrador para reiniciar:
@@ -346,7 +346,6 @@
         const m = obtenerMetricas();
         const content = document.getElementById('stats-content');
         
-        // Limpiar errores y campo de contraseña
         const errorMsg = document.getElementById('reset-error-msg');
         if (errorMsg) errorMsg.style.display = 'none';
         const passInput = document.getElementById('reset-pass-input');
@@ -396,7 +395,6 @@
         document.getElementById('stats-modal').style.display = 'none';
     }
 
-    // OPCIÓN 2: REINICIO VALIDADO EN INTERFAZ CON TIPO PASSWORD
     function resetearMetricasConClave() {
         const passInput = document.getElementById('reset-pass-input');
         const errorMsg = document.getElementById('reset-error-msg');
@@ -410,7 +408,6 @@
             return;
         }
 
-        // CLAVES VÁLIDAS ACEPTADAS ("1234", "2026", "admin")
         if (claveIngresada === "1983" || claveIngresada === "2010" || claveIngresada === "admin") {
             localStorage.removeItem('aj_metrics_v2');
             if (passInput) passInput.value = "";
@@ -486,7 +483,6 @@
             tags: [],
             img: "https://i.postimg.cc/FzD046qx/IMG-20260724-084235.jpg" 
         },
-        
         { 
             n_es: "Guacamole", n_en: "Guacamole", p: 230, c: "Lunch", 
             d_es: "Tradicional guacamole servido con totopos de maíz y queso fresco.",
@@ -892,7 +888,6 @@
         document.getElementById('lblTotal').innerText = t.total;
         document.getElementById('wifi-ssid-banner').innerText = WIFI_SSID;
         
-        // Textos del área administrativa en el modal de estadísticas
         const lblAdmin = document.getElementById('lblAdminPass');
         if(lblAdmin) lblAdmin.innerText = currentLang === 'es' ? '🔒 Clave de Administrador para reiniciar:' : '🔒 Admin Password to reset:';
         const inputPass = document.getElementById('reset-pass-input');
@@ -935,7 +930,6 @@
     }
 
     function filtrar(cat, btn) {
-        // REGISTRAR VISTA DE DEPARTAMENTO/CATEGORÍA
         registrarVisita(cat);
 
         document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
@@ -1098,7 +1092,6 @@
             if(document.getElementById('guest-name')) document.getElementById('guest-name').value = nom;
             if(document.getElementById('room-num')) document.getElementById('room-num').value = hab;
 
-            // REGISTRAR SOLICITUD A CONCIERGE DIRECTO
             registrarSolicitud('Concierge');
 
             const NUMERO_CONCIERGE = "5219985777525"; 
@@ -1170,128 +1163,125 @@
             subtotal += item.precio;
             if (item.categoria === "Experiencias") {
                 servicio += item.precio * 0.18;
-            } else if (['Desayuno', 'Lunch', 'Cena', 'Bebidas', 'Postre', 'Spa'].includes(item.categoria)) {
+            } else if (['Desayuno', 'Lunch', 'Cena', 'Bebidas', 'Spa'].includes(item.categoria)) {
                 requiereAvisoPropina = true;
             }
         });
 
-        let contadorGrupos = 0;
-        if(tieneSpa) contadorGrupos++;
-        if(tieneExperiencias) contadorGrupos++;
-        if(tieneConcierge) contadorGrupos++;
-        if(tieneAlimentos) contadorGrupos++;
+        let total = subtotal + servicio;
+        let totalUSD = (total / TIPO_CAMBIO).toFixed(2);
 
-        if(contadorGrupos > 1) {
-            mezclaWarning.style.display = "block";
-            mezclaWarning.innerText = currentLang === 'es' ? 
-                "⚠️ Envía los alimentos, experiencias o spa por separado" : 
-                "⚠️ Please send food, experiences, or spa requests separately";
-            document.getElementById('btnSend').style.opacity = "0.4";
-            document.getElementById('btnSend').style.cursor = "not-allowed";
+        document.getElementById('summary-subtotal').innerText = `$${subtotal.toFixed(2)} MXN`;
+        
+        const serviceRow = document.getElementById('summary-service-row');
+        if (servicio > 0) {
+            serviceRow.style.display = 'flex';
+            document.getElementById('summary-service').innerText = `$${servicio.toFixed(2)} MXN`;
         } else {
-            mezclaWarning.style.display = "none";
-            document.getElementById('btnSend').style.opacity = "1";
-            document.getElementById('btnSend').style.cursor = "pointer";
+            serviceRow.style.display = 'none';
         }
 
-        if (tieneConcierge) {
-            paymentWrapper.style.display = "none";
-            box.style.display = "none";
-            propinaMsg.style.display = "none";
+        document.getElementById('summary-total-mxn').innerText = `$${total.toFixed(2)} MXN`;
+        document.getElementById('summary-total-usd').innerText = `Approx. $${totalUSD} USD`;
+        box.style.display = 'block';
+
+        let contadorTipos = (tieneAlimentos ? 1 : 0) + (tieneSpa ? 1 : 0) + (tieneExperiencias ? 1 : 0) + (tieneConcierge ? 1 : 0);
+        if (contadorTipos > 1) {
+            mezclaWarning.innerText = translations[currentLang].errMezcla;
+            mezclaWarning.style.display = 'block';
+            paymentWrapper.style.display = 'none';
         } else {
-            paymentWrapper.style.display = "block";
-            box.style.display = "block";
-            
-            let totalMxn = subtotal + servicio;
-            let totalUsd = totalMxn / TIPO_CAMBIO;
+            mezclaWarning.style.display = 'none';
+            paymentWrapper.style.display = 'block';
+        }
 
-            document.getElementById('summary-subtotal').innerText = `$${subtotal.toFixed(2)}`;
-            
-            const serviceRow = document.getElementById('summary-service-row');
-            if (servicio > 0) {
-                serviceRow.style.display = "flex";
-                document.getElementById('summary-service').innerText = `$${servicio.toFixed(2)}`;
-            } else {
-                serviceRow.style.display = "none";
-            }
-
-            document.getElementById('summary-total-mxn').innerText = `$${totalMxn.toFixed(2)} MXN`;
-            document.getElementById('summary-total-usd').innerText = `Approx. $${totalUsd.toFixed(2)} USD`;
-
-            if (requiereAvisoPropina) {
-                propinaMsg.style.display = "block";
-                propinaMsg.innerText = currentLang === 'es' ? "* La propina no está incluida / Tip is not included" : "* Tip is not included";
-            } else {
-                propinaMsg.style.display = "none";
-            }
+        if (requiereAvisoPropina) {
+            propinaMsg.innerText = translations[currentLang].propinaLeyenda;
+            propinaMsg.style.display = 'block';
+        } else {
+            propinaMsg.style.display = 'none';
         }
     }
 
     function enviarPedido() {
         const nom = document.getElementById('guest-name').value.trim();
         const hab = document.getElementById('room-num').value.trim();
-        const pago = document.getElementById('payment-method').value;
         const t = translations[currentLang];
-        
-        if(!nom || !hab || carrito.length === 0) { mostrarToast(t.errDatos); return; }
+
+        if (carrito.length === 0) return;
+
+        if (!nom || !hab) {
+            mostrarToast(t.errDatos);
+            if (!nom) document.getElementById('guest-name').focus();
+            else document.getElementById('room-num').focus();
+            return;
+        }
 
         const tieneSpa = carrito.some(item => item.categoria === "Spa");
         const tieneExperiencias = carrito.some(item => item.categoria === "Experiencias");
         const tieneConcierge = carrito.some(item => item.categoria === "Concierge");
         const tieneAlimentos = carrito.some(item => !["Spa", "Experiencias", "Concierge"].includes(item.categoria));
 
-        if ((tieneSpa && tieneAlimentos) || (tieneExperiencias && tieneAlimentos) || (tieneConcierge && tieneAlimentos) || 
-            (tieneSpa && tieneExperiencias) || (tieneSpa && tieneConcierge) || (tieneExperiencias && tieneConcierge)) {
-            mostrarToast(t.errMezcla); return;
+        let contadorTipos = (tieneAlimentos ? 1 : 0) + (tieneSpa ? 1 : 0) + (tieneExperiencias ? 1 : 0) + (tieneConcierge ? 1 : 0);
+        if (contadorTipos > 1) {
+            mostrarToast(t.errMezcla);
+            return;
         }
 
-        const NUMERO_RESTAURANTE = "5219841870476";
-        const NUMERO_SPA = "5219985777525";
-        const NUMERO_CONCIERGE = "5219985777525";    
-        const NUMERO_EXPERIENCIAS = "5219985777525"; 
+        // REGISTRAR SOLICITUDES EN MÉTRICAS
+        let departamentosProcesados = new Set();
+        carrito.forEach(item => {
+            if (['Desayuno', 'Lunch', 'Cena', 'Bebidas'].includes(item.categoria)) {
+                departamentosProcesados.add('Restaurante');
+            } else if (item.categoria === 'Spa') {
+                departamentosProcesados.add('Spa');
+            } else if (item.categoria === 'Experiencias') {
+                departamentosProcesados.add('Experiencias');
+            } else if (item.categoria === 'Concierge') {
+                departamentosProcesados.add('Concierge');
+            }
+        });
 
-        let num = NUMERO_RESTAURANTE;
-        let cabecera = "*SOLICITUD DE ALIMENTOS Y BEBIDAS*";
-        let deptNombre = "Restaurante";
-        
-        if(tieneSpa) { num = NUMERO_SPA; cabecera = "*RESERVA DE SPA ANA Y JOSÉ*"; deptNombre = "Spa"; } 
-        else if(tieneExperiencias) { num = NUMERO_EXPERIENCIAS; cabecera = "*SOLICITUD DE EXPERIENCIAS VIP*"; deptNombre = "Experiencias"; } 
-        else if(tieneConcierge) { num = NUMERO_CONCIERGE; cabecera = "*SOLICITUD DE TOURS & CONCIERGE*"; deptNombre = "Concierge"; }
+        departamentosProcesados.forEach(dept => registrarSolicitud(dept));
 
-        // REGISTRAR LA SOLICITUD EN LAS MÉTRICAS
-        registrarSolicitud(deptNombre);
+        let numeroWA = "5219985777525"; 
 
-        let msg = "";
+        const metodoPago = document.getElementById('payment-method').value;
+        let subtotal = 0;
+        let servicio = 0;
 
-        if (tieneConcierge) {
-            msg = `${cabecera}\n*Nombre:* ${nom}\n*Habitación:* ${hab}\n`;
-            let lineasNotas = [];
-            carrito.forEach(i => {
-                if (i.nombre.includes("Solicitud") || i.nombre.includes("Request")) {
-                    lineasNotas.push(i.nota);
-                } else {
-                    if (i.nota) { lineasNotas.push(`${i.nombre} (${i.nota})`); } 
-                    else { lineasNotas.push(i.nombre); }
-                }
-            });
-            msg += `*Notas:* ${lineasNotas.join(", ")}`;
-        } else {
-            msg = `${cabecera}\n*Nombre:* ${nom}\n*Habitación:* ${hab}\n*Forma de Pago:* ${pago}\n---\n`;
-            carrito.forEach(i => msg += `• ${i.nombre} ${i.nota ? `[Detalles: ${i.nota}]` : ''}\n`);
+        let textoPedido = carrito.map(item => {
+            subtotal += item.precio;
+            if (item.categoria === "Experiencias") servicio += item.precio * 0.18;
+            return `• *${item.nombre}*${item.precio > 0 ? ` - $${item.precio} MXN` : ''}${item.nota ? `\n   _Nota: ${item.nota}_` : ''}`;
+        }).join('\n');
+
+        let total = subtotal + servicio;
+        let totalUSD = (total / TIPO_CAMBIO).toFixed(2);
+
+        let msg = `*NUEVA SOLICITUD - ANA Y JOSÉ*\n\n`;
+        msg += `*Huésped:* ${nom}\n`;
+        msg += `*Habitación:* ${hab}\n`;
+        msg += `*Forma de Pago:* ${metodoPago}\n\n`;
+        msg += `*Detalle:* \n${textoPedido}\n\n`;
+
+        if (servicio > 0) {
+            msg += `*Subtotal:* $${subtotal.toFixed(2)} MXN\n`;
+            msg += `*Servicio (18%):* $${servicio.toFixed(2)} MXN\n`;
         }
+        msg += `*TOTAL:* $${total.toFixed(2)} MXN (Approx. $${totalUSD} USD)\n`;
 
-        window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
-
-        carrito = [];
-        renderCarrito();
+        window.open(`https://wa.me/${numeroWA}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    function irAExperiencia(tipo) {
-        const btn = document.querySelector(`[data-cat="${tipo}"]`);
-        if(btn) btn.click();
-        window.scrollTo({ top: 150, behavior: 'smooth' });
+    function irAExperiencia(cat) {
+        filtrar(cat);
+        const navBtn = document.querySelector(`[data-cat="${cat}"]`);
+        if (navBtn) navBtn.click();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Inicializar al cargar la página
     updateUI();
 </script>
 </body>
